@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>Taigo Sakai | Portfolio</title>
+  <title>Taigo Sakai | Research Portfolio</title>
   <!-- GitHubと同じPrimer CSS -->
   <link rel="stylesheet"
         href="https://unpkg.com/@primer/css@22.0.2/dist/primer.css">
@@ -47,18 +47,7 @@
       background-color: #eaeef2;
       margin-right: 4px;
     }
-    .repo-card {
-      border: 1px solid #d0d7de;
-      border-radius: 6px;
-      padding: 12px;
-      margin-bottom: 8px;
-      background-color: #ffffff;
-    }
-    .repo-title {
-      font-weight: 600;
-      font-size: 15px;
-    }
-    .education-item, .experience-item {
+    .education-item {
       border-left: 2px solid #d0d7de;
       padding-left: 12px;
       margin-bottom: 12px;
@@ -66,6 +55,17 @@
     .edu-period {
       font-size: 13px;
       color: #57606a;
+    }
+    .link-list a {
+      display: inline-flex;
+      align-items: center;
+      margin-right: 12px;
+      margin-bottom: 6px;
+      font-size: 13px;
+      text-decoration: none;
+    }
+    .link-list a .label {
+      margin-left: 4px;
     }
     .footer {
       margin-top: 40px;
@@ -92,7 +92,7 @@
     <div>
       <div class="header-name">Taigo Sakai</div>
       <div class="text-small color-fg-muted">
-        Meijo University / Deep Learning for Imbalanced and Continual Learning
+        Meijo University, Graduate School of Science and Technology
       </div>
     </div>
     <div class="lang-toggle">
@@ -102,104 +102,150 @@
     </div>
   </div>
 
-  <!-- ナビ（見出しへのアンカー） -->
+  <!-- ナビ -->
   <nav class="UnderlineNav mb-3">
     <div class="UnderlineNav-body">
-      <a class="UnderlineNav-item" href="#about">About</a>
-      <a class="UnderlineNav-item" href="#research">Research</a>
+      <a class="UnderlineNav-item" href="#affiliation">Affiliation</a>
+      <a class="UnderlineNav-item" href="#links">Links</a>
+      <a class="UnderlineNav-item" href="#research">Publications</a>
       <a class="UnderlineNav-item" href="#awards">Awards</a>
-      <a class="UnderlineNav-item" href="#memberships">Memberships</a>
-      <a class="UnderlineNav-item" href="#projects">Projects</a>
-      <a class="UnderlineNav-item" href="#experience">Experience</a>
       <a class="UnderlineNav-item" href="#education">Education</a>
     </div>
   </nav>
 
-  <!-- 日本語セクション -->
+  <!-- 日本語 -->
   <div id="lang-ja" class="lang-section active">
 
-    <section id="about">
-      <div class="section-title">自己紹介</div>
-      <p>
-        名城大学 大学院 理工学研究科 電気電子・情報・材料工学専攻 博士課程に在籍し，
-        画像認識におけるクラス不均衡と継続学習を対象とした深層学習の研究に取り組んでいます。
-        学習中にニューロンを増減させることでネットワーク構造を動的に変化させ，
-        少数クラスと既存クラスの両方に十分な表現力を再配分する手法を提案しています。
-      </p>
-      <p>
-        実装と応用も重視し，医用画像，植物画像，マルチカメラ追跡，
-        iOSアプリへのモデル実装などで検証を進めています。
-      </p>
+    <section id="affiliation">
+      <div class="section-title">所属</div>
+      <ul>
+        <li>名城大学 大学院 理工学研究科 電気電子・情報・材料工学専攻 博士後期課程</li>
+        <li>名城大学 大学院 理工学研究科 電気電子工学専攻 修士課程 修了</li>
+        <li>指導教員: 堀田 一弘 教授</li>
+      </ul>
+    </section>
+
+    <section id="links">
+      <div class="section-title">連絡先・リンク</div>
+      <div class="link-list">
+        <a href="mailto:200442066@ccalumni.meijo-u.ac.jp" target="_blank" rel="noopener">
+          📧 <span class="label">Email</span>
+        </a>
+        <a href="https://x.com/ikaitaig" target="_blank" rel="noopener">
+          𝕏 <span class="label">@ikaitaig</span>
+        </a>
+        <a href="https://www.linkedin.com/in/sakai1250" target="_blank" rel="noopener">
+          💼 <span class="label">LinkedIn</span>
+        </a>
+        <a href="https://www.kaggle.com/sakaitt" target="_blank" rel="noopener">
+          🧮 <span class="label">Kaggle</span>
+        </a>
+        <a href="https://qiita.com/sakai1250" target="_blank" rel="noopener">
+          📝 <span class="label">Qiita</span>
+        </a>
+        <a href="https://scholar.google.com.ni/citations?user=LZnH1HIAAAAJ&hl=en&authuser=1"
+           target="_blank" rel="noopener">
+          📚 <span class="label">Google Scholar</span>
+        </a>
+      </div>
     </section>
 
     <section id="research">
-      <div class="section-title">研究実績</div>
+      <div class="section-title">研究業績</div>
 
-      <div class="subsection-title">国際会議（査読付き）</div>
+      <div class="subsection-title">国際会議・ワークショップ（査読あり）</div>
       <ul>
         <li>
           <span class="badge-year">2025</span>
           T. Sakai, K. Hotta,
           “Long-Tailed Data Classification by Increasing and Decreasing Neurons During Training,”
-          <span class="muted">ICCV 2025 Workshop on Human-inspired Computer Vision, Poster, Hawaii, USA.</span>
+          <span class="muted">
+            International Conference on Computer Vision (ICCV) Workshop on Human-inspired Computer Vision,
+            Poster, Hawaii, USA.
+          </span>
         </li>
         <li>
           <span class="badge-year">2024</span>
           T. Sakai, K. Hotta,
           “Growing Deep Neural Network Considering with Similarity between Neurons,”
-          <span class="muted">ECCV 2024 Workshop on Human-inspired Computer Vision, Poster, Milano, Italy.</span>
+          <span class="muted">
+            European Conference on Computer Vision (ECCV) Workshop on Human-inspired Computer Vision,
+            Poster, Milano, Italy.
+          </span>
         </li>
       </ul>
 
-      <div class="subsection-title">国内会議・シンポジウム</div>
+      <div class="subsection-title">国内学会・シンポジウム</div>
       <ul>
         <li>
-          <span class="badge-year">2025</span>
+          <span class="badge-year">2024</span>
           坂井 泰吾, 堀田 一弘,
-          「不均衡なデータセットの継続学習における勾配一貫性正規化と動的な知識蒸留」,
-          <span class="muted">画像の認識・理解シンポジウム MIRU2025, 京都, 口頭発表（査読あり）。</span>
-        </li>
-        <li>
-          <span class="badge-year">2025</span>
-          坂井 泰吾, 米倉 崇晃, 堀田 一弘,
-          「SAM2とマスク細線化によるシロイヌナズナの教師無し先端追跡手法」,
-          <span class="muted">情報処理学会第87回全国大会, 大阪, 口頭発表。</span>
+          「ニューロン間の類似度分布を考慮したニューロン増加型深層ニューラルネットワーク」,
+          <span class="muted">
+            情報処理学会 第238回CVIM研究会 卒論セッション, 2024年5月8日, 口頭発表。
+          </span>
         </li>
         <li>
           <span class="badge-year">2024</span>
           坂井 泰吾, 堀田 一弘,
           「ニューロン間の類似度を考慮した深層ニューラルネットワークによる画像分類」,
-          <span class="muted">令和六年度東海支部連合大会, 岐阜, 口頭発表。</span>
-        </li>
-        <li>
-          <span class="badge-year">2025</span>
-          坂井 泰吾, 堀田 一弘,
-          「医用画像分類における CNN と KAN の動的な統合によるノイズ頑健性の向上」,
-          <span class="muted">日本生体医工学会東海支部大会 2025, 愛知, 口頭発表。</span>
+          <span class="muted">
+            令和6年度 電気・電子・情報関係学会 東海支部連合大会, 2024年8月30日, 口頭発表。
+          </span>
         </li>
         <li>
           <span class="badge-year">2024</span>
           坂井 泰吾, 堀田 一弘,
           「学習中のニューロン増減によるクラス不均衡データの識別」,
-          <span class="muted">ビジョン技術の実利用ワークショップ ViEW2024, ポスター（査読あり）。</span>
+          <span class="muted">
+            ビジョン技術の実利用ワークショップ (ViEW2024), 神奈川, ポスター（査読あり）。
+          </span>
         </li>
         <li>
           <span class="badge-year">2025</span>
-          土井田 啓輔, 坂井 泰吾 ほか,
-          「複数視野を使った複数物体追跡の精度向上」,
-          <span class="muted">SSII2025, 東京, ポスター（査読あり）。</span>
-        </li>
-        <li>
-          <span class="badge-year">2025</span>
-          神谷 聡, 坂井 泰吾 ほか,
+          神谷 聡，坂井 泰吾，小嶋 華，朽津 和幸，友井 拓実，堀田 一弘,
           「少ない教師付きデータからのゼニゴケ仮根の先端追跡法」,
-          <span class="muted">DIA2025, 福井, ポスター（査読あり）。</span>
+          <span class="muted">
+            動的画像処理実利用化ワークショップ (DIA2025), 福井, ポスター（査読あり）。
+          </span>
+        </li>
+        <li>
+          <span class="badge-year">2025</span>
+          坂井 泰吾，米倉 崇晃，堀田 一弘,
+          「SAM2とマスク細線化によるシロイヌナズナの教師無し先端追跡手法」,
+          <span class="muted">
+            情報処理学会 第87回全国大会, 大阪, 2025年3月15日, 口頭発表。
+          </span>
+        </li>
+        <li>
+          <span class="badge-year">2025</span>
+          土井田 啓輔, 坂井 泰吾, 加藤 直樹, 横田 一豊, 中村 剛, 堀田 一 弘,
+          「複数視野を使った複数物体追跡の精度向上」,
+          <span class="muted">
+            第30回画像センシングシンポジウム (SSII2024), 東京, ポスター（査読あり）。
+          </span>
+        </li>
+        <li>
+          <span class="badge-year">2025</span>
+          坂井 泰吾, 堀田 一弘,
+          「不均衡なデータセットの継続学習における勾配一貫性正規化と動的な知識蒸留」,
+          <span class="muted">
+            画像の認識・理解シンポジウム (MIRU2025), 京都, 口頭発表（査読あり）。
+          </span>
+        </li>
+        <li>
+          <span class="badge-year">2025</span>
+          坂井 泰吾, 堀田 一弘,
+          「医用画像分類における CNN と KAN の動的な統合によるノイズ頑健性の向上」,
+          <span class="muted">
+            日本生体医工学会 東海支部大会 2025, 愛知, 口頭発表。
+          </span>
         </li>
       </ul>
     </section>
 
     <section id="awards">
-      <div class="section-title">受賞歴</div>
+      <div class="section-title">受賞</div>
       <ul>
         <li>
           <span class="badge-year">2025</span>
@@ -215,73 +261,6 @@
           情報処理学会 CVIM 研究会 卒業論文セッション優秀賞
         </li>
       </ul>
-    </section>
-
-    <section id="memberships">
-      <div class="section-title">所属学会</div>
-      <ul>
-        <li>
-          情報処理学会（Information Processing Society of Japan）,
-          <span class="muted">2024年11月 – 現在</span>
-        </li>
-        <li>
-          IEEE,
-          <span class="muted">2024年4月 – 現在</span>
-        </li>
-      </ul>
-    </section>
-
-    <section id="projects">
-      <div class="section-title">Projects（研究・開発）</div>
-
-      <div class="repo-card">
-        <div class="repo-title">Dynamic Neuron Growth and Pruning for Long-Tailed Data</div>
-        <div class="muted">
-          学習中にニューロンを増減させて表現力を再配分し，
-          Long-Tailedデータで少数クラス精度を向上させる手法。
-          Imbalanced CIFAR-100 や ImageNet-LT で最大 6.8% の少数クラス精度向上を確認。
-        </div>
-      </div>
-
-      <div class="repo-card">
-        <div class="repo-title">Similarity-aware Neuron Growing</div>
-        <div class="muted">
-          ニューロン間のコサイン類似度を正則化し，
-          役割が重複しないように成長させる手法。
-          CIFAR-10/100 で 1–2% 程度の精度向上と，
-          Grad-CAM による広範囲な注意領域を確認。
-        </div>
-      </div>
-
-      <div class="repo-card">
-        <div class="repo-title">recolle – NFC Photo Album for iOS</div>
-        <div class="muted">
-          NFC付きアクリルキーホルダーに写真アルバムへのリンクを書き込み，
-          iPhoneをかざすと日替わりで過去写真を呼び出すアプリ。
-          Next.js + Neon + Vercel と iOSアプリを連携した個人開発。
-        </div>
-      </div>
-
-      <div class="repo-card">
-        <div class="repo-title">Multi-view Detection and Tracking</div>
-        <div class="muted">
-          複数カメラからの鳥瞰平面上での人物検出・追跡。
-          複数視野の密度情報を用いた特徴融合・ConvLSTMによる時系列統合により，
-          WildTrack / MultiViewX でMODA, IDF1の向上を目指す研究。
-        </div>
-      </div>
-    </section>
-
-    <section id="experience">
-      <div class="section-title">経歴（インターン・その他）</div>
-      <div class="experience-item">
-        <div class="subsection-title">Research Internships and Competitions</div>
-        <ul>
-          <li>SIGNATE 超解像コンペ 入賞（深層学習による画像超解像モデル構築）。</li>
-          <li>世界規模ロボットコンテストにて画像認識を用いた追跡制御に携わり，上位入賞。</li>
-          <li>複数のハッカソンでiOSアプリを開発し，最優秀賞を獲得。</li>
-        </ul>
-      </div>
     </section>
 
     <section id="education">
@@ -311,27 +290,45 @@
   </div> <!-- /lang-ja -->
 
 
-  <!-- 英語セクション -->
+  <!-- 英語 -->
   <div id="lang-en" class="lang-section">
 
-    <section id="about-en">
-      <div class="section-title">About</div>
-      <p>
-        I am a Ph.D. student in the Graduate School of Science and Technology,
-        Meijo University. My research focuses on deep learning for
-        <strong>imbalanced and continual learning</strong> in image recognition.
-      </p>
-      <p>
-        I study dynamic neural networks that grow and prune neurons during
-        training, in order to reallocate representation capacity to rare
-        classes while preserving previously acquired knowledge.
-        I also validate the ideas on medical images, plant phenotyping,
-        multi-view detection and tracking, and iOS applications.
-      </p>
+    <section id="affiliation-en">
+      <div class="section-title">Affiliation</div>
+      <ul>
+        <li>Ph.D. Course, Graduate School of Science and Technology, Meijo University</li>
+        <li>M.Eng., Graduate School of Science and Technology, Meijo University</li>
+        <li>Supervisor: Prof. Kazuhiro Hotta</li>
+      </ul>
+    </section>
+
+    <section id="links-en">
+      <div class="section-title">Contact & Links</div>
+      <div class="link-list">
+        <a href="mailto:200442066@ccalumni.meijo-u.ac.jp" target="_blank" rel="noopener">
+          📧 <span class="label">Email</span>
+        </a>
+        <a href="https://x.com/ikaitaig" target="_blank" rel="noopener">
+          𝕏 <span class="label">@ikaitaig</span>
+        </a>
+        <a href="https://www.linkedin.com/in/sakai1250" target="_blank" rel="noopener">
+          💼 <span class="label">LinkedIn</span>
+        </a>
+        <a href="https://www.kaggle.com/sakaitt" target="_blank" rel="noopener">
+          🧮 <span class="label">Kaggle</span>
+        </a>
+        <a href="https://qiita.com/sakai1250" target="_blank" rel="noopener">
+          📝 <span class="label">Qiita</span>
+        </a>
+        <a href="https://scholar.google.com.ni/citations?user=LZnH1HIAAAAJ&hl=en&authuser=1"
+           target="_blank" rel="noopener">
+          📚 <span class="label">Google Scholar</span>
+        </a>
+      </div>
     </section>
 
     <section id="research-en">
-      <div class="section-title">Research Outputs</div>
+      <div class="section-title">Publications</div>
 
       <div class="subsection-title">International Workshops (peer-reviewed)</div>
       <ul>
@@ -339,60 +336,90 @@
           <span class="badge-year">2025</span>
           T. Sakai, K. Hotta,
           “Long-Tailed Data Classification by Increasing and Decreasing Neurons During Training,”
-          <span class="muted">ICCV 2025 Workshop on Human-inspired Computer Vision, Poster, Hawaii, USA.</span>
+          <span class="muted">
+            ICCV 2025 Workshop on Human-inspired Computer Vision, Poster, Hawaii, USA.
+          </span>
         </li>
         <li>
           <span class="badge-year">2024</span>
           T. Sakai, K. Hotta,
           “Growing Deep Neural Network Considering with Similarity between Neurons,”
-          <span class="muted">ECCV 2024 Workshop on Human-inspired Computer Vision, Poster, Milano, Italy.</span>
+          <span class="muted">
+            ECCV 2024 Workshop on Human-inspired Computer Vision, Poster, Milano, Italy.
+          </span>
         </li>
       </ul>
 
       <div class="subsection-title">Domestic Conferences and Symposia</div>
       <ul>
         <li>
-          <span class="badge-year">2025</span>
+          <span class="badge-year">2024</span>
           Taigo Sakai, Kazuhiro Hotta,
-          “Gradient-consistent regularization and dynamic knowledge distillation
-          for imbalanced continual learning,”
-          <span class="muted">MIRU 2025, Kyoto, oral, peer-reviewed.</span>
-        </li>
-        <li>
-          <span class="badge-year">2025</span>
-          Taigo Sakai, Takaaki Yonekura, Kazuhiro Hotta,
-          “Unsupervised tip tracking of Arabidopsis thaliana using SAM2 and skeletonization,”
-          <span class="muted">IPSJ National Convention 2025, Osaka, oral.</span>
+          “Neuron-growing deep neural network considering similarity distribution between neurons,”
+          <span class="muted">
+            IPSJ CVIM Research Group, 238th Meeting, Graduation Thesis Session,
+            May 8, 2024, oral.
+          </span>
         </li>
         <li>
           <span class="badge-year">2024</span>
           Taigo Sakai, Kazuhiro Hotta,
           “Image classification by deep neural networks considering similarity between neurons,”
-          <span class="muted">Tokai Branch Joint Conference 2024, Gifu, oral.</span>
-        </li>
-        <li>
-          <span class="badge-year">2025</span>
-          Taigo Sakai, Kazuhiro Hotta,
-          “Robust medical image classification by dynamic integration of CNN and KAN,”
-          <span class="muted">JSMBE Tokai Section Meeting 2025, Aichi, oral.</span>
+          <span class="muted">
+            Tokai Joint Conference on Electrical, Electronics, Information, and Related Engineering,
+            Aug. 30, 2024, oral.
+          </span>
         </li>
         <li>
           <span class="badge-year">2024</span>
           Taigo Sakai, Kazuhiro Hotta,
           “Class-imbalanced image classification by growing and pruning neurons during training,”
-          <span class="muted">ViEW 2024, Kanagawa, poster, peer-reviewed.</span>
+          <span class="muted">
+            ViEW 2024, Kanagawa, poster, peer-reviewed.
+          </span>
         </li>
         <li>
           <span class="badge-year">2025</span>
-          Keisuke Doida, Taigo Sakai et al.,
-          “Improving multi-object tracking with multiple camera views,”
-          <span class="muted">SSII 2025, Tokyo, poster, peer-reviewed.</span>
-        </li>
-        <li>
-          <span class="badge-year">2025</span>
-          Satoshi Kamiya, Taigo Sakai et al.,
+          Satoshi Kamiya, Taigo Sakai, Hana Kojima, Kazuyuki Kuchitsu,
+          Takumi Tomoi, Kazuhiro Hotta,
           “Tip tracking of Marchantia polymorpha rhizoids with limited supervision,”
-          <span class="muted">DIA 2025, Fukui, poster, peer-reviewed.</span>
+          <span class="muted">
+            DIA 2025, Fukui, poster, peer-reviewed.
+          </span>
+        </li>
+        <li>
+          <span class="badge-year">2025</span>
+          Taigo Sakai, Takaaki Yonekura, Kazuhiro Hotta,
+          “Unsupervised tip tracking of Arabidopsis thaliana using SAM2 and skeletonization,”
+          <span class="muted">
+            IPSJ National Convention 2025, Osaka, Mar. 15, oral.
+          </span>
+        </li>
+        <li>
+          <span class="badge-year">2025</span>
+          Keisuke Doida, Taigo Sakai, Naoki Kato, Kazutoyo Yokota,
+          Tsuyoshi Nakamura, Kazuhiro Hotta,
+          “Improving multi-object tracking with multiple camera views,”
+          <span class="muted">
+            30th Symposium on Sensing via Image Information (SSII 2024), Tokyo, poster, peer-reviewed.
+          </span>
+        </li>
+        <li>
+          <span class="badge-year">2025</span>
+          Taigo Sakai, Kazuhiro Hotta,
+          “Gradient-consistent regularization and dynamic knowledge distillation
+          for imbalanced continual learning,”
+          <span class="muted">
+            MIRU 2025, Kyoto, oral, peer-reviewed.
+          </span>
+        </li>
+        <li>
+          <span class="badge-year">2025</span>
+          Taigo Sakai, Kazuhiro Hotta,
+          “Robust medical image classification by dynamic integration of CNN and KAN,”
+          <span class="muted">
+            JSMBE Tokai Section Meeting 2025, Aichi, oral.
+          </span>
         </li>
       </ul>
     </section>
@@ -406,83 +433,13 @@
         </li>
         <li>
           <span class="badge-year">2025</span>
-          Best Algorithm Award,
-          ViEW 2024 Appearance Inspection Algorithm Contest 2025.
+          Best Algorithm Award, ViEW 2024 Appearance Inspection Algorithm Contest 2025.
         </li>
         <li>
           <span class="badge-year">2024</span>
-          Excellent Graduation Thesis Award,
-          IPSJ CVIM Research Group.
+          Excellent Graduation Thesis Award, IPSJ CVIM Research Group.
         </li>
       </ul>
-    </section>
-
-    <section id="memberships-en">
-      <div class="section-title">Professional Memberships</div>
-      <ul>
-        <li>
-          Information Processing Society of Japan (IPSJ),
-          <span class="muted">Nov. 2024 – present</span>
-        </li>
-        <li>
-          IEEE,
-          <span class="muted">Apr. 2024 – present</span>
-        </li>
-      </ul>
-    </section>
-
-    <section id="projects-en">
-      <div class="section-title">Projects</div>
-
-      <div class="repo-card">
-        <div class="repo-title">Dynamic Neuron Growth and Pruning for Long-Tailed Data</div>
-        <div class="muted">
-          A dynamic neural network that grows and prunes neurons
-          according to gradient statistics, reallocating capacity toward
-          rare classes and achieving up to 6.8% improvement for tail classes
-          on Imbalanced CIFAR-100 and ImageNet-LT.
-        </div>
-      </div>
-
-      <div class="repo-card">
-        <div class="repo-title">Similarity-aware Neuron Growing</div>
-        <div class="muted">
-          A regularization method that encourages low cosine similarity
-          between neurons, forcing them to learn diverse features.
-          It improves accuracy by 1–2 points on CIFAR-10/100 and
-          yields broader attention regions in Grad-CAM visualizations.
-        </div>
-      </div>
-
-      <div class="repo-card">
-        <div class="repo-title">recolle – NFC Photo Album</div>
-        <div class="muted">
-          An iOS app that links NFC acrylic keychains to online photo albums.
-          Tapping the keychain with an iPhone surfaces forgotten photos
-          that change daily. Built with Next.js, Neon, Vercel, and Swift.
-        </div>
-      </div>
-
-      <div class="repo-card">
-        <div class="repo-title">Multi-view Detection and Tracking</div>
-        <div class="muted">
-          Multi-camera pedestrian detection and tracking in BEV space,
-          exploring density-aware feature fusion and ConvLSTM-based
-          temporal integration on datasets such as WildTrack and MultiViewX.
-        </div>
-      </div>
-    </section>
-
-    <section id="experience-en">
-      <div class="section-title">Experience</div>
-      <div class="experience-item">
-        <div class="subsection-title">Research Internships and Competitions</div>
-        <ul>
-          <li>Top-ranked team in a super-resolution competition hosted by SIGNATE.</li>
-          <li>Top-5 contribution in a world-level robotics contest with vision-based tracking.</li>
-          <li>Multiple hackathon prizes for iOS applications with deep learning models.</li>
-        </ul>
-      </div>
     </section>
 
     <section id="education-en">
@@ -490,24 +447,21 @@
 
       <div class="education-item">
         <div class="subsection-title">
-          Ph.D. Course, Graduate School of Science and Technology,
-          Meijo University
+          Ph.D. Course, Graduate School of Science and Technology, Meijo University
         </div>
         <div class="edu-period">Apr. 2026 – present</div>
       </div>
 
       <div class="education-item">
         <div class="subsection-title">
-          M.Eng., Graduate School of Science and Technology,
-          Meijo University
+          M.Eng., Graduate School of Science and Technology, Meijo University
         </div>
         <div class="edu-period">Apr. 2024 – Mar. 2026</div>
       </div>
 
       <div class="education-item">
         <div class="subsection-title">
-          B.Eng., Faculty of Science and Technology,
-          Meijo University
+          B.Eng., Faculty of Science and Technology, Meijo University
         </div>
         <div class="edu-period">Apr. 2020 – Mar. 2024</div>
       </div>
