@@ -1,210 +1,570 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>坂井 泰吾｜研究業績</title>
+  <meta charset="UTF-8">
+  <title>Taigo Sakai | Portfolio</title>
+  <!-- GitHubと同じPrimer CSS -->
+  <link rel="stylesheet"
+        href="https://unpkg.com/@primer/css@22.0.2/dist/primer.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    :root { --fg:#0b0b0c; --muted:#666; --bg:#ffffff; --line:#e6e6e6; --acc:#2f5bea; }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;color:var(--fg);background:var(--bg)}
-    header.sticky{position:sticky;top:0;background:rgba(255,255,255,.9);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);z-index:10}
-    .container{max-width:1040px;margin:0 auto;padding:16px}
-    .row{display:grid;grid-template-columns:1fr;gap:16px}
-    @media(min-width:900px){.row.cols-3{grid-template-columns:2fr 1fr}.row.cols-2{grid-template-columns:1fr 1fr}}
-    h1{font-size:20px;margin:0}h2{font-size:20px;margin:0 0 8px}h3{font-size:16px;margin:0 0 6px}
-    p{margin:0 0 12px;line-height:1.6}.muted{color:var(--muted)}
-    .card{border:1px solid var(--line);border-radius:14px;background:#fff}.card .hd{padding:12px 16px;border-bottom:1px solid var(--line)}.card .bd{padding:16px}
-    .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;border:1px solid var(--line);background:#fff;cursor:pointer;font:inherit;text-decoration:none;color:inherit}
-    .badge{display:inline-block;padding:2px 8px;border:1px solid var(--line);border-radius:999px;font-size:12px;background:#fafafa}
-    .badge.soft{border-color:#dfe5ff;background:#f5f6ff}
-    .grid{display:grid;gap:12px}.pub{border:1px solid var(--line);border-radius:14px;padding:12px}.pub.featured{background:#fafcff}
-    .chips{display:flex;flex-wrap:wrap;gap:6px}.flex{display:flex;align-items:center;gap:8px}
-    .space{height:10px}.inputs{display:flex;gap:8px;flex-wrap:wrap}
-    input[type=text],select{padding:8px 10px;border-radius:8px;border:1px solid var(--line);font:inherit}
-    a.link{color:var(--acc);text-decoration:none}a.link:hover{text-decoration:underline}
-    footer{text-align:center;font-size:12px;color:var(--muted);padding:24px 0}
-    .k{color:#888;font-size:12px}.rowline{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}.right{display:flex;gap:6px;flex-wrap:wrap}
+    body {
+      background-color: #f6f8fa;
+    }
+    .page {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+    .header-name {
+      font-size: 26px;
+      font-weight: 600;
+    }
+    .lang-toggle button {
+      margin-left: 4px;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-top: 32px;
+      border-bottom: 1px solid #d0d7de;
+      padding-bottom: 4px;
+    }
+    .subsection-title {
+      font-size: 16px;
+      font-weight: 600;
+      margin-top: 16px;
+    }
+    .muted {
+      color: #57606a;
+      font-size: 13px;
+    }
+    .badge-year {
+      display: inline-block;
+      padding: 1px 6px;
+      font-size: 12px;
+      border-radius: 12px;
+      background-color: #eaeef2;
+      margin-right: 4px;
+    }
+    .repo-card {
+      border: 1px solid #d0d7de;
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 8px;
+      background-color: #ffffff;
+    }
+    .repo-title {
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .education-item, .experience-item {
+      border-left: 2px solid #d0d7de;
+      padding-left: 12px;
+      margin-bottom: 12px;
+    }
+    .edu-period {
+      font-size: 13px;
+      color: #57606a;
+    }
+    .footer {
+      margin-top: 40px;
+      padding-top: 16px;
+      border-top: 1px solid #d0d7de;
+      font-size: 12px;
+      color: #57606a;
+      text-align: center;
+    }
+    /* 言語切り替え */
+    .lang-section {
+      display: none;
+    }
+    .lang-section.active {
+      display: block;
+    }
   </style>
 </head>
 <body>
-  <header class="sticky">
-    <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:12px;">
-      <div class="flex" style="gap:12px">
-        <img id="avatar" alt="profile" style="width:64px;height:64px;border-radius:50%;object-fit:cover;border:1px solid var(--line);background:#f3f3f3;display:none"/>
-        <div>
-          <h1 id="hdr_name"></h1>
-          <div class="muted" id="hdr_title"></div>
-        </div>
-      </div>
-      <div class="flex" style="gap:8px">
-        <label class="k">JA</label>
-        <input id="langSwitch" type="checkbox"/>
-        <label class="k">EN</label>
+<div class="page">
+
+  <!-- ヘッダ（GitHub風トップバー） -->
+  <div class="d-flex flex-justify-between flex-items-center mb-3">
+    <div>
+      <div class="header-name">Taigo Sakai</div>
+      <div class="text-small color-fg-muted">
+        Meijo University / Deep Learning for Imbalanced and Continual Learning
       </div>
     </div>
-  </header>
+    <div class="lang-toggle">
+      <span class="text-small color-fg-muted">Language</span>
+      <button class="btn btn-sm" data-lang="ja">JA</button>
+      <button class="btn btn-sm" data-lang="en">EN</button>
+    </div>
+  </div>
 
-  <main class="container">
-    <section class="row cols-3">
-      <div class="card">
-        <div class="hd"><h2 id="about_h"></h2><div class="muted" id="affil"></div></div>
-        <div class="bd"><p id="intro"></p><div id="interests" class="chips"></div></div>
-      </div>
-      <div class="card">
-        <div class="hd"><h2 id="contact_h"></h2></div>
-        <div class="bd" id="contact"></div>
-      </div>
+  <!-- ナビ（見出しへのアンカー） -->
+  <nav class="UnderlineNav mb-3">
+    <div class="UnderlineNav-body">
+      <a class="UnderlineNav-item" href="#about">About</a>
+      <a class="UnderlineNav-item" href="#research">Research</a>
+      <a class="UnderlineNav-item" href="#awards">Awards</a>
+      <a class="UnderlineNav-item" href="#memberships">Memberships</a>
+      <a class="UnderlineNav-item" href="#projects">Projects</a>
+      <a class="UnderlineNav-item" href="#experience">Experience</a>
+      <a class="UnderlineNav-item" href="#education">Education</a>
+    </div>
+  </nav>
+
+  <!-- 日本語セクション -->
+  <div id="lang-ja" class="lang-section active">
+
+    <section id="about">
+      <div class="section-title">自己紹介</div>
+      <p>
+        名城大学 大学院 理工学研究科 電気電子・情報・材料工学専攻 博士課程に在籍し，
+        画像認識におけるクラス不均衡と継続学習を対象とした深層学習の研究に取り組んでいます。
+        学習中にニューロンを増減させることでネットワーク構造を動的に変化させ，
+        少数クラスと既存クラスの両方に十分な表現力を再配分する手法を提案しています。
+      </p>
+      <p>
+        実装と応用も重視し，医用画像，植物画像，マルチカメラ追跡，
+        iOSアプリへのモデル実装などで検証を進めています。
+      </p>
     </section>
 
-    <div class="space"></div>
+    <section id="research">
+      <div class="section-title">研究実績</div>
 
-    <section>
-      <div class="rowline"><h2 id="pubs_h"></h2><div class="muted" id="hint_filter"></div></div>
-      <div class="card"><div class="bd grid" style="gap:14px">
-        <div class="inputs">
-          <span class="k" style="align-self:center">Search</span>
-          <input id="q" type="text" placeholder="タイトル・著者・タグで検索"/>
-          <select id="typeSelect"></select>
-          <select id="yearSelect"></select>
+      <div class="subsection-title">国際会議（査読付き）</div>
+      <ul>
+        <li>
+          <span class="badge-year">2025</span>
+          T. Sakai, K. Hotta,
+          “Long-Tailed Data Classification by Increasing and Decreasing Neurons During Training,”
+          <span class="muted">ICCV 2025 Workshop on Human-inspired Computer Vision, Poster, Hawaii, USA.</span>
+        </li>
+        <li>
+          <span class="badge-year">2024</span>
+          T. Sakai, K. Hotta,
+          “Growing Deep Neural Network Considering with Similarity between Neurons,”
+          <span class="muted">ECCV 2024 Workshop on Human-inspired Computer Vision, Poster, Milano, Italy.</span>
+        </li>
+      </ul>
+
+      <div class="subsection-title">国内会議・シンポジウム</div>
+      <ul>
+        <li>
+          <span class="badge-year">2025</span>
+          坂井 泰吾, 堀田 一弘,
+          「不均衡なデータセットの継続学習における勾配一貫性正規化と動的な知識蒸留」,
+          <span class="muted">画像の認識・理解シンポジウム MIRU2025, 京都, 口頭発表（査読あり）。</span>
+        </li>
+        <li>
+          <span class="badge-year">2025</span>
+          坂井 泰吾, 米倉 崇晃, 堀田 一弘,
+          「SAM2とマスク細線化によるシロイヌナズナの教師無し先端追跡手法」,
+          <span class="muted">情報処理学会第87回全国大会, 大阪, 口頭発表。</span>
+        </li>
+        <li>
+          <span class="badge-year">2024</span>
+          坂井 泰吾, 堀田 一弘,
+          「ニューロン間の類似度を考慮した深層ニューラルネットワークによる画像分類」,
+          <span class="muted">令和六年度東海支部連合大会, 岐阜, 口頭発表。</span>
+        </li>
+        <li>
+          <span class="badge-year">2025</span>
+          坂井 泰吾, 堀田 一弘,
+          「医用画像分類における CNN と KAN の動的な統合によるノイズ頑健性の向上」,
+          <span class="muted">日本生体医工学会東海支部大会 2025, 愛知, 口頭発表。</span>
+        </li>
+        <li>
+          <span class="badge-year">2024</span>
+          坂井 泰吾, 堀田 一弘,
+          「学習中のニューロン増減によるクラス不均衡データの識別」,
+          <span class="muted">ビジョン技術の実利用ワークショップ ViEW2024, ポスター（査読あり）。</span>
+        </li>
+        <li>
+          <span class="badge-year">2025</span>
+          土井田 啓輔, 坂井 泰吾 ほか,
+          「複数視野を使った複数物体追跡の精度向上」,
+          <span class="muted">SSII2025, 東京, ポスター（査読あり）。</span>
+        </li>
+        <li>
+          <span class="badge-year">2025</span>
+          神谷 聡, 坂井 泰吾 ほか,
+          「少ない教師付きデータからのゼニゴケ仮根の先端追跡法」,
+          <span class="muted">DIA2025, 福井, ポスター（査読あり）。</span>
+        </li>
+      </ul>
+    </section>
+
+    <section id="awards">
+      <div class="section-title">受賞歴</div>
+      <ul>
+        <li>
+          <span class="badge-year">2025</span>
+          画像の認識・理解シンポジウム MIRU2025 学生奨励賞
+        </li>
+        <li>
+          <span class="badge-year">2025</span>
+          ビジョン技術の実利用ワークショップ ViEW2024
+          外観検査アルゴリズムコンテスト2025 最優秀賞
+        </li>
+        <li>
+          <span class="badge-year">2024</span>
+          情報処理学会 CVIM 研究会 卒業論文セッション優秀賞
+        </li>
+      </ul>
+    </section>
+
+    <section id="memberships">
+      <div class="section-title">所属学会</div>
+      <ul>
+        <li>
+          情報処理学会（Information Processing Society of Japan）,
+          <span class="muted">2024年11月 – 現在</span>
+        </li>
+        <li>
+          IEEE,
+          <span class="muted">2024年4月 – 現在</span>
+        </li>
+      </ul>
+    </section>
+
+    <section id="projects">
+      <div class="section-title">Projects（研究・開発）</div>
+
+      <div class="repo-card">
+        <div class="repo-title">Dynamic Neuron Growth and Pruning for Long-Tailed Data</div>
+        <div class="muted">
+          学習中にニューロンを増減させて表現力を再配分し，
+          Long-Tailedデータで少数クラス精度を向上させる手法。
+          Imbalanced CIFAR-100 や ImageNet-LT で最大 6.8% の少数クラス精度向上を確認。
         </div>
-        <div class="grid" id="pubs"></div>
-      </div></div>
-    </section>
+      </div>
 
-    <div class="space"></div>
+      <div class="repo-card">
+        <div class="repo-title">Similarity-aware Neuron Growing</div>
+        <div class="muted">
+          ニューロン間のコサイン類似度を正則化し，
+          役割が重複しないように成長させる手法。
+          CIFAR-10/100 で 1–2% 程度の精度向上と，
+          Grad-CAM による広範囲な注意領域を確認。
+        </div>
+      </div>
 
-    <section class="row cols-2">
-      <div class="card"><div class="hd"><h2 id="talks_h"></h2></div><div class="bd" id="talks"></div></div>
-      <div class="card"><div class="hd"><h2 id="awards_h"></h2></div><div class="bd" id="awards"></div></div>
-      <div class="card"><div class="hd"><h2 id="projects_h"></h2></div><div class="bd" id="projects"></div></div>
-      <div class="card"><div class="hd"><h2 id="edu_h"></h2></div><div class="bd" id="edu"></div></div>
-    </section>
+      <div class="repo-card">
+        <div class="repo-title">recolle – NFC Photo Album for iOS</div>
+        <div class="muted">
+          NFC付きアクリルキーホルダーに写真アルバムへのリンクを書き込み，
+          iPhoneをかざすと日替わりで過去写真を呼び出すアプリ。
+          Next.js + Neon + Vercel と iOSアプリを連携した個人開発。
+        </div>
+      </div>
 
-    <section class="container" style="margin-top:16px;padding-left:0;padding-right:0">
-      <div class="row">
-        <div class="card"><div class="hd"><h2>研究実績</h2></div><div class="bd"><div id="ra_papers" class="grid"></div></div></div>
-        <div class="card"><div class="hd"><h2>受賞歴</h2></div><div class="bd"><div id="ra_awards" class="grid"></div></div></div>
-        <div class="card"><div class="hd"><h2>出場・所属学会</h2></div><div class="bd"><div id="ra_confs" class="grid"></div></div></div>
-        <div class="card"><div class="hd"><h2>参加プロジェクト</h2></div><div class="bd"><div id="ra_projects" class="grid"></div></div></div>
+      <div class="repo-card">
+        <div class="repo-title">Multi-view Detection and Tracking</div>
+        <div class="muted">
+          複数カメラからの鳥瞰平面上での人物検出・追跡。
+          複数視野の密度情報を用いた特徴融合・ConvLSTMによる時系列統合により，
+          WildTrack / MultiViewX でMODA, IDF1の向上を目指す研究。
+        </div>
       </div>
     </section>
 
-    <section class="container" style="margin-top:16px;padding-left:0;padding-right:0">
-      <div class="row">
-        <div class="card"><div class="hd"><h2>経歴（インターン・アルバイトなど）</h2></div><div class="bd"><div id="cab_career" class="grid"></div></div></div>
-        <div class="card"><div class="hd"><h2>大学院</h2></div><div class="bd" id="cab_grad"></div></div>
-        <div class="card"><div class="hd"><h2>大学</h2></div><div class="bd" id="cab_univ"></div></div>
-        <div class="card"><div class="hd"><h2>高等専門学校専攻科</h2></div><div class="bd" id="cab_kosen_adv"></div></div>
-        <div class="card"><div class="hd"><h2>高等専門学校</h2></div><div class="bd" id="cab_kosen"></div></div>
-        <div class="card"><div class="hd"><h2>高等学校</h2></div><div class="bd" id="cab_hs"></div></div>
+    <section id="experience">
+      <div class="section-title">経歴（インターン・その他）</div>
+      <div class="experience-item">
+        <div class="subsection-title">Research Internships and Competitions</div>
+        <ul>
+          <li>SIGNATE 超解像コンペ 入賞（深層学習による画像超解像モデル構築）。</li>
+          <li>世界規模ロボットコンテストにて画像認識を用いた追跡制御に携わり，上位入賞。</li>
+          <li>複数のハッカソンでiOSアプリを開発し，最優秀賞を獲得。</li>
+        </ul>
       </div>
     </section>
-  </main>
 
-  <footer>© <span id="year"></span> <span id="name_foot"></span></footer>
+    <section id="education">
+      <div class="section-title">学歴</div>
 
-  <script>
-    // 1) データ
-    const DATA = {
-      langDefault: 'ja',
-      person: { name_ja:'坂井 泰吾', name_en:'Taigo Sakai', title_ja:'修士課程（画像認識・深層学習）', title_en:'M.S. Student in Computer Vision & Deep Learning', affiliation_ja:'名城大学 理工学研究科 システム情報通信研究室', affiliation_en:'Meijo Univ., Graduate School of Science & Engineering', email:'', website:'', github:'', twitter:'', scholar:'', cv_pdf:'', avatar_url:'' },
-      intro: { ja:'画像認識と継続学習（Class-Incremental Learning）を主題に、少数クラスの性能低下と忘却を抑える処理の流れを作っています。学習中のニューロン増減、移動平均規制、分布感度の蒸留、再学習配分を重視。', en:'I study computer vision and class-incremental learning, focusing on stabilizing minority-class performance and reducing forgetting via neuron growth/pruning, EMA-style regularization, distribution-aware distillation, and replay reallocation.' },
-      interests:[{ja:'Class-Incremental Learning',en:'Class-Incremental Learning'},{ja:'不均衡学習',en:'Imbalanced Learning'},{ja:'マルチビュー検出・追跡',en:'Multi-View Detection & Tracking'},{ja:'効率化 (KD/量子化)',en:'Efficiency (KD/Quantization)'}],
-      publications:[
-        {id:'iccv2025-neurogrow',year:2025,type:'Conference',venue:'ICCV (under review)', title:{ja:'Long-Tailed Data Classification by Increasing and Decreasing Neurons During Training',en:'Long-Tailed Data Classification by Increasing and Decreasing Neurons During Training'}, authors:['Taigo Sakai','…'], links:{pdf:'',doi:'',code:'',project:'',arxiv:'https://arxiv.org/abs/2507.09940'}, tags:['long-tailed','neurogenesis','pruning','CIL'], bibtex:'', highlight:true},
-        {id:'miru2025-gcr-dkd',year:2025,type:'Domestic',venue:'MIRU 2025', title:{ja:'不均衡なデータセットの継続学習における勾配一貫性正規化と動的な知識蒸留',en:'Gradient Consistency Regularization and Dynamic KD for Imbalanced CIL'}, authors:['Taigo Sakai','…'], links:{}, tags:['CIL','imbalance','distillation'], highlight:false},
-        {id:'ssii2025-mv-mot',year:2025,type:'Domestic',venue:'SSII 2025', title:{ja:'複数視野を使った複数物体追跡の精度向上',en:'Improving Multi-Object Tracking with Multi-View'}, authors:['Taigo Sakai','…'], links:{}, tags:['tracking','multi-view'], highlight:false},
-        {id:'ipsj2025-sam2-root',year:2025,type:'Domestic',venue:'IPSJ 87th', title:{ja:'SAM2とマスク細線化によるシロイヌナズナの教師無し先端追跡手法',en:'Unsupervised Root Tip Tracking with SAM2 and Skeletonization'}, authors:['Taigo Sakai','…'], links:{}, tags:['plant','tracking'], highlight:false},
-        {id:'view2024-yolov8-ts',year:2024,type:'Domestic',venue:'ViEW 2024', title:{ja:'YOLOv8 を用いた分割領域毎の検出及び時系列情報を利用した追跡',en:'Temporal Tracking with YOLOv8'}, authors:['Taigo Sakai','…'], links:{pdf:'https://www.tc-iaip.org/view/2024/member/ViEW2024_ProceedingsV2.pdf'}, tags:['tracking','yolov8'], highlight:false},
-        {id:'view2024-neurogrow-imb',year:2024,type:'Domestic',venue:'ViEW 2024', title:{ja:'学習中のニューロン増減によるクラス不均衡データの識別',en:'Class-imbalanced Classification with Neuron Growth'}, authors:['Taigo Sakai','…'], links:{pdf:'https://www.tc-iaip.org/view/2024/member/ViEW2024_ProceedingsV2.pdf'}, tags:['CIL','imbalance'], highlight:false},
-        {id:'arxiv2024-neuron-sim',year:2024,type:'Preprint',venue:'arXiv', title:{ja:'ニューロン間の類似度を考慮した深層ニューラルネットワーク',en:'Growing Deep Neural Network Considering Neuron Similarity'}, authors:['Taigo Sakai','…'], links:{arxiv:'https://arxiv.org/abs/2408.13291'}, tags:['neurogenesis'], highlight:false},
-        {id:'ipsj2024-neuron-sim',year:2024,type:'Domestic',venue:'IPSJ', title:{ja:'ニューロン間の類似度分布を考慮したニューロン増加型深層ニューラルネットワーク',en:'Neuron-growth DNN with Similarity Distribution'}, authors:['Taigo Sakai','…'], links:{pdf:'https://ipsj.ixsq.nii.ac.jp/ej/?action=pages_view_main&active_action=repository_view_main_item_detail&item_id=234155&item_no=1&page_id=13&block_id=8'}, tags:['neurogenesis'], highlight:false}
-      ],
-      talks:[{year:2025,title_ja:'不均衡CILにおけるニューロン増減の効果と限界',title_en:'Neuron Growth/Pruning in Imbalanced CIL: Effects and Limits',event_ja:'研究会 招待講演',event_en:'Workshop invited talk',slides:'',video:''}],
-      awards:[{year:2025,title_ja:'MIRU2025学生奨励賞',title_en:'MIRU 2025 Student Encouragement Award',link:'https://cvim.ipsj.or.jp/MIRU2025/award.html#MIRU_Student_Excellent_Paper_Awards'},{year:2024,title_ja:'CVIM研究会卒論セッション優秀賞',title_en:'CVIM Outstanding Undergraduate Thesis Award',link:'https://cvim.ipsj.or.jp/index.php?id=award_winner'},{year:2024,title_ja:'AIハッカソン 最優秀賞（iOS服コーデ提案アプリ）',title_en:'AI Hackathon Grand Prize (iOS outfit app)'}],
-      projects:[{name:'kikonAshI (iOS)',desc_ja:'手持ちの服を写真に撮るだけで、AIがその服に合うコーディネートを提案してくれるiOSアプリです。',desc_en:'iOS app for outfit suggestions using on-device vision and similarity search.',links:{},badges:['iOS','CoreML','TFLite']},{name:'Robomaster UL',desc_ja:'ロボット世界大会6位入賞。画像処理AI担当。軽量化と高速化を両立。',desc_en:'Robomaster UL: 6th, responsible for vision AI with efficiency focus.',links:{},badges:['Robotics','EdgeAI']}],
-      services:[{year:'2024-',role_ja:'査読（国際WS）',role_en:'Reviewer (Intl. WS)',org:''}],
-      educations:[{year:'2024-',what_ja:'名城大学 修士課程（画像認識）',what_en:'M.S., Meijo Univ.'}],
-      research:{
-        awards:[{year:2025,label_ja:'MIRU2025学生奨励賞',label_en:'MIRU 2025 Student Encouragement Award',href:'https://cvim.ipsj.or.jp/MIRU2025/award.html#MIRU_Student_Excellent_Paper_Awards'},{year:2024,label_ja:'CVIM研究会卒論セッション優秀賞',label_en:'CVIM Outstanding Undergraduate Thesis Award',href:'https://cvim.ipsj.or.jp/index.php?id=award_winner'}],
-        conferences:[{year:2025,month:'10',label:'ICCV 2025',href:'https://iccv.thecvf.com/'},{year:2025,month:'08',label:'MIRU 2025',href:'https://cvim.ipsj.or.jp/MIRU2025/'},{year:2025,month:'05',label:'SSII 2025',href:'https://pub.confit.atlas.jp/ja/event/ssii2025'},{year:2025,month:'03',label:'DIA 2025',href:'https://www.tc-iaip.org/dia/2025/'},{year:2025,month:'03',label:'IPSJ 87th',href:'https://www.ipsj.or.jp/event/taikai/87/'},{year:2024,month:'12',label:'ViEW 2024',href:'https://www.tc-iaip.org/view/2024/'},{year:2024,month:'09',label:'ECCV 2024',href:'https://eccv.ecva.net/'},{year:2024,month:'08',label:'MIRU 2024',href:'https://miru-committee.github.io/miru2024/'},{year:2024,month:'08',label:'令和6年度東海支部連合大会',href:'https://www.tokai-rengo.jp/'}],
-        projects:[{title_ja:'ロボット世界大会6位(Second prize)入賞',title_en:'Robomaster UL: 6th (Second prize)',period:'2024-06 ~ 2024-06',detail_ja:'ロボットの世界大会で6位に入賞した経験があります。私は、ロボットの「目」となる画像認識AIの開発を担当し、性能を保ちつつ動きを軽く、速くすることに成功しました。',detail_en:'Joined Robomaster UL; built efficient on-board vision AI.',href:''}]
-      },
-      career:[{org:'株式会社スターシャル教育研究所',role_ja:'数学・理科講師（アルバイト）',role_en:'Math/Science Tutor (part-time)',period:'2021-08 ~ 2026-03',detail_ja:'生徒さん一人ひとりの学力や性格に合わせて、最も効果的な指導方法を考え、実践していました。',detail_en:'Personalized instruction; managed multiple students.'}],
-      school:{grad:{school_ja:'名城大学大学院 理工学研究科 電気電子工学専攻',school_en:'Meijo Univ. Grad. School, EE',lab_ja:'システム情報通信研究室（堀田研究室）',lab_en:'Systems & Information Comm. (Hotta Lab)',advisor_ja:'堀田 一弘',advisor_en:'Kazuhiro Hotta',period:'2024-04 ~ 2026-03'}, univ:{school_ja:'名城大学 理工学部 電気電子工学科',school_en:'Meijo Univ., EE',lab_ja:'システム情報通信研究室（堀田研究室）',lab_en:'Hotta Lab',period:'2020-04 ~ 2024-03',period_lab:'2023-04 ~ 2024-03'}, kosen_adv:null, kosen:null, hs:{school_ja:'愛知県立五条高等学校',school_en:'Aichi Pref. Gojo HS',period:'2017-04 ~ 2020-03'}}
-    };
+      <div class="education-item">
+        <div class="subsection-title">名城大学 大学院 理工学研究科 電気電子・情報・材料工学専攻 博士後期課程</div>
+        <div class="edu-period">2026年4月 – 現在</div>
+      </div>
 
-    // 2) 最小ヘルパ
-    let lang = DATA.langDefault || 'ja';
-    const t = (ja,en)=> (lang==='ja'? ja: en);
-    const el=(tag,attrs={},children=[])=>{const d=document.createElement(tag);for(const k in attrs){if(k==='class')d.className=attrs[k];else if(k==='style')d.setAttribute('style',attrs[k]);else d.setAttribute(k,attrs[k]);}children.forEach(c=>d.appendChild(c.nodeType?c:document.createTextNode(c)));return d};
-    const setText=(id,txt)=>{const n=document.getElementById(id);if(n)n.textContent=txt};
-    const linkBtn=(href,label)=>{if(!href)return document.createTextNode('');return el('a',{class:'btn',href,target:'_blank',rel:'noreferrer'},[label])};
+      <div class="education-item">
+        <div class="subsection-title">名城大学 大学院 理工学研究科 電気電子工学専攻 修士課程</div>
+        <div class="edu-period">2024年4月 – 2026年3月</div>
+      </div>
 
-    // 3) レンダ
-    function uniqueYears(pub){return ['All',...Array.from(new Set(pub.map(p=>p.year))).sort((a,b)=>b-a).map(String)]}
-    function types(pub){return ['All',...Array.from(new Set(pub.map(p=>p.type)))]}
+      <div class="education-item">
+        <div class="subsection-title">名城大学 理工学部 電気電子工学科</div>
+        <div class="edu-period">2020年4月 – 2024年3月</div>
+      </div>
 
-    function renderTop(){
-      setText('hdr_name',t(DATA.person.name_ja,DATA.person.name_en));
-      setText('hdr_title',t(DATA.person.title_ja,DATA.person.title_en));
-      const av=document.getElementById('avatar');if(DATA.person.avatar_url){av.src=DATA.person.avatar_url;av.style.display='block'}
-      setText('about_h',t('自己紹介','About')); setText('contact_h',t('連絡先','Contact')); setText('pubs_h',t('論文','Publications')); setText('hint_filter',t('年・種別・検索で絞り込み可','Filter by year/type/search')); setText('talks_h',t('発表','Talks')); setText('awards_h',t('受賞','Awards')); setText('projects_h',t('プロジェクト','Projects')); setText('edu_h',t('学歴・活動','Education & Service')); setText('affil',t(DATA.person.affiliation_ja,DATA.person.affiliation_en)); setText('intro',t(DATA.intro.ja,DATA.intro.en));
-      setText('name_foot',DATA.person.name_ja); document.getElementById('year').textContent=String(new Date().getFullYear());
-      const ints=document.getElementById('interests');ints.innerHTML='';DATA.interests.forEach(it=>ints.appendChild(el('span',{class:'badge soft'},[t(it.ja,it.en)])));
-      const c=document.getElementById('contact');c.innerHTML='';const kv=[['Email',DATA.person.email?'mailto:'+DATA.person.email:''],['Website',DATA.person.website],['GitHub',DATA.person.github],['Twitter',DATA.person.twitter],['Scholar',DATA.person.scholar]];kv.forEach(([k,v])=>c.appendChild(el('div',{class:'rowline'},[el('div',{class:'muted'},[k]),v?el('a',{class:'link',href:v,target:'_blank',rel:'noreferrer'},[v]):el('span',{class:'muted'},['—'])]))); if(DATA.person.cv_pdf){c.appendChild(el('div',{class:'space'},[]));c.appendChild(el('a',{class:'btn',href:DATA.person.cv_pdf,target:'_blank',rel:'noreferrer'},[t('CVを開く','Open CV')]))}
+      <div class="education-item">
+        <div class="subsection-title">愛知県立五条高等学校 普通科</div>
+        <div class="edu-period">2017年4月 – 2020年3月</div>
+      </div>
+    </section>
+
+  </div> <!-- /lang-ja -->
+
+
+  <!-- 英語セクション -->
+  <div id="lang-en" class="lang-section">
+
+    <section id="about-en">
+      <div class="section-title">About</div>
+      <p>
+        I am a Ph.D. student in the Graduate School of Science and Technology,
+        Meijo University. My research focuses on deep learning for
+        <strong>imbalanced and continual learning</strong> in image recognition.
+      </p>
+      <p>
+        I study dynamic neural networks that grow and prune neurons during
+        training, in order to reallocate representation capacity to rare
+        classes while preserving previously acquired knowledge.
+        I also validate the ideas on medical images, plant phenotyping,
+        multi-view detection and tracking, and iOS applications.
+      </p>
+    </section>
+
+    <section id="research-en">
+      <div class="section-title">Research Outputs</div>
+
+      <div class="subsection-title">International Workshops (peer-reviewed)</div>
+      <ul>
+        <li>
+          <span class="badge-year">2025</span>
+          T. Sakai, K. Hotta,
+          “Long-Tailed Data Classification by Increasing and Decreasing Neurons During Training,”
+          <span class="muted">ICCV 2025 Workshop on Human-inspired Computer Vision, Poster, Hawaii, USA.</span>
+        </li>
+        <li>
+          <span class="badge-year">2024</span>
+          T. Sakai, K. Hotta,
+          “Growing Deep Neural Network Considering with Similarity between Neurons,”
+          <span class="muted">ECCV 2024 Workshop on Human-inspired Computer Vision, Poster, Milano, Italy.</span>
+        </li>
+      </ul>
+
+      <div class="subsection-title">Domestic Conferences and Symposia</div>
+      <ul>
+        <li>
+          <span class="badge-year">2025</span>
+          Taigo Sakai, Kazuhiro Hotta,
+          “Gradient-consistent regularization and dynamic knowledge distillation
+          for imbalanced continual learning,”
+          <span class="muted">MIRU 2025, Kyoto, oral, peer-reviewed.</span>
+        </li>
+        <li>
+          <span class="badge-year">2025</span>
+          Taigo Sakai, Takaaki Yonekura, Kazuhiro Hotta,
+          “Unsupervised tip tracking of Arabidopsis thaliana using SAM2 and skeletonization,”
+          <span class="muted">IPSJ National Convention 2025, Osaka, oral.</span>
+        </li>
+        <li>
+          <span class="badge-year">2024</span>
+          Taigo Sakai, Kazuhiro Hotta,
+          “Image classification by deep neural networks considering similarity between neurons,”
+          <span class="muted">Tokai Branch Joint Conference 2024, Gifu, oral.</span>
+        </li>
+        <li>
+          <span class="badge-year">2025</span>
+          Taigo Sakai, Kazuhiro Hotta,
+          “Robust medical image classification by dynamic integration of CNN and KAN,”
+          <span class="muted">JSMBE Tokai Section Meeting 2025, Aichi, oral.</span>
+        </li>
+        <li>
+          <span class="badge-year">2024</span>
+          Taigo Sakai, Kazuhiro Hotta,
+          “Class-imbalanced image classification by growing and pruning neurons during training,”
+          <span class="muted">ViEW 2024, Kanagawa, poster, peer-reviewed.</span>
+        </li>
+        <li>
+          <span class="badge-year">2025</span>
+          Keisuke Doida, Taigo Sakai et al.,
+          “Improving multi-object tracking with multiple camera views,”
+          <span class="muted">SSII 2025, Tokyo, poster, peer-reviewed.</span>
+        </li>
+        <li>
+          <span class="badge-year">2025</span>
+          Satoshi Kamiya, Taigo Sakai et al.,
+          “Tip tracking of Marchantia polymorpha rhizoids with limited supervision,”
+          <span class="muted">DIA 2025, Fukui, poster, peer-reviewed.</span>
+        </li>
+      </ul>
+    </section>
+
+    <section id="awards-en">
+      <div class="section-title">Awards</div>
+      <ul>
+        <li>
+          <span class="badge-year">2025</span>
+          Student Encouragement Award, MIRU 2025.
+        </li>
+        <li>
+          <span class="badge-year">2025</span>
+          Best Algorithm Award,
+          ViEW 2024 Appearance Inspection Algorithm Contest 2025.
+        </li>
+        <li>
+          <span class="badge-year">2024</span>
+          Excellent Graduation Thesis Award,
+          IPSJ CVIM Research Group.
+        </li>
+      </ul>
+    </section>
+
+    <section id="memberships-en">
+      <div class="section-title">Professional Memberships</div>
+      <ul>
+        <li>
+          Information Processing Society of Japan (IPSJ),
+          <span class="muted">Nov. 2024 – present</span>
+        </li>
+        <li>
+          IEEE,
+          <span class="muted">Apr. 2024 – present</span>
+        </li>
+      </ul>
+    </section>
+
+    <section id="projects-en">
+      <div class="section-title">Projects</div>
+
+      <div class="repo-card">
+        <div class="repo-title">Dynamic Neuron Growth and Pruning for Long-Tailed Data</div>
+        <div class="muted">
+          A dynamic neural network that grows and prunes neurons
+          according to gradient statistics, reallocating capacity toward
+          rare classes and achieving up to 6.8% improvement for tail classes
+          on Imbalanced CIFAR-100 and ImageNet-LT.
+        </div>
+      </div>
+
+      <div class="repo-card">
+        <div class="repo-title">Similarity-aware Neuron Growing</div>
+        <div class="muted">
+          A regularization method that encourages low cosine similarity
+          between neurons, forcing them to learn diverse features.
+          It improves accuracy by 1–2 points on CIFAR-10/100 and
+          yields broader attention regions in Grad-CAM visualizations.
+        </div>
+      </div>
+
+      <div class="repo-card">
+        <div class="repo-title">recolle – NFC Photo Album</div>
+        <div class="muted">
+          An iOS app that links NFC acrylic keychains to online photo albums.
+          Tapping the keychain with an iPhone surfaces forgotten photos
+          that change daily. Built with Next.js, Neon, Vercel, and Swift.
+        </div>
+      </div>
+
+      <div class="repo-card">
+        <div class="repo-title">Multi-view Detection and Tracking</div>
+        <div class="muted">
+          Multi-camera pedestrian detection and tracking in BEV space,
+          exploring density-aware feature fusion and ConvLSTM-based
+          temporal integration on datasets such as WildTrack and MultiViewX.
+        </div>
+      </div>
+    </section>
+
+    <section id="experience-en">
+      <div class="section-title">Experience</div>
+      <div class="experience-item">
+        <div class="subsection-title">Research Internships and Competitions</div>
+        <ul>
+          <li>Top-ranked team in a super-resolution competition hosted by SIGNATE.</li>
+          <li>Top-5 contribution in a world-level robotics contest with vision-based tracking.</li>
+          <li>Multiple hackathon prizes for iOS applications with deep learning models.</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="education-en">
+      <div class="section-title">Education</div>
+
+      <div class="education-item">
+        <div class="subsection-title">
+          Ph.D. Course, Graduate School of Science and Technology,
+          Meijo University
+        </div>
+        <div class="edu-period">Apr. 2026 – present</div>
+      </div>
+
+      <div class="education-item">
+        <div class="subsection-title">
+          M.Eng., Graduate School of Science and Technology,
+          Meijo University
+        </div>
+        <div class="edu-period">Apr. 2024 – Mar. 2026</div>
+      </div>
+
+      <div class="education-item">
+        <div class="subsection-title">
+          B.Eng., Faculty of Science and Technology,
+          Meijo University
+        </div>
+        <div class="edu-period">Apr. 2020 – Mar. 2024</div>
+      </div>
+
+      <div class="education-item">
+        <div class="subsection-title">
+          Aichi Prefectural Gojou Senior High School
+        </div>
+        <div class="edu-period">Apr. 2017 – Mar. 2020</div>
+      </div>
+    </section>
+
+  </div> <!-- /lang-en -->
+
+  <div class="footer">
+    Last updated: 2025-12-04<br>
+    Hosted on GitHub Pages.
+  </div>
+
+</div> <!-- /.page -->
+
+<script>
+  (function () {
+    const JA = 'ja';
+    const EN = 'en';
+    const STORAGE_KEY = 'portfolio-lang';
+
+    function setLang(lang) {
+      document.getElementById('lang-ja').classList.toggle('active', lang === JA);
+      document.getElementById('lang-en').classList.toggle('active', lang === EN);
+      document.documentElement.lang = lang;
+      localStorage.setItem(STORAGE_KEY, lang);
     }
 
-    function renderPubs(){
-      const q=document.getElementById('q').value.trim().toLowerCase(); const typeSel=document.getElementById('typeSelect').value; const yearSel=document.getElementById('yearSelect').value;
-      const list=DATA.publications.filter(p=>typeSel==='All'||p.type===typeSel).filter(p=>yearSel==='All'||String(p.year)===yearSel).filter(p=>{if(!q)return true;const hay=[p.title.ja,p.title.en,p.venue,(p.tags||[]).join(' '),(p.authors||[]).join(' ')].join(' ').toLowerCase();return hay.includes(q)}).sort((a,b)=>(b.highlight?1:0)-(a.highlight?1:0)||b.year-a.year);
-      const root=document.getElementById('pubs');root.innerHTML=''; if(!list.length){root.appendChild(el('div',{class:'muted'},[t('該当なし。条件を緩めてください。','No results. Relax filters.')]));return}
-      list.forEach(p=>{const box=el('div',{class:'pub'+(p.highlight?' featured':'')},[]); box.appendChild(el('div',{class:'muted'},[`${p.year} · ${p.type} · ${p.venue}`])); box.appendChild(el('div',{style:'font-weight:600;margin-top:4px;'},[t(p.title.ja,p.title.en)])); box.appendChild(el('div',{class:'muted',style:'margin-top:4px;font-size:14px;'},[(p.authors||[]).join(', ')])); const right=el('div',{class:'right',style:'margin-top:8px;'},[]); const L=p.links||{}; if(L.pdf)right.appendChild(linkBtn(L.pdf,'PDF')); if(L.arxiv)right.appendChild(linkBtn(L.arxiv,'arXiv')); if(L.doi)right.appendChild(linkBtn('https://doi.org/'+L.doi,'DOI')); if(L.code)right.appendChild(linkBtn(L.code,'Code')); if(L.project)right.appendChild(linkBtn(L.project,'Project')); box.appendChild(right); root.appendChild(box)});
-    }
-
-    function renderTalks(){const root=document.getElementById('talks');root.innerHTML=''; if(!DATA.talks.length){root.appendChild(el('div',{class:'muted'},[t('まだありません。更新予定。','Nothing yet.')]));return} DATA.talks.forEach(tk=>{root.appendChild(el('div',{class:'rowline'},[el('div',{},[`${tk.year} · ${t(tk.title_ja,tk.title_en)}`,el('div',{class:'muted'},[t(tk.event_ja,tk.event_en)])]),el('div',{class:'right'},[linkBtn(tk.slides,'SLIDES'),linkBtn(tk.video,'VIDEO')])]))})}
-    function renderAwards(){const root=document.getElementById('awards');root.innerHTML=''; if(!DATA.awards.length){root.appendChild(el('div',{class:'muted'},[t('まだありません。更新予定。','Nothing yet.')]));return} DATA.awards.forEach(a=>root.appendChild(el('div',{class:'rowline'},[el('div',{},[`${a.year} · ${t(a.title_ja,a.title_en)}`])])))}
-    function renderProjects(){const root=document.getElementById('projects');root.innerHTML=''; if(!DATA.projects.length){root.appendChild(el('div',{class:'muted'},[t('まだありません。更新予定。','Nothing yet.')]));return} DATA.projects.forEach(pr=>{const box=el('div',{class:'pub'},[]); box.appendChild(el('div',{style:'font-weight:600;'},[pr.name])); box.appendChild(el('div',{class:'muted',style:'margin-top:4px;'},[t(pr.desc_ja,pr.desc_en)])); const chips=el('div',{class:'chips',style:'margin-top:6px;'},[]); (pr.badges||[]).forEach(tag=>chips.appendChild(el('span',{class:'badge'},[tag]))); box.appendChild(chips); const right=el('div',{class:'right',style:'margin-top:8px;'},[]); Object.entries(pr.links||{}).forEach(([k,v])=>{if(v)right.appendChild(linkBtn(v,k.toUpperCase()))}); box.appendChild(right); root.appendChild(box)})}
-    function renderEdu(){const root=document.getElementById('edu');root.innerHTML=''; DATA.educations.forEach(ed=>root.appendChild(el('div',{class:'rowline'},[el('div',{},[`${ed.year} · ${t(ed.what_ja,ed.what_en)}`])])))}
-
-    function renderResearch(){
-      const q=document.getElementById('q').value.trim().toLowerCase();
-      const papers=DATA.publications.filter(p=>{if(!q)return true;const hay=[p.title.ja,p.title.en,p.venue,(p.tags||[]).join(' '),(p.authors||[]).join(' ')].join(' ').toLowerCase();return hay.includes(q)}).sort((a,b)=>b.year-a.year);
-      const rp=document.getElementById('ra_papers');rp.innerHTML=''; papers.forEach(p=>{const box=el('div',{class:'pub'},[]); box.appendChild(el('div',{class:'muted'},[`${p.year} · ${p.venue}`])); box.appendChild(el('div',{style:'font-weight:600;'},[t(p.title.ja,p.title.en)])); const right=el('div',{class:'right',style:'margin-top:6px;'},[]); const L=p.links||{}; if(L.arxiv)right.appendChild(linkBtn(L.arxiv,'arXiv')); if(L.pdf)right.appendChild(linkBtn(L.pdf,'PDF')); if(L.doi)right.appendChild(linkBtn('https://doi.org/'+L.doi,'DOI')); box.appendChild(right); rp.appendChild(box)});
-      const ra=document.getElementById('ra_awards');ra.innerHTML=''; DATA.research.awards.filter(a=>{if(!q)return true;return (a.label_ja+a.label_en).toLowerCase().includes(q)}).sort((a,b)=>b.year-a.year).forEach(a=>{ra.appendChild(el('div',{class:'rowline'},[el('a',{class:'link',href:a.href,target:'_blank',rel:'noreferrer'},[`${a.year} · ${t(a.label_ja,a.label_en)}`])]))});
-      const rc=document.getElementById('ra_confs');rc.innerHTML=''; DATA.research.conferences.filter(c=>{if(!q)return true;return c.label.toLowerCase().includes(q)}).sort((a,b)=>b.year-a.year||b.month.localeCompare(a.month)).forEach(c=>{rc.appendChild(el('div',{class:'rowline'},[el('a',{class:'link',href:c.href,target:'_blank',rel:'noreferrer'},[`${c.year}年${c.month}月 · ${c.label}`])]))});
-      const rpj=document.getElementById('ra_projects');rpj.innerHTML=''; DATA.research.projects.filter(p=>{if(!q)return true;return (p.title_ja+p.title_en+p.detail_ja+p.detail_en).toLowerCase().includes(q)}).forEach(p=>{const box=el('div',{class:'pub'},[]); box.appendChild(el('div',{style:'font-weight:600;'},[t(p.title_ja,p.title_en)])); box.appendChild(el('div',{class:'muted',style:'margin-top:4px;'},[t(p.detail_ja,p.detail_en)])); box.appendChild(el('div',{class:'muted',style:'margin-top:4px;'},[p.period])); if(p.href)box.appendChild(el('div',{class:'right',style:'margin-top:6px;'},[linkBtn(p.href,'LINK')])); rpj.appendChild(box)});
-    }
-
-    function renderCareerAcademic(){
-      const q=document.getElementById('q').value.trim().toLowerCase();
-      const cc=document.getElementById('cab_career');cc.innerHTML=''; DATA.career.filter(x=>{if(!q)return true;return (x.org+x.role_ja+x.role_en+x.detail_ja+x.detail_en).toLowerCase().includes(q)}).forEach(x=>{const box=el('div',{class:'pub'},[]); box.appendChild(el('div',{style:'font-weight:600;'},[x.org])); box.appendChild(el('div',{class:'muted'},[`${t(x.role_ja,x.role_en)} · ${x.period}`])); box.appendChild(el('div',{class:'muted',style:'margin-top:4px;'},[t(x.detail_ja,x.detail_en)])); cc.appendChild(box)});
-      const g=DATA.school.grad,u=DATA.school.univ,adv=DATA.school.kosen_adv,ks=DATA.school.kosen,hs=DATA.school.hs;
-      const grad=document.getElementById('cab_grad');grad.innerHTML=''; if(g){grad.appendChild(el('div',{},[t(g.school_ja,g.school_en)]));grad.appendChild(el('div',{class:'muted'},[`${t('研究室','Lab')}: ${t(g.lab_ja,g.lab_en)}`]));grad.appendChild(el('div',{class:'muted'},[`${t('指導教官','Advisor')}: ${t(g.advisor_ja,g.advisor_en)}`]));grad.appendChild(el('div',{class:'muted'},[g.period]))} else {grad.appendChild(el('div',{class:'muted'},[t('未入力項目です。','No entry.')]))}
-      const univ=document.getElementById('cab_univ');univ.innerHTML=''; if(u){univ.appendChild(el('div',{},[t(u.school_ja,u.school_en)]));univ.appendChild(el('div',{class:'muted'},[`${t('研究室','Lab')}: ${t(u.lab_ja,u.lab_en)}`]));univ.appendChild(el('div',{class:'muted'},[u.period])); if(u.period_lab)univ.appendChild(el('div',{class:'muted'},[`${t('研究室在籍','In lab')}: ${u.period_lab}`]))} else {univ.appendChild(el('div',{class:'muted'},[t('未入力項目です。','No entry.')]))}
-      const advc=document.getElementById('cab_kosen_adv');advc.innerHTML=''; if(!adv){advc.appendChild(el('div',{class:'muted'},[t('未入力項目です。','No entry.')]))}
-      const ksc=document.getElementById('cab_kosen');ksc.innerHTML=''; if(!ks){ksc.appendChild(el('div',{class:'muted'},[t('未入力項目です。','No entry.')]))}
-      const hsc=document.getElementById('cab_hs');hsc.innerHTML=''; if(hs){hsc.appendChild(el('div',{},[t(hs.school_ja,hs.school_en)]));hsc.appendChild(el('div',{class:'muted'},[hs.period]))}
-    }
-
-    function renderFilters(){
-      const ty=document.getElementById('typeSelect');const yr=document.getElementById('yearSelect');
-      const ys=uniqueYears(DATA.publications),ts=types(DATA.publications);
-      ty.innerHTML=''; ts.forEach(v=>ty.appendChild(el('option',{value:v},[v])));
-      yr.innerHTML=''; ys.forEach(v=>yr.appendChild(el('option',{value:v},[v])));
-    }
-
-    function renderAll(){renderTop();renderFilters();renderPubs();renderTalks();renderAwards();renderProjects();renderEdu();renderResearch();renderCareerAcademic()}
-
-    document.addEventListener('DOMContentLoaded',()=>{
-      document.getElementById('langSwitch').checked=(lang==='en');
-      document.getElementById('langSwitch').addEventListener('change',e=>{lang=e.target.checked?'en':'ja';renderAll()});
-      ['q','typeSelect','yearSelect'].forEach(id=>document.getElementById(id).addEventListener('input',()=>{renderPubs();renderResearch();renderCareerAcademic()}));
-      renderAll();
-      // 簡易セルフチェック（consoleのみ）
-      try{console.assert(Array.isArray(DATA.publications)&&DATA.publications.length>0,'no publications');console.assert(document.querySelector('#pubs')!=null,'pubs mount');}catch(e){console.error(e)}
+    // ボタン操作
+    document.querySelectorAll('.lang-toggle button').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        setLang(this.getAttribute('data-lang'));
+      });
     });
-  </script>
+
+    // 初期言語判定
+    (function initLang() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved === JA || saved === EN) {
+        setLang(saved);
+        return;
+      }
+      const nav = navigator.language || navigator.userLanguage || '';
+      if (nav.toLowerCase().startsWith('ja')) {
+        setLang(JA);
+      } else {
+        setLang(EN);
+      }
+    })();
+  })();
+</script>
+
 </body>
 </html>
