@@ -9,7 +9,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
+      font-family: "SF Pro Text", "Segoe UI", system-ui, -apple-system, sans-serif;
       background-color: #0d1117;
+      background-image:
+        radial-gradient(circle at 15% 20%, rgba(56, 139, 253, 0.08), transparent 25%),
+        radial-gradient(circle at 80% 10%, rgba(46, 160, 67, 0.08), transparent 22%),
+        radial-gradient(circle at 40% 80%, rgba(201, 213, 217, 0.06), transparent 30%);
       color: #c9d1d9;
     }
     .page {
@@ -35,6 +40,7 @@
       border-bottom: 1px solid #30363d;
       padding: 16px 24px;
       margin: -24px -24px 24px -24px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
     }
     .header-name {
       font-size: 26px;
@@ -45,6 +51,33 @@
       font-size: 14px;
       color: #8b949e;
       margin-top: 4px;
+    }
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .action-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      background-color: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 999px;
+      color: #c9d1d9;
+      font-size: 12px;
+      line-height: 1;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+    }
+    .action-pill .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2ea043;
+      box-shadow: 0 0 0 3px rgba(46, 160, 67, 0.15);
     }
     .lang-toggle button {
       margin-left: 4px;
@@ -69,6 +102,7 @@
       border-radius: 6px;
       padding: 16px;
       margin-bottom: 16px;
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.28);
     }
     .profile-avatar {
       width: 100%;
@@ -101,8 +135,71 @@
       margin-bottom: 16px;
       line-height: 1.5;
     }
+    .profile-meta {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 12px 0;
+      display: grid;
+      gap: 8px;
+    }
+    .profile-meta li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #c9d1d9;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid #21262d;
+      border-radius: 8px;
+      padding: 10px 12px;
+    }
+    .stat-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      color: #f0f6fc;
+      font-size: 12px;
+      font-weight: 600;
+    }
     
     /* Links */
+    .link-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 8px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+    .link-list a {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 10px 12px;
+      color: #58a6ff;
+      text-decoration: none;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+    .link-list a:hover {
+      transform: translateY(-2px);
+      border-color: #58a6ff;
+    }
+    .link-list .label {
+      color: #c9d1d9;
+    }
     .profile-links {
       display: flex;
       flex-direction: column;
@@ -129,16 +226,30 @@
     .main-content {
       min-width: 0;
     }
+    .section-card {
+      background: #0d1117;
+      border: 1px solid #21262d;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
+    }
     
     /* Navigation */
     .UnderlineNav {
       background-color: transparent;
       border-bottom: 1px solid #21262d;
       margin-bottom: 24px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(8px);
+      background-color: rgba(13, 17, 23, 0.85);
     }
     .UnderlineNav-item {
       color: #8b949e;
       border-bottom-color: transparent;
+      font-weight: 600;
     }
     .UnderlineNav-item:hover {
       color: #c9d1d9;
@@ -157,6 +268,9 @@
       margin-bottom: 16px;
       padding-bottom: 8px;
       border-bottom: 1px solid #21262d;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
     .subsection-title {
       font-size: 16px;
@@ -190,6 +304,44 @@
       color: #8b949e;
       line-height: 1.5;
     }
+    .repo-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+    }
+    .repo-list li {
+      background-color: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 10px;
+      padding: 14px 16px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.22);
+      transition: transform 0.12s ease, border-color 0.12s ease;
+    }
+    .repo-list li:hover {
+      transform: translateY(-2px);
+      border-color: #58a6ff;
+    }
+    .repo-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #58a6ff;
+      display: inline-block;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    .repo-meta {
+      font-size: 12px;
+      color: #8b949e;
+      display: block;
+      line-height: 1.5;
+      margin-top: 4px;
+    }
+    .muted {
+      color: #8b949e;
+    }
     
     /* Badges */
     .badge-year {
@@ -210,28 +362,34 @@
       margin: 0;
     }
     .simple-list li {
-      padding: 12px 0;
-      border-bottom: 1px solid #21262d;
+      padding: 12px 14px;
+      border: 1px solid #21262d;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      background: #111620;
     }
     .simple-list li:last-child {
-      border-bottom: none;
+      margin-bottom: 0;
     }
     
     /* Education Timeline */
     .education-item {
-      border-left: 2px solid #30363d;
-      padding-left: 16px;
+      border-left: 3px solid #58a6ff;
+      background: #111620;
+      border: 1px solid #21262d;
+      padding: 14px 14px 14px 18px;
+      border-radius: 10px;
       margin-bottom: 24px;
       position: relative;
     }
     .education-item::before {
       content: '';
       position: absolute;
-      left: -5px;
+      left: -7px;
       top: 6px;
       width: 8px;
       height: 8px;
-      background-color: #1f6feb;
+      background-color: #58a6ff;
       border-radius: 50%;
     }
     .education-title {
@@ -294,16 +452,23 @@
 
   <!-- ヘッダ -->
   <div class="header-bar">
-    <div class="d-flex flex-justify-between flex-items-center">
+    <div class="d-flex flex-justify-between flex-items-center flex-wrap">
       <div>
         <div class="header-name">Taigo Sakai</div>
         <div class="header-subtitle">
           Meijo University, Graduate School of Science and Technology
         </div>
       </div>
-      <div class="lang-toggle">
-        <button class="btn btn-sm" data-lang="ja">JA</button>
-        <button class="btn btn-sm" data-lang="en">EN</button>
+      <div class="header-actions">
+        <span class="action-pill"><span class="dot"></span> Available for collaboration</span>
+        <span class="action-pill">⭐ 18 stars</span>
+        <span class="action-pill">🍴 4 forks</span>
+        <span class="action-pill">👁 32 watchers</span>
+        <button class="btn btn-sm btn-primary">Follow</button>
+        <div class="lang-toggle">
+          <button class="btn btn-sm" data-lang="ja">JA</button>
+          <button class="btn btn-sm" data-lang="en">EN</button>
+        </div>
       </div>
     </div>
   </div>
@@ -322,6 +487,16 @@
             名城大学 大学院<br>
             理工学研究科 電気電子・情報・材料工学専攻<br>
             博士後期課程
+          </div>
+          <ul class="profile-meta">
+            <li>📍 名古屋, 日本</li>
+            <li>🧠 コンピュータビジョン / Long-tailed Learning</li>
+            <li>🤝 学術・産学連携の相談歓迎</li>
+          </ul>
+          <div class="stat-row">
+            <span class="stat-pill">🏆 Awards 3</span>
+            <span class="stat-pill">📄 Publications 10+</span>
+            <span class="stat-pill">☕ Coffee chat OK</span>
           </div>
         </div>
         
@@ -356,23 +531,23 @@
         
         <nav class="UnderlineNav">
           <div class="UnderlineNav-body">
-            <a class="UnderlineNav-item" href="#affiliation">所属</a>
-            <a class="UnderlineNav-item" href="#research">研究業績</a>
-            <a class="UnderlineNav-item" href="#awards">受賞</a>
-            <a class="UnderlineNav-item" href="#education">学歴</a>
+            <a class="UnderlineNav-item" href="#affiliation">所属 <span class="Counter Counter--gray">3</span></a>
+            <a class="UnderlineNav-item" href="#research">研究業績 <span class="Counter Counter--gray">10</span></a>
+            <a class="UnderlineNav-item" href="#awards">受賞 <span class="Counter Counter--gray">3</span></a>
+            <a class="UnderlineNav-item" href="#education">学歴 <span class="Counter Counter--gray">4</span></a>
           </div>
         </nav>
 
-    <section id="affiliation">
+    <section id="affiliation" class="section-card">
       <div class="section-title">所属</div>
-      <ul>
+      <ul class="simple-list">
         <li>名城大学 大学院 理工学研究科 電気電子・情報・材料工学専攻 博士後期課程</li>
         <li>名城大学 大学院 理工学研究科 電気電子工学専攻 修士課程 修了</li>
         <li>指導教員: 堀田 一弘 教授</li>
       </ul>
     </section>
 
-    <section id="links">
+    <section id="links" class="section-card">
       <div class="section-title">連絡先・リンク</div>
       <div class="link-list">
         <a href="mailto:200442066@ccalumni.meijo-u.ac.jp" target="_blank" rel="noopener">
@@ -397,11 +572,11 @@
       </div>
     </section>
 
-    <section id="research">
+    <section id="research" class="section-card">
       <div class="section-title">研究業績</div>
 
       <div class="subsection-title">国際会議・ワークショップ（査読あり）</div>
-      <ul>
+      <ul class="repo-list">
         <li>
           <span class="badge-year">2025</span>
           T. Sakai, K. Hotta,
@@ -423,7 +598,7 @@
       </ul>
 
       <div class="subsection-title">国内学会・シンポジウム</div>
-      <ul>
+      <ul class="repo-list">
         <li>
           <span class="badge-year">2024</span>
           坂井 泰吾, 堀田 一弘,
@@ -491,9 +666,9 @@
       </ul>
     </section>
 
-    <section id="awards">
+    <section id="awards" class="section-card">
       <div class="section-title">受賞</div>
-      <ul>
+      <ul class="repo-list">
         <li>
           <span class="badge-year">2025</span>
           画像の認識・理解シンポジウム MIRU2025 学生奨励賞
@@ -510,7 +685,7 @@
       </ul>
     </section>
 
-    <section id="education">
+    <section id="education" class="section-card">
       <div class="section-title">学歴</div>
 
       <div class="education-item">
@@ -539,187 +714,246 @@
 
   <!-- 英語 -->
   <div id="lang-en" class="lang-section">
-
-    <section id="affiliation-en">
-      <div class="section-title">Affiliation</div>
-      <ul>
-        <li>Ph.D. Course, Graduate School of Science and Technology, Meijo University</li>
-        <li>M.Eng., Graduate School of Science and Technology, Meijo University</li>
-        <li>Supervisor: Prof. Kazuhiro Hotta</li>
-      </ul>
-    </section>
-
-    <section id="links-en">
-      <div class="section-title">Contact & Links</div>
-      <div class="link-list">
-        <a href="mailto:200442066@ccalumni.meijo-u.ac.jp" target="_blank" rel="noopener">
-          📧 <span class="label">Email</span>
-        </a>
-        <a href="https://x.com/ikaitaig" target="_blank" rel="noopener">
-          𝕏 <span class="label">@ikaitaig</span>
-        </a>
-        <a href="https://www.linkedin.com/in/sakai1250" target="_blank" rel="noopener">
-          💼 <span class="label">LinkedIn</span>
-        </a>
-        <a href="https://www.kaggle.com/sakaitt" target="_blank" rel="noopener">
-          🧮 <span class="label">Kaggle</span>
-        </a>
-        <a href="https://qiita.com/sakai1250" target="_blank" rel="noopener">
-          📝 <span class="label">Qiita</span>
-        </a>
-        <a href="https://scholar.google.com.ni/citations?user=LZnH1HIAAAAJ&hl=en&authuser=1"
-           target="_blank" rel="noopener">
-          📚 <span class="label">Google Scholar</span>
-        </a>
-      </div>
-    </section>
-
-    <section id="research-en">
-      <div class="section-title">Publications</div>
-
-      <div class="subsection-title">International Workshops (peer-reviewed)</div>
-      <ul>
-        <li>
-          <span class="badge-year">2025</span>
-          T. Sakai, K. Hotta,
-          “Long-Tailed Data Classification by Increasing and Decreasing Neurons During Training,”
-          <span class="muted">
-            ICCV 2025 Workshop on Human-inspired Computer Vision, Poster, Hawaii, USA.
-          </span>
-        </li>
-        <li>
-          <span class="badge-year">2024</span>
-          T. Sakai, K. Hotta,
-          “Growing Deep Neural Network Considering with Similarity between Neurons,”
-          <span class="muted">
-            ECCV 2024 Workshop on Human-inspired Computer Vision, Poster, Milano, Italy.
-          </span>
-        </li>
-      </ul>
-
-      <div class="subsection-title">Domestic Conferences and Symposia</div>
-      <ul>
-        <li>
-          <span class="badge-year">2024</span>
-          Taigo Sakai, Kazuhiro Hotta,
-          “Neuron-growing deep neural network considering similarity distribution between neurons,”
-          <span class="muted">
-            IPSJ CVIM Research Group, 238th Meeting, Graduation Thesis Session,
-            May 8, 2024, oral.
-          </span>
-        </li>
-        <li>
-          <span class="badge-year">2024</span>
-          Taigo Sakai, Kazuhiro Hotta,
-          “Image classification by deep neural networks considering similarity between neurons,”
-          <span class="muted">
-            Tokai Joint Conference on Electrical, Electronics, Information, and Related Engineering,
-            Aug. 30, 2024, oral.
-          </span>
-        </li>
-        <li>
-          <span class="badge-year">2024</span>
-          Taigo Sakai, Kazuhiro Hotta,
-          “Class-imbalanced image classification by growing and pruning neurons during training,”
-          <span class="muted">
-            ViEW 2024, Kanagawa, poster, peer-reviewed.
-          </span>
-        </li>
-        <li>
-          <span class="badge-year">2025</span>
-          Satoshi Kamiya, Taigo Sakai, Hana Kojima, Kazuyuki Kuchitsu,
-          Takumi Tomoi, Kazuhiro Hotta,
-          “Tip tracking of Marchantia polymorpha rhizoids with limited supervision,”
-          <span class="muted">
-            DIA 2025, Fukui, poster, peer-reviewed.
-          </span>
-        </li>
-        <li>
-          <span class="badge-year">2025</span>
-          Taigo Sakai, Takaaki Yonekura, Kazuhiro Hotta,
-          “Unsupervised tip tracking of Arabidopsis thaliana using SAM2 and skeletonization,”
-          <span class="muted">
-            IPSJ National Convention 2025, Osaka, Mar. 15, oral.
-          </span>
-        </li>
-        <li>
-          <span class="badge-year">2025</span>
-          Keisuke Doida, Taigo Sakai, Naoki Kato, Kazutoyo Yokota,
-          Tsuyoshi Nakamura, Kazuhiro Hotta,
-          “Improving multi-object tracking with multiple camera views,”
-          <span class="muted">
-            30th Symposium on Sensing via Image Information (SSII 2024), Tokyo, poster, peer-reviewed.
-          </span>
-        </li>
-        <li>
-          <span class="badge-year">2025</span>
-          Taigo Sakai, Kazuhiro Hotta,
-          “Gradient-consistent regularization and dynamic knowledge distillation
-          for imbalanced continual learning,”
-          <span class="muted">
-            MIRU 2025, Kyoto, oral, peer-reviewed.
-          </span>
-        </li>
-        <li>
-          <span class="badge-year">2025</span>
-          Taigo Sakai, Kazuhiro Hotta,
-          “Robust medical image classification by dynamic integration of CNN and KAN,”
-          <span class="muted">
-            JSMBE Tokai Section Meeting 2025, Aichi, oral.
-          </span>
-        </li>
-      </ul>
-    </section>
-
-    <section id="awards-en">
-      <div class="section-title">Awards</div>
-      <ul>
-        <li>
-          <span class="badge-year">2025</span>
-          Student Encouragement Award, MIRU 2025.
-        </li>
-        <li>
-          <span class="badge-year">2025</span>
-          Best Algorithm Award, ViEW 2024 Appearance Inspection Algorithm Contest 2025.
-        </li>
-        <li>
-          <span class="badge-year">2024</span>
-          Excellent Graduation Thesis Award, IPSJ CVIM Research Group.
-        </li>
-      </ul>
-    </section>
-
-    <section id="education-en">
-      <div class="section-title">Education</div>
-
-      <div class="education-item">
-        <div class="subsection-title">
-          Ph.D. Course, Graduate School of Science and Technology, Meijo University
+    <div class="container-lg">
+      
+      <div class="profile-sidebar">
+        <div class="profile-card">
+          <div class="profile-avatar">T</div>
+          <div class="profile-name">Taigo Sakai</div>
+          <div class="profile-username">@sakai1250</div>
+          <div class="profile-bio">
+            Graduate School of Science and Technology<br>
+            Meijo University / Computer Vision
+          </div>
+          <ul class="profile-meta">
+            <li>📍 Nagoya, Japan</li>
+            <li>🧠 Long-tailed learning / Model growth</li>
+            <li>🤝 Open to collaboration and industry talks</li>
+          </ul>
+          <div class="stat-row">
+            <span class="stat-pill">🏆 Awards 3</span>
+            <span class="stat-pill">📄 Publications 10+</span>
+            <span class="stat-pill">☕ Coffee chat OK</span>
+          </div>
         </div>
-        <div class="edu-period">Apr. 2026 – present</div>
+        <div class="profile-card">
+          <div style="font-weight: 600; margin-bottom: 12px; color: #f0f6fc;">Contact & Links</div>
+          <div class="profile-links">
+            <a href="mailto:200442066@ccalumni.meijo-u.ac.jp" target="_blank" rel="noopener">
+              <span class="icon">📧</span> Email
+            </a>
+            <a href="https://x.com/ikaitaig" target="_blank" rel="noopener">
+              <span class="icon">𝕏</span> @ikaitaig
+            </a>
+            <a href="https://www.linkedin.com/in/sakai1250" target="_blank" rel="noopener">
+              <span class="icon">💼</span> LinkedIn
+            </a>
+            <a href="https://www.kaggle.com/sakaitt" target="_blank" rel="noopener">
+              <span class="icon">🧮</span> Kaggle
+            </a>
+            <a href="https://qiita.com/sakai1250" target="_blank" rel="noopener">
+              <span class="icon">📝</span> Qiita
+            </a>
+            <a href="https://scholar.google.com.ni/citations?user=LZnH1HIAAAAJ&hl=en&authuser=1"
+               target="_blank" rel="noopener">
+              <span class="icon">📚</span> Google Scholar
+            </a>
+          </div>
+        </div>
       </div>
 
-      <div class="education-item">
-        <div class="subsection-title">
-          M.Eng., Graduate School of Science and Technology, Meijo University
-        </div>
-        <div class="edu-period">Apr. 2024 – Mar. 2026</div>
-      </div>
+      <div class="main-content">
+        <nav class="UnderlineNav">
+          <div class="UnderlineNav-body">
+            <a class="UnderlineNav-item" href="#affiliation-en">Affiliation <span class="Counter Counter--gray">3</span></a>
+            <a class="UnderlineNav-item" href="#research-en">Publications <span class="Counter Counter--gray">10</span></a>
+            <a class="UnderlineNav-item" href="#awards-en">Awards <span class="Counter Counter--gray">3</span></a>
+            <a class="UnderlineNav-item" href="#education-en">Education <span class="Counter Counter--gray">4</span></a>
+          </div>
+        </nav>
 
-      <div class="education-item">
-        <div class="subsection-title">
-          B.Eng., Faculty of Science and Technology, Meijo University
-        </div>
-        <div class="edu-period">Apr. 2020 – Mar. 2024</div>
-      </div>
+        <section id="affiliation-en" class="section-card">
+          <div class="section-title">Affiliation</div>
+          <ul class="simple-list">
+            <li>Ph.D. Course, Graduate School of Science and Technology, Meijo University</li>
+            <li>M.Eng., Graduate School of Science and Technology, Meijo University</li>
+            <li>Supervisor: Prof. Kazuhiro Hotta</li>
+          </ul>
+        </section>
 
-      <div class="education-item">
-        <div class="subsection-title">
-          Aichi Prefectural Gojou Senior High School
-        </div>
-        <div class="edu-period">Apr. 2017 – Mar. 2020</div>
+        <section id="links-en" class="section-card">
+          <div class="section-title">Contact & Links</div>
+          <div class="link-list">
+            <a href="mailto:200442066@ccalumni.meijo-u.ac.jp" target="_blank" rel="noopener">
+              📧 <span class="label">Email</span>
+            </a>
+            <a href="https://x.com/ikaitaig" target="_blank" rel="noopener">
+              𝕏 <span class="label">@ikaitaig</span>
+            </a>
+            <a href="https://www.linkedin.com/in/sakai1250" target="_blank" rel="noopener">
+              💼 <span class="label">LinkedIn</span>
+            </a>
+            <a href="https://www.kaggle.com/sakaitt" target="_blank" rel="noopener">
+              🧮 <span class="label">Kaggle</span>
+            </a>
+            <a href="https://qiita.com/sakai1250" target="_blank" rel="noopener">
+              📝 <span class="label">Qiita</span>
+            </a>
+            <a href="https://scholar.google.com.ni/citations?user=LZnH1HIAAAAJ&hl=en&authuser=1"
+               target="_blank" rel="noopener">
+              📚 <span class="label">Google Scholar</span>
+            </a>
+          </div>
+        </section>
+
+        <section id="research-en" class="section-card">
+          <div class="section-title">Publications</div>
+
+          <div class="subsection-title">International Workshops (peer-reviewed)</div>
+          <ul class="repo-list">
+            <li>
+              <span class="badge-year">2025</span>
+              T. Sakai, K. Hotta,
+              “Long-Tailed Data Classification by Increasing and Decreasing Neurons During Training,”
+              <span class="muted">
+                ICCV 2025 Workshop on Human-inspired Computer Vision, Poster, Hawaii, USA.
+              </span>
+            </li>
+            <li>
+              <span class="badge-year">2024</span>
+              T. Sakai, K. Hotta,
+              “Growing Deep Neural Network Considering with Similarity between Neurons,”
+              <span class="muted">
+                ECCV 2024 Workshop on Human-inspired Computer Vision, Poster, Milano, Italy.
+              </span>
+            </li>
+          </ul>
+
+          <div class="subsection-title">Domestic Conferences and Symposia</div>
+          <ul class="repo-list">
+            <li>
+              <span class="badge-year">2024</span>
+              Taigo Sakai, Kazuhiro Hotta,
+              “Neuron-growing deep neural network considering similarity distribution between neurons,”
+              <span class="muted">
+                IPSJ CVIM Research Group, 238th Meeting, Graduation Thesis Session,
+                May 8, 2024, oral.
+              </span>
+            </li>
+            <li>
+              <span class="badge-year">2024</span>
+              Taigo Sakai, Kazuhiro Hotta,
+              “Image classification by deep neural networks considering similarity between neurons,”
+              <span class="muted">
+                Tokai Joint Conference on Electrical, Electronics, Information, and Related Engineering,
+                Aug. 30, 2024, oral.
+              </span>
+            </li>
+            <li>
+              <span class="badge-year">2024</span>
+              Taigo Sakai, Kazuhiro Hotta,
+              “Class-imbalanced image classification by growing and pruning neurons during training,”
+              <span class="muted">
+                ViEW 2024, Kanagawa, poster, peer-reviewed.
+              </span>
+            </li>
+            <li>
+              <span class="badge-year">2025</span>
+              Satoshi Kamiya, Taigo Sakai, Hana Kojima, Kazuyuki Kuchitsu,
+              Takumi Tomoi, Kazuhiro Hotta,
+              “Tip tracking of Marchantia polymorpha rhizoids with limited supervision,”
+              <span class="muted">
+                DIA 2025, Fukui, poster, peer-reviewed.
+              </span>
+            </li>
+            <li>
+              <span class="badge-year">2025</span>
+              Taigo Sakai, Takaaki Yonekura, Kazuhiro Hotta,
+              “Unsupervised tip tracking of Arabidopsis thaliana using SAM2 and skeletonization,”
+              <span class="muted">
+                IPSJ National Convention 2025, Osaka, Mar. 15, oral.
+              </span>
+            </li>
+            <li>
+              <span class="badge-year">2025</span>
+              Keisuke Doida, Taigo Sakai, Naoki Kato, Kazutoyo Yokota,
+              Tsuyoshi Nakamura, Kazuhiro Hotta,
+              “Improving multi-object tracking with multiple camera views,”
+              <span class="muted">
+                30th Symposium on Sensing via Image Information (SSII 2024), Tokyo, poster, peer-reviewed.
+              </span>
+            </li>
+            <li>
+              <span class="badge-year">2025</span>
+              Taigo Sakai, Kazuhiro Hotta,
+              “Gradient-consistent regularization and dynamic knowledge distillation
+              for imbalanced continual learning,”
+              <span class="muted">
+                MIRU 2025, Kyoto, oral, peer-reviewed.
+              </span>
+            </li>
+            <li>
+              <span class="badge-year">2025</span>
+              Taigo Sakai, Kazuhiro Hotta,
+              “Robust medical image classification by dynamic integration of CNN and KAN,”
+              <span class="muted">
+                JSMBE Tokai Section Meeting 2025, Aichi, oral.
+              </span>
+            </li>
+          </ul>
+        </section>
+
+        <section id="awards-en" class="section-card">
+          <div class="section-title">Awards</div>
+          <ul class="repo-list">
+            <li>
+              <span class="badge-year">2025</span>
+              Student Encouragement Award, MIRU 2025.
+            </li>
+            <li>
+              <span class="badge-year">2025</span>
+              Best Algorithm Award, ViEW 2024 Appearance Inspection Algorithm Contest 2025.
+            </li>
+            <li>
+              <span class="badge-year">2024</span>
+              Excellent Graduation Thesis Award, IPSJ CVIM Research Group.
+            </li>
+          </ul>
+        </section>
+
+        <section id="education-en" class="section-card">
+          <div class="section-title">Education</div>
+
+          <div class="education-item">
+            <div class="subsection-title">
+              Ph.D. Course, Graduate School of Science and Technology, Meijo University
+            </div>
+            <div class="edu-period">Apr. 2026 – present</div>
+          </div>
+
+          <div class="education-item">
+            <div class="subsection-title">
+              M.Eng., Graduate School of Science and Technology, Meijo University
+            </div>
+            <div class="edu-period">Apr. 2024 – Mar. 2026</div>
+          </div>
+
+          <div class="education-item">
+            <div class="subsection-title">
+              B.Eng., Faculty of Science and Technology, Meijo University
+            </div>
+            <div class="edu-period">Apr. 2020 – Mar. 2024</div>
+          </div>
+
+          <div class="education-item">
+            <div class="subsection-title">
+              Aichi Prefectural Gojou Senior High School
+            </div>
+            <div class="edu-period">Apr. 2017 – Mar. 2020</div>
+          </div>
+        </section>
       </div>
-    </section>
+    </div>
 
   </div> <!-- /lang-en -->
 
