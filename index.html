@@ -2,11 +2,11 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>Taigo Sakai | Research Portfolio</title>
+  <title>Taigo Sakai | Portfolio</title>
   <link rel="stylesheet" href="https://unpkg.com/@primer/css@22.0.2/dist/primer.css">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* 基本設定 */
+    /* === Base Styles === */
     body {
       font-family: "SF Pro Text", "Segoe UI", system-ui, -apple-system, sans-serif;
       background-color: #0d1117;
@@ -24,7 +24,7 @@
     a { text-decoration: none; color: #58a6ff; }
     a:hover { text-decoration: underline; }
 
-    /* レイアウトグリッド */
+    /* === Layout === */
     .container-lg {
       display: grid;
       grid-template-columns: 296px 1fr;
@@ -35,7 +35,7 @@
       .container-lg { grid-template-columns: 1fr; }
     }
     
-    /* Header */
+    /* === Header === */
     .header-bar {
       background-color: #161b22;
       border-bottom: 1px solid #30363d;
@@ -46,23 +46,15 @@
     .header-name { font-size: 26px; font-weight: 600; color: #f0f6fc; }
     .header-subtitle { font-size: 14px; color: #8b949e; margin-top: 4px; }
     .header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
-    .action-pill {
-      display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px;
-      background-color: #0d1117; border: 1px solid #30363d; border-radius: 999px;
-      color: #c9d1d9; font-size: 12px; line-height: 1;
-    }
-    .action-pill .dot {
-      width: 8px; height: 8px; border-radius: 50%; background: #2ea043;
-      box-shadow: 0 0 0 3px rgba(46, 160, 67, 0.15);
-    }
+    
     .lang-toggle button {
       margin-left: 4px; background-color: #21262d; border: 1px solid #30363d; color: #c9d1d9;
     }
-    .lang-toggle button:hover { background-color: #30363d; border-color: #8b949e; }
+    .lang-toggle button:hover { background-color: #30363d; }
     .lang-toggle button.active { border-color: #58a6ff; color: #f0f6fc; background-color: #0d1117; }
     
-    /* Sidebar Profile */
-    .profile-sidebar { position: sticky; top: 80px; height: fit-content; }
+    /* === Sidebar === */
+    .profile-sidebar { position: sticky; top: 24px; height: fit-content; }
     .profile-card {
       background-color: #161b22; border: 1px solid #30363d; border-radius: 6px;
       padding: 16px; margin-bottom: 16px; box-shadow: 0 8px 26px rgba(0, 0, 0, 0.28);
@@ -71,110 +63,95 @@
       width: 100%; aspect-ratio: 1; border-radius: 50%; border: 1px solid #30363d;
       background: linear-gradient(135deg, #238636 0%, #1f6feb 100%);
       display: flex; align-items: center; justify-content: center;
-      font-size: 120px; font-weight: 300; color: #ffffff; margin-bottom: 16px;
+      font-size: 100px; color: #ffffff; margin-bottom: 16px;
     }
-    .profile-name { font-size: 24px; font-weight: 600; color: #f0f6fc; margin-bottom: 4px; }
-    .profile-username { font-size: 20px; font-weight: 300; color: #8b949e; margin-bottom: 16px; }
+    .profile-name { font-size: 24px; font-weight: 600; color: #f0f6fc; }
+    .profile-username { font-size: 20px; font-weight: 300; color: #8b949e; margin-bottom: 12px; }
     .profile-bio { font-size: 14px; margin-bottom: 16px; line-height: 1.5; }
-    .profile-meta { list-style: none; padding: 0; margin: 0 0 12px 0; display: grid; gap: 8px; }
-    .profile-meta li {
-      display: flex; align-items: center; gap: 10px; font-size: 13px; color: #c9d1d9;
-      background: rgba(255, 255, 255, 0.02); border: 1px solid #21262d; border-radius: 8px; padding: 10px 12px;
-    }
-    .stat-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
-    .stat-pill {
-      display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; border-radius: 999px;
-      background: #0d1117; border: 1px solid #30363d; color: #f0f6fc; font-size: 12px; font-weight: 600;
-    }
-    .profile-links { display: flex; flex-direction: column; gap: 8px; }
-    .profile-links a { display: flex; align-items: center; font-size: 14px; padding: 4px 0; }
+    .profile-links { display: flex; flex-direction: column; gap: 6px; }
+    .profile-links a { display: flex; align-items: center; font-size: 13px; color: #8b949e; }
+    .profile-links a:hover { color: #58a6ff; }
     .profile-links .icon { margin-right: 8px; width: 16px; text-align: center; }
 
-    /* Main Content */
-    .main-content { min-width: 0; }
-    .section-card {
-      background: #0d1117; border: 1px solid #21262d; border-radius: 12px;
-      padding: 24px; margin-bottom: 24px; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.24);
-    }
-
-    /* Navigation */
-    .UnderlineNav {
-      background-color: transparent; border-bottom: 1px solid #21262d; margin-bottom: 24px;
+    /* === Tabs Navigation === */
+    .tab-nav {
+      display: flex;
+      border-bottom: 1px solid #21262d;
+      margin-bottom: 24px;
       position: sticky; top: 0; z-index: 10;
-      backdrop-filter: blur(8px); background-color: rgba(13, 17, 23, 0.85);
+      background-color: rgba(13, 17, 23, 0.95);
+      backdrop-filter: blur(5px);
     }
-    .UnderlineNav-body { display: flex; gap: 20px; overflow-x: auto; }
-    .UnderlineNav-item {
-      color: #8b949e; border-bottom: 2px solid transparent; padding: 12px 0;
-      font-weight: 600; font-size: 14px; cursor: pointer; white-space: nowrap;
+    .tab-item {
+      padding: 12px 16px;
+      color: #8b949e;
+      font-weight: 600;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
     }
-    .UnderlineNav-item:hover { color: #c9d1d9; border-bottom-color: #6e7681; text-decoration: none; }
-    .UnderlineNav-item.selected { color: #f0f6fc; border-bottom-color: #f78166; }
-    .nav-label { font-size: 12px; color: #8b949e; font-weight: normal; margin-left: 4px; }
+    .tab-item:hover { color: #c9d1d9; }
+    .tab-item.active { color: #f0f6fc; border-bottom-color: #f78166; }
+    .tab-content { display: none; animation: fadeIn 0.3s ease; }
+    .tab-content.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* Typography & Sections */
+    /* === Content Sections === */
+    .section-card {
+      background: #0d1117; border: 1px solid #21262d; border-radius: 6px;
+      padding: 20px; margin-bottom: 16px;
+    }
     .section-title {
-      font-size: 22px; font-weight: 600; color: #f0f6fc; margin-bottom: 20px;
-      padding-bottom: 8px; border-bottom: 1px solid #21262d; display: flex; align-items: center; gap: 8px;
+      font-size: 18px; font-weight: 600; color: #f0f6fc; margin-bottom: 16px;
+      padding-bottom: 8px; border-bottom: 1px solid #21262d;
     }
     .subsection-title {
-      font-size: 16px; font-weight: 600; color: #58a6ff; margin-top: 24px; margin-bottom: 12px;
+      font-size: 15px; font-weight: 600; color: #58a6ff; margin-top: 20px; margin-bottom: 10px;
     }
 
-    /* Lists */
-    .simple-list { list-style: none; padding: 0; margin: 0; }
-    .simple-list li {
-      padding: 12px 14px; border: 1px solid #21262d; border-radius: 8px; margin-bottom: 10px; background: #111620;
-    }
-    
-    /* Research/Education Items */
-    .repo-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+    /* Lists & Items */
+    .repo-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
     .repo-list li {
-      background-color: #161b22; border: 1px solid #30363d; border-radius: 8px;
-      padding: 16px; transition: transform 0.12s ease, border-color 0.12s ease;
+      background-color: #161b22; border: 1px solid #30363d; border-radius: 6px;
+      padding: 12px 16px; font-size: 14px; line-height: 1.5;
     }
-    .repo-list li:hover { transform: translateY(-2px); border-color: #58a6ff; }
-    .education-item {
-      border-left: 3px solid #58a6ff; background: #111620; border: 1px solid #21262d; border-left-width: 3px;
-      padding: 14px 14px 14px 18px; border-radius: 0 8px 8px 0; margin-bottom: 16px; position: relative;
-    }
-    .education-title { font-size: 15px; font-weight: 600; color: #f0f6fc; margin-bottom: 4px; }
-    .education-period { font-size: 12px; color: #8b949e; }
     .badge-year {
       display: inline-block; padding: 2px 8px; font-size: 11px; font-weight: 600;
-      border-radius: 12px; background-color: #1f6feb; color: #ffffff; margin-right: 8px;
+      border-radius: 12px; background-color: #238636; color: #ffffff; margin-right: 6px;
     }
-    .muted { color: #8b949e; font-size: 13px; line-height: 1.5; }
+    .muted { color: #8b949e; font-size: 12px; margin-top: 4px; display: block;}
 
-    /* Grid Layout for Apps (Replaces Table) */
-    .grid-gallery {
+    /* Tech Stack Badge Rows */
+    .badge-row { margin-bottom: 12px; }
+    .badge-row h4 { font-size: 13px; color: #8b949e; margin-bottom: 6px; }
+
+    /* Grid for Apps (Dense Layout) */
+    .grid-dense {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 20px;
-      margin-top: 16px;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 16px;
     }
     .app-card {
-      background: #161b22; border: 1px solid #30363d; border-radius: 8px; padding: 16px;
-      display: flex; flex-direction: column; align-items: center; text-align: center;
-      transition: all 0.2s ease;
+      background: #161b22; border: 1px solid #30363d; border-radius: 6px;
+      padding: 12px; display: flex; flex-direction: row; gap: 12px;
+      align-items: start; transition: border-color 0.2s;
     }
-    .app-card:hover { border-color: #8b949e; transform: translateY(-2px); }
-    .app-card img { max-width: 100%; height: auto; border-radius: 6px; margin-bottom: 12px; object-fit: cover; }
-    .app-title { font-weight: 700; color: #58a6ff; margin-bottom: 8px; display: block; }
-    .app-desc { font-size: 13px; color: #c9d1d9; line-height: 1.5; margin-bottom: 12px; flex-grow: 1; text-align: left; width: 100%; }
-    .app-links { font-size: 12px; margin-top: auto; width: 100%; border-top: 1px solid #30363d; padding-top: 8px; display: flex; justify-content: space-around; }
-
-    /* Divider */
-    .section-divider {
-      display: flex; align-items: center; gap: 16px; margin: 48px 0 32px 0;
-      color: #8b949e; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+    .app-card:hover { border-color: #58a6ff; }
+    .app-thumb {
+      width: 80px; height: 80px; object-fit: cover; border-radius: 8px;
+      border: 1px solid #30363d; flex-shrink: 0;
     }
-    .section-divider::before, .section-divider::after {
-      content: ""; height: 1px; background: #30363d; flex: 1;
-    }
+    .app-info { flex: 1; min-width: 0; }
+    .app-title { font-weight: 600; font-size: 14px; color: #58a6ff; display: block; margin-bottom: 4px; }
+    .app-desc { font-size: 12px; color: #c9d1d9; line-height: 1.4; margin-bottom: 8px; }
+    .app-links { font-size: 11px; }
+    .app-links a { margin-right: 8px; color: #8b949e; border: 1px solid #30363d; padding: 2px 6px; border-radius: 4px; }
+    .app-links a:hover { color: #f0f6fc; border-color: #8b949e; text-decoration: none; }
 
     /* Footer */
-    .footer { margin-top: 48px; padding-top: 24px; border-top: 1px solid #21262d; font-size: 12px; color: #8b949e; text-align: center; }
+    .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid #21262d; font-size: 12px; color: #8b949e; text-align: center; }
+    
+    /* Toggle Visibility */
     .lang-section { display: none; }
     .lang-section.active { display: block; }
   </style>
@@ -186,12 +163,9 @@
     <div class="d-flex flex-justify-between flex-items-center flex-wrap">
       <div>
         <div class="header-name">Taigo Sakai</div>
-        <div class="header-subtitle">
-          Meijo University, Graduate School of Science and Technology
-        </div>
+        <div class="header-subtitle">Meijo University, Graduate School of Science and Technology</div>
       </div>
       <div class="header-actions">
-        <span class="action-pill"><span class="dot"></span> Available for collaboration</span>
         <button class="btn btn-sm btn-primary">Follow</button>
         <div class="lang-toggle">
           <button class="btn btn-sm" id="btn-ja" onclick="setLang('ja')">JA</button>
@@ -214,86 +188,54 @@
             理工学研究科 電気電子・情報・材料工学専攻<br>
             博士後期課程
           </div>
-          <ul class="profile-meta">
-            <li>📍 名古屋, 日本</li>
-            <li>🎓 Deep Learning / CV</li>
-          </ul>
-          <div class="stat-row">
-            <span class="stat-pill">🏆 Awards 3</span>
-            <span class="stat-pill">📄 Publications 10+</span>
-          </div>
-        </div>
-        
-        <div class="profile-card">
-          <div style="font-weight: 600; margin-bottom: 12px; color: #f0f6fc;">Links</div>
           <div class="profile-links">
             <a href="mailto:200442066@ccalumni.meijo-u.ac.jp"><span class="icon">📧</span> Email</a>
-            <a href="https://scholar.google.com.ni/citations?user=LZnH1HIAAAAJ&hl=en&authuser=1" target="_blank"><span class="icon">📚</span> Google Scholar</a>
-            <a href="https://researchmap.jp/sakai1250" target="_blank"><span class="icon">🔬</span> researchmap</a>
-            <a href="https://github.com/sakai1250" target="_blank"><span class="icon">💻</span> GitHub</a>
             <a href="https://x.com/ikaitaig" target="_blank"><span class="icon">𝕏</span> @ikaitaig</a>
+            <a href="https://www.linkedin.com/in/sakai1250" target="_blank"><span class="icon">💼</span> LinkedIn</a>
+            <a href="https://www.kaggle.com/sakaitt" target="_blank"><span class="icon">🧮</span> Kaggle</a>
             <a href="https://qiita.com/sakai1250" target="_blank"><span class="icon">📝</span> Qiita</a>
+            <a href="https://scholar.google.com.ni/citations?user=LZnH1HIAAAAJ&hl=en&authuser=1" target="_blank"><span class="icon">📚</span> Google Scholar</a>
           </div>
         </div>
       </div>
       
       <div class="main-content">
         
-        <div class="section-card" style="text-align:center;">
-          <a href="https://github.com/DenverCoder1/readme-typing-svg">
-             <img src="https://readme-typing-svg.demolab.com/?lines=I'm+Taigo+Sakai;Researcher+in+Computer+Vision;&font=Fira%20Code&center=true&width=600&height=60&color=ffffff&vCenter=true&pause=1000&size=28" alt="typing introduction" style="max-width:100%;" />
-          </a>
+        <div class="section-card" style="text-align:center; padding: 16px;">
+          <img src="https://readme-typing-svg.demolab.com/?lines=I'm+Taigo+Sakai;Researcher+of+Deep+Learning;&font=Fira%20Code&center=true&width=600&height=50&color=ffffff&vCenter=true&pause=1000&size=24" alt="typing introduction" style="max-width:100%;" />
         </div>
 
-        <nav class="UnderlineNav">
-          <div class="UnderlineNav-body">
-            <a class="UnderlineNav-item selected" href="#academic-ja">Researcher <span class="nav-label">(業績)</span></a>
-            <a class="UnderlineNav-item" href="#engineering-ja">Engineer <span class="nav-label">(開発)</span></a>
-          </div>
-        </nav>
+        <div class="tab-nav">
+          <div class="tab-item active" onclick="switchTab('ja', 'research')">研究 (Researcher)</div>
+          <div class="tab-item" onclick="switchTab('ja', 'engineer')">開発 (Engineer)</div>
+        </div>
 
-        <div id="academic-ja">
-          <div class="section-divider">Academic Profile</div>
-
+        <div id="ja-research" class="tab-content active">
+          
           <section class="section-card">
-            <div class="section-title">所属</div>
-            <ul class="simple-list">
-              <li>名城大学 大学院 理工学研究科 電気電子・情報・材料工学専攻 博士後期課程</li>
-              <li>指導教員: 堀田 一弘 教授</li>
+            <div class="section-title">所属・学歴</div>
+            <ul class="repo-list">
+              <li>
+                <b>名城大学 大学院 理工学研究科 電気電子・情報・材料工学専攻 博士後期課程</b>
+                <div class="muted">2026年4月 – 現在 | 指導教員: 堀田 一弘 教授</div>
+              </li>
+              <li>
+                <b>名城大学 大学院 理工学研究科 電気電子工学専攻 修士課程</b>
+                <div class="muted">2024年4月 – 2026年3月</div>
+              </li>
+              <li>
+                <b>名城大学 理工学部 電気電子工学科</b>
+                <div class="muted">2020年4月 – 2024年3月</div>
+              </li>
             </ul>
-          </section>
-
-          <section class="section-card">
-             <div class="section-title">学歴</div>
-             <div class="education-item">
-               <div class="education-title">名城大学 大学院 理工学研究科 電気電子・情報・材料工学専攻 博士後期課程</div>
-               <div class="education-period">2026年4月 – 現在</div>
-             </div>
-             <div class="education-item">
-               <div class="education-title">名城大学 大学院 理工学研究科 電気電子工学専攻 修士課程 修了</div>
-               <div class="education-period">2024年4月 – 2026年3月</div>
-             </div>
-             <div class="education-item">
-               <div class="education-title">名城大学 理工学部 電気電子工学科 卒業</div>
-               <div class="education-period">2020年4月 – 2024年3月</div>
-             </div>
           </section>
 
           <section class="section-card">
             <div class="section-title">受賞</div>
             <ul class="repo-list">
-              <li>
-                <span class="badge-year">2025</span>
-                画像の認識・理解シンポジウム MIRU2025 学生奨励賞
-              </li>
-              <li>
-                <span class="badge-year">2025</span>
-                ViEW2024 外観検査アルゴリズムコンテスト2025 最優秀賞
-              </li>
-              <li>
-                <span class="badge-year">2024</span>
-                情報処理学会 CVIM 研究会 卒業論文セッション優秀賞
-              </li>
+              <li><span class="badge-year">2025</span> 画像の認識・理解シンポジウム MIRU2025 学生奨励賞</li>
+              <li><span class="badge-year">2025</span> ViEW2024 外観検査アルゴリズムコンテスト2025 最優秀賞</li>
+              <li><span class="badge-year">2024</span> 情報処理学会 CVIM 研究会 卒業論文セッション優秀賞</li>
             </ul>
           </section>
 
@@ -303,15 +245,11 @@
             <div class="subsection-title">国際会議・ワークショップ（査読あり）</div>
             <ul class="repo-list">
               <li>
-                <span class="badge-year">2025</span>
-                <b>T. Sakai</b>, K. Hotta,
-                “Long-Tailed Data Classification by Increasing and Decreasing Neurons During Training,”
+                <span class="badge-year">2025</span> T. Sakai, K. Hotta, “Long-Tailed Data Classification by Increasing and Decreasing Neurons During Training,”
                 <div class="muted">ICCV 2025 Workshop on Human-inspired Computer Vision, Poster, Hawaii, USA.</div>
               </li>
               <li>
-                <span class="badge-year">2024</span>
-                <b>T. Sakai</b>, K. Hotta,
-                “Growing Deep Neural Network Considering with Similarity between Neurons,”
+                <span class="badge-year">2024</span> T. Sakai, K. Hotta, “Growing Deep Neural Network Considering with Similarity between Neurons,”
                 <div class="muted">ECCV 2024 Workshop on Human-inspired Computer Vision, Poster, Milano, Italy.</div>
               </li>
             </ul>
@@ -319,120 +257,211 @@
             <div class="subsection-title">国内学会・シンポジウム</div>
             <ul class="repo-list">
               <li>
-                <span class="badge-year">2025</span>
-                <b>坂井 泰吾</b>, 堀田 一弘,
-                「不均衡なデータセットの継続学習における勾配一貫性正規化と動的な知識蒸留」
+                <span class="badge-year">2025</span> 坂井 泰吾, 堀田 一弘, 「不均衡なデータセットの継続学習における勾配一貫性正規化と動的な知識蒸留」
                 <div class="muted">画像の認識・理解シンポジウム (MIRU2025), 京都, 口頭発表（査読あり）。</div>
               </li>
               <li>
-                <span class="badge-year">2024</span>
-                <b>坂井 泰吾</b>, 堀田 一弘,
-                「学習中のニューロン増減によるクラス不均衡データの識別」
+                <span class="badge-year">2025</span> 神谷 聡，坂井 泰吾，小嶋 華，朽津 和幸，友井 拓実，堀田 一弘, 「少ない教師付きデータからのゼニゴケ仮根の先端追跡法」
+                <div class="muted">動的画像処理実利用化ワークショップ (DIA2025), 福井, ポスター（査読あり）。</div>
+              </li>
+              <li>
+                <span class="badge-year">2025</span> 坂井 泰吾，米倉 崇晃，堀田 一弘, 「SAM2とマスク細線化によるシロイヌナズナの教師無し先端追跡手法」
+                <div class="muted">情報処理学会 第87回全国大会, 大阪, 2025年3月15日, 口頭発表。</div>
+              </li>
+              <li>
+                <span class="badge-year">2025</span> 土井田 啓輔, 坂井 泰吾, 他, 「複数視野を使った複数物体追跡の精度向上」
+                <div class="muted">第30回画像センシングシンポジウム (SSII2024), 東京, ポスター（査読あり）。</div>
+              </li>
+              <li>
+                <span class="badge-year">2025</span> 坂井 泰吾, 堀田 一弘, 「医用画像分類における CNN と KAN の動的な統合によるノイズ頑健性の向上」
+                <div class="muted">日本生体医工学会 東海支部大会 2025, 愛知, 口頭発表。</div>
+              </li>
+              <li>
+                <span class="badge-year">2024</span> 坂井 泰吾, 堀田 一弘, 「学習中のニューロン増減によるクラス不均衡データの識別」
                 <div class="muted">ビジョン技術の実利用ワークショップ (ViEW2024), 神奈川, ポスター（査読あり）。</div>
               </li>
                <li>
-                <span class="badge-year">2024</span>
-                <b>坂井 泰吾</b>, 堀田 一弘,
-                「ニューロン間の類似度分布を考慮したニューロン増加型深層ニューラルネットワーク」
+                <span class="badge-year">2024</span> 坂井 泰吾, 堀田 一弘, 「ニューロン間の類似度を考慮した深層ニューラルネットワークによる画像分類」
+                <div class="muted">令和6年度 電気・電子・情報関係学会 東海支部連合大会, 2024年8月30日, 口頭発表。</div>
+              </li>
+              <li>
+                <span class="badge-year">2024</span> 坂井 泰吾, 堀田 一弘, 「ニューロン間の類似度分布を考慮したニューロン増加型深層ニューラルネットワーク」
                 <div class="muted">情報処理学会 第238回CVIM研究会 卒論セッション, 2024年5月8日, 口頭発表。</div>
               </li>
-              </ul>
+            </ul>
           </section>
         </div>
 
-        <div id="engineering-ja">
-          <div class="section-divider">Engineering Portfolio</div>
-
+        <div id="ja-engineer" class="tab-content">
+          
           <section class="section-card">
             <div class="section-title">My Apps & Services</div>
-            <p class="muted">個人開発およびハッカソン等での成果物。</p>
-            
-            <div class="grid-gallery">
+            <div class="grid-dense">
               <div class="app-card">
-                <a href="https://apps.apple.com/jp/app/kikonashi/id6502258139">
-                  <img src="https://github.com/user-attachments/assets/e7a7dbf0-f338-454a-9802-2ea1ab64da41" alt="kikonAshI" />
-                </a>
-                <a href="https://apps.apple.com/jp/app/kikonashi/id6502258139" class="app-title">kikonAshI (iOS)</a>
-                <div class="app-desc">
-                  独自開発したファッションAI搭載アプリ。毎日のコーディネート提案と育成機能を融合。
-                </div>
-                <div class="app-links">
-                  <a href="https://apps.apple.com/jp/app/kikonashi/id6502258139">App Store</a>
-                  <a href="https://github.com/sakai1250/hacku2023">GitHub</a>
+                <img src="https://github.com/user-attachments/assets/e7a7dbf0-f338-454a-9802-2ea1ab64da41" class="app-thumb" alt="icon">
+                <div class="app-info">
+                  <a href="https://apps.apple.com/jp/app/kikonashi/id6502258139" class="app-title">kikonAshI (iOS)</a>
+                  <div class="app-desc">独自開発ファッションAI搭載。毎日のコーデ提案と育成機能。</div>
+                  <div class="app-links">
+                    <a href="https://apps.apple.com/jp/app/kikonashi/id6502258139">App Store</a>
+                    <a href="https://github.com/sakai1250/hacku2023">GitHub</a>
+                  </div>
                 </div>
               </div>
-
               <div class="app-card">
-                <a href="https://www.jogiken.com/sugosugiru/">
-                  <img src="https://github.com/user-attachments/assets/b1d58dae-fc06-4ca8-aae2-7b76901d79b8" alt="すごすぎる時間割" />
-                </a>
-                <a href="https://www.jogiken.com/sugosugiru/" class="app-title">すごすぎる時間割</a>
-                <div class="app-desc">
-                  情報技術研究会で開発協力。シンプルなUIで直感的に授業管理ができる大学生向けアプリ。
-                </div>
-                <div class="app-links">
-                  <a href="https://apps.apple.com/jp/app/id6744370038">iOS</a>
-                  <a href="https://play.google.com/store/apps/details?id=com.jogiken.sugosugiru">Android</a>
+                <img src="https://github.com/user-attachments/assets/b1d58dae-fc06-4ca8-aae2-7b76901d79b8" class="app-thumb" alt="icon">
+                <div class="app-info">
+                  <a href="https://www.jogiken.com/sugosugiru/" class="app-title">すごすぎる時間割</a>
+                  <div class="app-desc">情報技術研究会で開発。シンプルなUIの大学生向け時間割アプリ。</div>
+                  <div class="app-links">
+                    <a href="https://apps.apple.com/jp/app/id6744370038">iOS</a>
+                    <a href="https://play.google.com/store/apps/details?id=com.jogiken.sugosugiru">Android</a>
+                  </div>
                 </div>
               </div>
-
               <div class="app-card">
-                <a href="https://recolle.vercel.app/">
-                  <img src="https://github.com/user-attachments/assets/321aa41a-fb83-470b-8d45-0f44b94eb28a" alt="recolLe" />
-                </a>
-                <a href="https://recolle.vercel.app/" class="app-title">recolLe (Web/iOS)</a>
-                <div class="app-desc">
-                  NFCを活用した写真アルバム。「かざす」動作で思い出を呼び出す新しい体験を提供。
-                </div>
-                <div class="app-links">
-                  <a href="https://recolle.vercel.app/">Web</a>
-                  <a href="https://apps.apple.com/jp/app/id6755230226">App Store</a>
+                <img src="https://github.com/user-attachments/assets/321aa41a-fb83-470b-8d45-0f44b94eb28a" class="app-thumb" alt="icon">
+                <div class="app-info">
+                  <a href="https://recolle.vercel.app/" class="app-title">recolLe (Web/iOS)</a>
+                  <div class="app-desc">NFCフォトアルバム。「かざす」動作で思い出を呼び出す体験。</div>
+                  <div class="app-links">
+                    <a href="https://recolle.vercel.app/">Web</a>
+                    <a href="https://apps.apple.com/jp/app/id6755230226">App Store</a>
+                  </div>
                 </div>
               </div>
-              
               <div class="app-card">
-                <a href="https://github.com/sakai1250/super_res.git">
-                  <img src="https://github.com/user-attachments/assets/3c2a0ed5-b342-4b52-b6f7-b706f5d005cd" alt="超kAI蔵" />
-                </a>
-                <a href="https://github.com/sakai1250/super_res.git" class="app-title">超kAI蔵 (iOS)</a>
-                <div class="app-desc">
-                   最大4倍のAI超解像アプリ。フォルダ分類やメモ機能も搭載し、研究用途にも対応。
+                <img src="https://github.com/user-attachments/assets/52ef9d7e-7f2d-4c4b-88d1-8d822a382450" class="app-thumb" alt="icon">
+                <div class="app-info">
+                  <a href="https://itunes.apple.com/jp/app/id6755966828?mt=8" class="app-title">おつりDoctor (iOS)</a>
+                  <div class="app-desc">硬貨を撮影して金額を自動集計。ユーザー育成機能付き。</div>
+                  <div class="app-links">
+                    <a href="https://github.com/sakai1250/otsuri_docter">GitHub</a>
+                  </div>
                 </div>
-                <div class="app-links">
-                  <a href="https://apps.apple.com/jp/app/超kai蔵/id6751739848">App Store</a>
-                   <a href="https://github.com/sakai1250/super_res.git">GitHub</a>
+              </div>
+               <div class="app-card">
+                <img src="https://github.com/user-attachments/assets/3c2a0ed5-b342-4b52-b6f7-b706f5d005cd" class="app-thumb" alt="icon">
+                <div class="app-info">
+                  <a href="https://github.com/sakai1250/super_res.git" class="app-title">超kAI蔵 (iOS)</a>
+                  <div class="app-desc">最大4倍AI超解像。フォルダ分類・メモ保存搭載で研究用途にも。</div>
+                  <div class="app-links">
+                    <a href="https://apps.apple.com/jp/app/id6751739848">App Store</a>
+                    <a href="https://github.com/sakai1250/super_res.git">GitHub</a>
+                  </div>
+                </div>
+              </div>
+               <div class="app-card">
+                <img src="https://github.com/user-attachments/assets/770a600a-b3b5-4459-ae9a-f09943e82a0f" class="app-thumb" alt="icon">
+                <div class="app-info">
+                  <a href="https://github.com/jphacks/F_2208" class="app-title">貯Pay箱 (Web)</a>
+                  <div class="app-desc">電子マネー×ToDo管理。タスク達成でモチベーションを可視化。</div>
+                  <div class="app-links">
+                    <a href="https://github.com/jphacks/F_2208">GitHub</a>
+                  </div>
+                </div>
+              </div>
+              <div class="app-card">
+                <img src="https://github.com/user-attachments/assets/322c6e47-1bdd-47b5-8439-7b186ef4b687" class="app-thumb" alt="icon">
+                <div class="app-info">
+                  <a href="https://github.com/sakai1250/Who-is-the-Ground-Truth-" class="app-title">Who is GT? (iOS)</a>
+                  <div class="app-desc">画像AIとユーザーが直接対決するゲーム。真の正解は誰だ？</div>
+                  <div class="app-links">
+                    <a href="https://apps.apple.com/jp/app/id6755972438">App Store</a>
+                  </div>
+                </div>
+              </div>
+               <div class="app-card">
+                <img src="https://github.com/user-attachments/assets/b6dec124-0428-49cc-9835-4d2a2d89f23a" class="app-thumb" alt="icon">
+                <div class="app-info">
+                  <a href="https://github.com/jphacks/F_2107" class="app-title">NERO (Android)</a>
+                  <div class="app-desc">タスク管理と同時に睡眠時間を記録。健康と効率を両立。</div>
+                  <div class="app-links">
+                    <a href="https://github.com/jphacks/F_2107">GitHub</a>
+                  </div>
+                </div>
+              </div>
+              <div class="app-card">
+                <img src="https://github.com/user-attachments/assets/0e3a5e1e-a535-4aa6-918e-a66d2c62f4be" class="app-thumb" alt="icon">
+                <div class="app-info">
+                  <a href="https://github.com/sakai1250/HackU2022" class="app-title">StylePlan</a>
+                  <div class="app-desc">大学生の一人暮らし支援。天気、ToDo、レシピ、音楽を統合。</div>
                 </div>
               </div>
             </div>
           </section>
 
           <section class="section-card">
-            <div class="section-title">Tech Stack & Activity</div>
-            
-            <div class="subsection-title">Languages & Frameworks</div>
-            <p>
-              <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python">
-              <img src="https://img.shields.io/badge/Swift-F54A2A?style=for-the-badge&logo=swift&logoColor=white" alt="Swift">
-              <img src="https://img.shields.io/badge/Dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white" alt="Dart">
-              <img src="https://img.shields.io/badge/TypeScript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
-              <br>
-              <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="Flutter">
-              <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" alt="Django">
-              <img src="https://img.shields.io/badge/Unity-FFFFFF?style=for-the-badge&logo=unity&logoColor=black" alt="Unity">
-            </p>
-
-             <div class="subsection-title">GitHub Stats</div>
-             <p>
-              <img alt="Top Langs" height="150" src="https://github-readme-stats-vercel-wea9.vercel.app/api/top-langs/?username=sakai1250&layout=compact&show_icons=true&theme=dracula&count_private=true" />
-              <img alt="github stats" height="150" src="https://github-readme-stats-vercel-wea9.vercel.app/api?username=sakai1250&theme=dracula&show_icons=ture&count_private=true" />
-            </p>
-             <div class="subsection-title">Kaggle</div>
-             <p>
-              <img src="./kaggle-badges/CompetitionsRank/plastic-black.svg" alt="Kaggle rank badge" height="60">
-             </p>
+            <div class="section-title">Playground</div>
+             <div class="grid-dense">
+              <div class="app-card">
+                <img src="https://github.com/user-attachments/assets/6810d77d-35e9-44ff-96c7-7921653a5e1c" class="app-thumb" alt="icon">
+                <div class="app-info">
+                  <a href="https://github.com/sakai1250/ML_app_flask_test" class="app-title">金魚画像識別サイト</a>
+                  <div class="app-desc">Flask製Webアプリ。金魚の画像をAIが判別。</div>
+                </div>
+              </div>
+              <div class="app-card">
+                <img src="https://github.com/user-attachments/assets/f463115e-7fdf-47ac-97d1-164cb3b9bea7" class="app-thumb" alt="icon">
+                <div class="app-info">
+                  <a href="https://github.com/sakai1250/RL_super_mario_bro" class="app-title">SuperMario強化学習</a>
+                  <div class="app-desc">強化学習でマリオを自動プレイ。1-1, 1-3等クリア。</div>
+                </div>
+              </div>
+               <div class="app-card">
+                <img src="https://github.com/user-attachments/assets/c82ac5df-8c0c-4e3b-b9e8-92ede64a08d9" class="app-thumb" alt="icon">
+                <div class="app-info">
+                  <a href="https://github.com/sakai1250/Block_KUZUSHI_unity" class="app-title">ブロック崩し</a>
+                  <div class="app-desc">Unityで制作したクラシックなブロック崩し。</div>
+                </div>
+              </div>
+               <div class="app-card">
+                <div class="app-thumb" style="display:flex;align-items:center;justify-content:center;background:#0d1117;font-size:24px;">🎮</div>
+                <div class="app-info">
+                  <a href="https://github.com/sakai1250/Tetorinu/tree/main" class="app-title">テトリヌ</a>
+                  <div class="app-desc">学部1年時に作成。学科内投票3位。</div>
+                </div>
+              </div>
+            </div>
           </section>
 
-        </div> </div>
+          <section class="section-card">
+            <div class="section-title">Tech Stack & Organizations</div>
+            
+            <div class="badge-row">
+              <h4>Languages</h4>
+              <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python">
+              <img src="https://img.shields.io/badge/swift-F54A2A?style=for-the-badge&logo=swift&logoColor=white" alt="Swift">
+              <img src="https://img.shields.io/badge/Dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white" alt="Dart">
+              <img src="https://img.shields.io/badge/TypeScript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
+              <img src="https://img.shields.io/badge/Java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java">
+              <img src="https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=c&logoColor=black" alt="C">
+            </div>
+            
+            <div class="badge-row">
+              <h4>Frameworks & Tools</h4>
+              <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="Flutter">
+              <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" alt="Django">
+              <img src="https://img.shields.io/badge/Flask-000?style=for-the-badge&logo=flask&logoColor=fff" alt="Flask">
+              <img src="https://img.shields.io/badge/Unity-FFFFFF?style=for-the-badge&logo=unity&logoColor=black" alt="Unity">
+              <img src="https://custom-icon-badges.demolab.com/badge/Microsoft%20Azure-0089D6?style=for-the-badge&logo=msazure&logoColor=white" alt="Azure">
+            </div>
+
+            <div class="badge-row">
+              <h4>Organizations</h4>
+               <a href="https://github.com/RM-NAGOYASHACHIHOKO"><img src="https://github.com/user-attachments/assets/06029876-4a7b-44fe-8df6-cac6bbbf8391" alt="Nagoya" width="40"></a>
+               <a href="https://github.com/jphacks"><img src="https://github.com/user-attachments/assets/3df7dbab-02ff-494d-b468-3bf755043a2c" alt="JPHacks" width="40"></a>
+               <a href="https://www.jogiken.com/"><img src="https://github.com/user-attachments/assets/7109b8d7-da71-4b8d-8858-773980b358d5" alt="Jogiken" width="40"></a>
+            </div>
+
+            <div style="margin-top: 24px;">
+              <img alt="Top Langs" height="130" src="https://github-readme-stats-vercel-wea9.vercel.app/api/top-langs/?username=sakai1250&layout=compact&show_icons=true&theme=dracula&count_private=true" />
+              <img alt="github stats" height="130" src="https://github-readme-stats-vercel-wea9.vercel.app/api?username=sakai1250&theme=dracula&show_icons=ture&count_private=true" />
+            </div>
+          </section>
+
+        </div>
+      </div>
     </div>
   </div> <div id="lang-en" class="lang-section">
     <div class="container-lg">
@@ -444,13 +473,6 @@
             Ph.D. Student<br>
             Graduate School of Science and Technology, Meijo University
           </div>
-          <ul class="profile-meta">
-             <li>📍 Nagoya, Japan</li>
-             <li>🎓 Deep Learning / CV</li>
-          </ul>
-        </div>
-        <div class="profile-card">
-          <div style="font-weight: 600; margin-bottom: 12px; color: #f0f6fc;">Links</div>
           <div class="profile-links">
             <a href="mailto:200442066@ccalumni.meijo-u.ac.jp"><span class="icon">📧</span> Email</a>
             <a href="https://scholar.google.com.ni/citations?user=LZnH1HIAAAAJ&hl=en&authuser=1" target="_blank"><span class="icon">📚</span> Google Scholar</a>
@@ -459,65 +481,81 @@
       </div>
 
       <div class="main-content">
-        <nav class="UnderlineNav">
-           <div class="UnderlineNav-body">
-            <a class="UnderlineNav-item selected" href="#academic-en">Researcher</a>
-            <a class="UnderlineNav-item" href="#engineering-en">Engineer</a>
-          </div>
-        </nav>
+        <div class="tab-nav">
+          <div class="tab-item active" onclick="switchTab('en', 'research')">Researcher</div>
+          <div class="tab-item" onclick="switchTab('en', 'engineer')">Engineer</div>
+        </div>
 
-        <div id="academic-en">
-          <div class="section-divider">Academic Profile</div>
+        <div id="en-research" class="tab-content active">
           <section class="section-card">
             <div class="section-title">Affiliation</div>
-            <ul class="simple-list">
+            <ul class="repo-list">
               <li>Ph.D. Course, Graduate School of Science and Technology, Meijo University</li>
               <li>Supervisor: Prof. Kazuhiro Hotta</li>
             </ul>
           </section>
           
-           <section class="section-card">
+          <section class="section-card">
             <div class="section-title">Publications</div>
             <div class="subsection-title">International Workshops (peer-reviewed)</div>
             <ul class="repo-list">
               <li>
-                <span class="badge-year">2025</span>
-                <b>T. Sakai</b>, K. Hotta, “Long-Tailed Data Classification...”
-                <div class="muted">ICCV 2025 Workshop on Human-inspired Computer Vision.</div>
+                <span class="badge-year">2025</span> T. Sakai, K. Hotta, “Long-Tailed Data Classification by Increasing and Decreasing Neurons During Training,”
+                <div class="muted">ICCV 2025 Workshop on Human-inspired Computer Vision, Poster.</div>
               </li>
                <li>
-                <span class="badge-year">2024</span>
-                <b>T. Sakai</b>, K. Hotta, “Growing Deep Neural Network...”
-                <div class="muted">ECCV 2024 Workshop on Human-inspired Computer Vision.</div>
+                <span class="badge-year">2024</span> T. Sakai, K. Hotta, “Growing Deep Neural Network Considering with Similarity between Neurons,”
+                <div class="muted">ECCV 2024 Workshop on Human-inspired Computer Vision, Poster.</div>
+              </li>
+            </ul>
+            <div class="subsection-title">Domestic (Selected)</div>
+             <ul class="repo-list">
+              <li>
+                <span class="badge-year">2025</span> T. Sakai, K. Hotta, "Gradient-consistent regularization..."
+                <div class="muted">MIRU 2025, Oral (Peer-reviewed).</div>
+              </li>
+              <li>
+                <span class="badge-year">2024</span> T. Sakai, K. Hotta, "Class-imbalanced image classification..."
+                <div class="muted">ViEW 2024, Poster (Peer-reviewed).</div>
               </li>
             </ul>
           </section>
         </div>
 
-        <div id="engineering-en">
-          <div class="section-divider">Engineering Portfolio</div>
-          <section class="section-card">
+        <div id="en-engineer" class="tab-content">
+           <section class="section-card">
             <div class="section-title">My Apps</div>
-            <div class="grid-gallery">
-               <div class="app-card">
-                <a href="#" class="app-title">kikonAshI (iOS)</a>
-                <div class="app-desc">Fashion AI application.</div>
+            <div class="grid-dense">
+              <div class="app-card">
+                 <img src="https://github.com/user-attachments/assets/e7a7dbf0-f338-454a-9802-2ea1ab64da41" class="app-thumb">
+                 <div class="app-info">
+                   <a href="#" class="app-title">kikonAshI (iOS)</a>
+                   <div class="app-desc">Fashion AI application.</div>
+                 </div>
               </div>
+              <div class="app-card">
+                 <img src="https://github.com/user-attachments/assets/3c2a0ed5-b342-4b52-b6f7-b706f5d005cd" class="app-thumb">
+                 <div class="app-info">
+                   <a href="#" class="app-title">Super kAIzo (iOS)</a>
+                   <div class="app-desc">AI Super Resolution App.</div>
+                 </div>
               </div>
-          </section>
+            </div>
+           </section>
         </div>
 
       </div>
     </div>
   </div> <div class="footer">
-    Last updated: 2025-12-20 | Hosted on GitHub Pages.
+    Last updated: 2025-12-04 | Hosted on GitHub Pages.
   </div>
 
 </div>
 
 <script>
-  // 言語切り替えロジック
   const STORAGE_KEY = 'portfolio-lang';
+
+  // 言語切り替え
   function setLang(lang) {
     document.getElementById('lang-ja').classList.toggle('active', lang === 'ja');
     document.getElementById('lang-en').classList.toggle('active', lang === 'en');
@@ -525,20 +563,25 @@
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
     localStorage.setItem(STORAGE_KEY, lang);
   }
-  // 初期化
-  const saved = localStorage.getItem(STORAGE_KEY) || (navigator.language.startsWith('ja') ? 'ja' : 'en');
-  setLang(saved);
 
-  // 簡易タブ切り替え（スクロールリンクの強調などが必要ならJSを追加）
-  document.querySelectorAll('.UnderlineNav-item').forEach(item => {
-    item.addEventListener('click', (e) => {
-       // ページ内リンクのデフォルト動作の後にスタイル適用
-       setTimeout(() => {
-         document.querySelectorAll('.UnderlineNav-item').forEach(nav => nav.classList.remove('selected'));
-         e.target.classList.add('selected');
-       }, 10);
-    });
-  });
+  // タブ切り替え
+  function switchTab(lang, tabName) {
+    // コンテンツの表示/非表示
+    const container = document.getElementById('lang-' + lang);
+    container.querySelector('#' + lang + '-research').classList.toggle('active', tabName === 'research');
+    container.querySelector('#' + lang + '-engineer').classList.toggle('active', tabName === 'engineer');
+    
+    // タブボタンのアクティブ化
+    const navItems = container.querySelectorAll('.tab-item');
+    navItems[0].classList.toggle('active', tabName === 'research');
+    navItems[1].classList.toggle('active', tabName === 'engineer');
+  }
+
+  // 初期化
+  (function init() {
+    const saved = localStorage.getItem(STORAGE_KEY) || 'ja';
+    setLang(saved);
+  })();
 </script>
 </body>
 </html>
