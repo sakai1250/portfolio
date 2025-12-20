@@ -4,24 +4,39 @@
   <meta charset="UTF-8">
   <title>Taigo Sakai | Portfolio</title>
   <link rel="stylesheet" href="https://unpkg.com/@primer/css@22.0.2/dist/primer.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     /* === Base Styles === */
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface-2: #0f141b;
+      --text: #e6edf3;
+      --muted: #9aa4af;
+      --accent: #2ea043;
+      --accent-2: #2f81f7;
+      --accent-warm: #f78166;
+      --stroke: #30363d;
+      --glow: rgba(46, 160, 67, 0.18);
+    }
     body {
-      font-family: "SF Pro Text", "Segoe UI", system-ui, -apple-system, sans-serif;
-      background-color: #0d1117;
+      font-family: "Noto Sans JP", "Space Grotesk", "SF Pro Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+      background-color: var(--bg);
       background-image:
-        radial-gradient(circle at 15% 20%, rgba(56, 139, 253, 0.08), transparent 25%),
+        radial-gradient(circle at 15% 20%, rgba(46, 160, 67, 0.12), transparent 25%),
         radial-gradient(circle at 80% 10%, rgba(46, 160, 67, 0.08), transparent 22%),
         radial-gradient(circle at 40% 80%, rgba(201, 213, 217, 0.06), transparent 30%);
-      color: #c9d1d9;
+      color: var(--text);
     }
     .page {
       max-width: 1280px;
       margin: 0 auto;
       padding: 24px;
     }
-    a { text-decoration: none; color: #58a6ff; }
+    a { text-decoration: none; color: var(--accent-2); }
     a:hover { text-decoration: underline; }
 
     /* === Layout === */
@@ -37,21 +52,101 @@
     
     /* === Header === */
     .header-bar {
-      background-color: #161b22;
-      border-bottom: 1px solid #30363d;
-      padding: 16px 24px;
+      background:
+        radial-gradient(circle at 10% -20%, rgba(46, 160, 67, 0.2), transparent 45%),
+        radial-gradient(circle at 90% 0%, rgba(47, 129, 247, 0.2), transparent 45%),
+        linear-gradient(120deg, rgba(247, 129, 102, 0.08), transparent 45%),
+        var(--surface);
+      border-bottom: 1px solid var(--stroke);
+      padding: 20px 24px;
       margin: -24px -24px 24px -24px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      box-shadow: 0 18px 38px rgba(0, 0, 0, 0.45);
+      position: relative;
+      overflow: hidden;
     }
-    .header-name { font-size: 26px; font-weight: 600; color: #f0f6fc; }
-    .header-subtitle { font-size: 14px; color: #8b949e; margin-top: 4px; }
+    .header-bar::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(13, 17, 23, 0.2), transparent 35%);
+      pointer-events: none;
+    }
+    .header-inner { display: flex; flex-direction: column; gap: 12px; position: relative; z-index: 1; }
+    .header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .header-identity { display: flex; flex-direction: column; gap: 8px; }
+    .header-name {
+      font-family: "Space Grotesk", "Noto Sans JP", "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: 0.4px;
+      color: #f0f6fc;
+    }
+    .header-subtitle { font-size: 14px; color: var(--muted); margin-top: 2px; max-width: 560px; }
+    .header-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+    .header-badge {
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--stroke);
+      color: #c9d1d9;
+      background: rgba(13, 17, 23, 0.6);
+      letter-spacing: 0.3px;
+    }
     .header-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+    .header-btn {
+      background: var(--surface-2);
+      border: 1px solid var(--stroke);
+      color: #c9d1d9;
+    }
+    .header-btn:hover { border-color: var(--accent-2); color: #f0f6fc; }
+    .header-btn.primary {
+      background: linear-gradient(135deg, rgba(46, 160, 67, 0.2), rgba(47, 129, 247, 0.2));
+      border-color: rgba(47, 129, 247, 0.5);
+      color: #f0f6fc;
+      box-shadow: 0 0 0 1px rgba(47, 129, 247, 0.2), 0 8px 18px rgba(0, 0, 0, 0.25);
+    }
+    .header-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+    .header-nav { display: flex; gap: 8px; flex-wrap: wrap; }
+    .nav-btn {
+      background: rgba(13, 17, 23, 0.6);
+      border: 1px solid var(--stroke);
+      color: #c9d1d9;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 0.3px;
+      cursor: pointer;
+      transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    }
+    .nav-btn:hover { border-color: var(--accent-warm); color: #f0f6fc; transform: translateY(-1px); }
+    .header-hint { font-size: 12px; color: var(--muted); }
     
     .lang-toggle button {
-      margin-left: 4px; background-color: #21262d; border: 1px solid #30363d; color: #c9d1d9;
+      margin-left: 4px; background-color: #21262d; border: 1px solid var(--stroke); color: #c9d1d9;
     }
     .lang-toggle button:hover { background-color: #30363d; }
-    .lang-toggle button.active { border-color: #58a6ff; color: #f0f6fc; background-color: #0d1117; }
+    .lang-toggle button.active { border-color: var(--accent-2); color: #f0f6fc; background-color: #0d1117; }
+
+    .header-identity,
+    .header-actions,
+    .header-bottom {
+      animation: headerEnter 0.6s ease both;
+    }
+    .header-actions { animation-delay: 0.08s; }
+    .header-bottom { animation-delay: 0.16s; }
+    @keyframes headerEnter {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .header-identity,
+      .header-actions,
+      .header-bottom { animation: none; }
+    }
+    @media (max-width: 768px) {
+      .header-actions { justify-content: flex-start; }
+      .header-bottom { align-items: flex-start; }
+    }
     
     /* === Sidebar === */
     .profile-sidebar { position: sticky; top: 24px; height: fit-content; }
@@ -100,6 +195,7 @@
       padding: 12px 16px;
       color: #8b949e;
       font-weight: 600;
+      font-family: "Space Grotesk", "Noto Sans JP", "SF Pro Text", "Segoe UI", system-ui, sans-serif;
       border-bottom: 2px solid transparent;
       cursor: pointer;
       transition: all 0.2s;
@@ -162,9 +258,11 @@
     .section-title {
       font-size: 18px; font-weight: 600; color: #f0f6fc; margin-bottom: 16px;
       padding-bottom: 8px; border-bottom: 1px solid #21262d;
+      font-family: "Space Grotesk", "Noto Sans JP", "SF Pro Text", "Segoe UI", system-ui, sans-serif;
     }
     .subsection-title {
       font-size: 15px; font-weight: 600; color: #58a6ff; margin-top: 20px; margin-bottom: 10px;
+      font-family: "Space Grotesk", "Noto Sans JP", "SF Pro Text", "Segoe UI", system-ui, sans-serif;
     }
 
     /* Lists & Items */
@@ -236,17 +334,34 @@
 <div class="page">
 
   <div class="header-bar">
-    <div class="d-flex flex-justify-between flex-items-center flex-wrap">
-      <div>
-        <div class="header-name">Taigo Sakai</div>
-        <div class="header-subtitle">Meijo University, Graduate School of Science and Technology</div>
-      </div>
-      <div class="header-actions">
-        <a href="https://github.com/sakai1250"><button class="btn btn-sm btn-primary">Follow</button></a>
-        <div class="lang-toggle">
-          <button class="btn btn-sm" id="btn-ja" onclick="setLang('ja')">JA</button>
-          <button class="btn btn-sm" id="btn-en" onclick="setLang('en')">EN</button>
+    <div class="header-inner">
+      <div class="header-top">
+        <div class="header-identity">
+          <div class="header-name">Taigo Sakai</div>
+          <div class="header-subtitle" data-label-ja="名城大学 大学院 理工学研究科" data-label-en="Meijo University, Graduate School of Science and Technology">
+            Meijo University, Graduate School of Science and Technology
+          </div>
+          <div class="header-badges">
+            <span class="header-badge">Deep Learning</span>
+            <span class="header-badge">Computer Vision</span>
+            <span class="header-badge">iOS / Web</span>
+          </div>
         </div>
+        <div class="header-actions">
+          <a href="mailto:200442066@ccalumni.meijo-u.ac.jp" class="btn btn-sm header-btn" data-label-ja="連絡" data-label-en="Contact">Contact</a>
+          <a href="https://github.com/sakai1250" class="btn btn-sm header-btn primary" data-label-ja="フォロー" data-label-en="Follow">Follow</a>
+          <div class="lang-toggle">
+            <button class="btn btn-sm" id="btn-ja" onclick="setLang('ja')">JA</button>
+            <button class="btn btn-sm" id="btn-en" onclick="setLang('en')">EN</button>
+          </div>
+        </div>
+      </div>
+      <div class="header-bottom">
+        <div class="header-nav">
+          <button class="nav-btn" data-jump="research" data-label-ja="研究を見る" data-label-en="See Research" type="button">See Research</button>
+          <button class="nav-btn" data-jump="engineer" data-label-ja="開発を見る" data-label-en="See Engineering" type="button">See Engineering</button>
+        </div>
+        <div class="header-hint" data-label-ja="検索: / キー" data-label-en="Search: press /">Search: press /</div>
       </div>
     </div>
   </div>
@@ -697,7 +812,20 @@
     document.getElementById('btn-ja').classList.toggle('active', lang === 'ja');
     document.getElementById('btn-en').classList.toggle('active', lang === 'en');
     localStorage.setItem(STORAGE_KEY, lang);
+    syncHeaderLabels(lang);
     applyFilters(lang);
+  }
+
+  function syncHeaderLabels(lang) {
+    document.querySelectorAll('[data-label-ja][data-label-en]').forEach((element) => {
+      element.textContent = lang === 'ja' ? element.dataset.labelJa : element.dataset.labelEn;
+    });
+  }
+
+  function getCurrentLang() {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === 'en' || stored === 'ja') return stored;
+    return document.getElementById('lang-en').classList.contains('active') ? 'en' : 'ja';
   }
 
   // タブ切り替え
@@ -712,6 +840,15 @@
     navItems[0].classList.toggle('active', tabName === 'research');
     navItems[1].classList.toggle('active', tabName === 'engineer');
     applyFilters(lang);
+  }
+
+  function jumpToTab(tabName) {
+    const lang = getCurrentLang();
+    switchTab(lang, tabName);
+    const target = document.getElementById(`${lang}-${tabName}`);
+    if (!target) return;
+    const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    target.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
   }
 
   function getActiveTab(lang) {
@@ -869,11 +1006,32 @@
     });
   }
 
+  function initHeaderNav() {
+    document.querySelectorAll('.nav-btn').forEach((button) => {
+      button.addEventListener('click', () => {
+        const tabName = button.dataset.jump;
+        if (tabName) jumpToTab(tabName);
+      });
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key !== '/' || event.ctrlKey || event.metaKey || event.altKey) return;
+      const activeTag = document.activeElement && document.activeElement.tagName;
+      if (activeTag && /input|textarea/i.test(activeTag)) return;
+
+      event.preventDefault();
+      const lang = getCurrentLang();
+      const searchInput = document.getElementById(`search-${lang}`);
+      if (searchInput) searchInput.focus();
+    });
+  }
+
   // 初期化
   (function init() {
     initFilters();
     initCopyButtons();
     initBackToTop();
+    initHeaderNav();
     const saved = localStorage.getItem(STORAGE_KEY) || 'ja';
     setLang(saved);
   })();
