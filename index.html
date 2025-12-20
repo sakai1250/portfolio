@@ -121,12 +121,6 @@
     .nav-btn:hover { border-color: var(--accent-warm); color: #f0f6fc; transform: translateY(-1px); }
     .header-hint { font-size: 12px; color: var(--muted); }
     
-    .lang-toggle button {
-      margin-left: 4px; background-color: #21262d; border: 1px solid var(--stroke); color: #c9d1d9;
-    }
-    .lang-toggle button:hover { background-color: #30363d; }
-    .lang-toggle button.active { border-color: var(--accent-2); color: #f0f6fc; background-color: #0d1117; }
-
     .header-identity,
     .header-actions,
     .header-bottom {
@@ -325,9 +319,6 @@
     }
     #back-to-top.show { display: inline-flex; }
     
-    /* Toggle Visibility */
-    .lang-section { display: none; }
-    .lang-section.active { display: block; }
   </style>
 </head>
 <body>
@@ -338,9 +329,7 @@
       <div class="header-top">
         <div class="header-identity">
           <div class="header-name">Taigo Sakai</div>
-          <div class="header-subtitle" data-label-ja="名城大学 大学院 理工学研究科" data-label-en="Meijo University, Graduate School of Science and Technology">
-            Meijo University, Graduate School of Science and Technology
-          </div>
+          <div class="header-subtitle">名城大学 大学院 理工学研究科</div>
           <div class="header-badges">
             <span class="header-badge">Deep Learning</span>
             <span class="header-badge">Computer Vision</span>
@@ -348,25 +337,21 @@
           </div>
         </div>
         <div class="header-actions">
-          <a href="mailto:200442066@ccalumni.meijo-u.ac.jp" class="btn btn-sm header-btn" data-label-ja="連絡" data-label-en="Contact">Contact</a>
-          <a href="https://github.com/sakai1250" class="btn btn-sm header-btn primary" data-label-ja="フォロー" data-label-en="Follow">Follow</a>
-          <div class="lang-toggle">
-            <button class="btn btn-sm" id="btn-ja" onclick="setLang('ja')">JA</button>
-            <button class="btn btn-sm" id="btn-en" onclick="setLang('en')">EN</button>
-          </div>
+          <a href="mailto:200442066@ccalumni.meijo-u.ac.jp" class="btn btn-sm header-btn">連絡</a>
+          <a href="https://github.com/sakai1250" class="btn btn-sm header-btn primary">フォロー</a>
         </div>
       </div>
       <div class="header-bottom">
         <div class="header-nav">
-          <button class="nav-btn" data-jump="research" data-label-ja="研究を見る" data-label-en="See Research" type="button">See Research</button>
-          <button class="nav-btn" data-jump="engineer" data-label-ja="開発を見る" data-label-en="See Engineering" type="button">See Engineering</button>
+          <button class="nav-btn" data-jump="research" type="button">研究を見る</button>
+          <button class="nav-btn" data-jump="engineer" type="button">開発を見る</button>
         </div>
-        <div class="header-hint" data-label-ja="検索: / キー" data-label-en="Search: press /">Search: press /</div>
+        <div class="header-hint">検索: / キー</div>
       </div>
     </div>
   </div>
 
-  <div id="lang-ja" class="lang-section active">
+  <div id="content">
     <div class="container-lg">
       
       <div class="profile-sidebar">
@@ -401,30 +386,40 @@
         </div>
 
         <div class="utility-bar">
-          <input id="search-ja" class="search-input" type="search" placeholder="検索: 研究・開発の項目" aria-label="検索">
-          <div class="search-meta"><span id="search-count-ja">0</span> 件</div>
-          <button class="btn btn-sm" id="clear-ja" type="button">クリア</button>
+          <input id="search" class="search-input" type="search" placeholder="検索: 研究・開発の項目" aria-label="検索">
+          <div class="search-meta"><span id="search-count">0</span> 件</div>
+          <button class="btn btn-sm" id="clear" type="button">クリア</button>
         </div>
 
         <div class="tab-nav">
-          <div class="tab-item active" onclick="switchTab('ja', 'research')">研究 (Researcher)</div>
-          <div class="tab-item" onclick="switchTab('ja', 'engineer')">開発 (Engineer)</div>
+          <div class="tab-item active" onclick="switchTab('research')">研究 (Researcher)</div>
+          <div class="tab-item" onclick="switchTab('engineer')">開発 (Engineer)</div>
         </div>
 
         <div id="ja-research" class="tab-content active">
+          <div class="filter-row year-filter">
+            <span class="filter-label">年度</span>
+            <button class="chip active" data-year="all" type="button">すべて</button>
+            <button class="chip" data-year="2026" type="button">2026</button>
+            <button class="chip" data-year="2025" type="button">2025</button>
+            <button class="chip" data-year="2024" type="button">2024</button>
+            <button class="chip" data-year="2023" type="button">2023</button>
+            <button class="chip" data-year="2021" type="button">2021</button>
+            <button class="chip" data-year="2020" type="button">2020</button>
+          </div>
           
           <section class="section-card">
             <div class="section-title">所属・学歴</div>
             <ul class="repo-list">
-              <li>
+              <li data-year="2026">
                 <b>名城大学 大学院 理工学研究科 電気電子・情報・材料工学専攻 博士後期課程</b>
                 <div class="muted">2026年4月 – 現在 | 指導教員: 堀田 一弘 教授</div>
               </li>
-              <li>
+              <li data-year="2024">
                 <b>名城大学 大学院 理工学研究科 電気電子工学専攻 修士課程</b>
                 <div class="muted">2024年4月 – 2026年3月</div>
               </li>
-              <li>
+              <li data-year="2020">
                 <b>名城大学 理工学部 電気電子工学科</b>
                 <div class="muted">2020年4月 – 2024年3月</div>
               </li>
@@ -434,20 +429,20 @@
           <section class="section-card">
             <div class="section-title">受賞・表彰</div>
             <ul class="repo-list">
-              <li><span class="badge-year">2025</span> 名城大学　学長表彰</li>
-              <li><span class="badge-year">2025</span> LINEヤフー主催HackU 名城大学　HappyHacking賞</li>
-              <li><span class="badge-year">2025</span> 名城大学　学業優秀奨学生</li>
-              <li><span class="badge-year">2025</span> 画像の認識・理解シンポジウム MIRU2025 学生奨励賞</li>
-              <li><span class="badge-year">2025</span> ViEW2024 外観検査アルゴリズムコンテスト2025 最優秀賞</li>
-              <li><span class="badge-year">2024</span> 名城大学　学長表彰</li>
-              <li><span class="badge-year">2024</span> Axell　超解像コンペ　9位入賞</li>
-              <li><span class="badge-year">2024</span> 情報処理学会 CVIM 研究会 卒業論文セッション優秀賞</li>
-              <li><span class="badge-year">2023</span> 名城大学　学長表彰</li>
-              <li><span class="badge-year">2023</span> パワーアカデミ主催電気教材企画コンテスト　最優秀賞</li>
-              <li><span class="badge-year">2023</span> LINEヤフー主催HackU 名城大学　最優秀賞</li>
-              <li><span class="badge-year">2023</span> LINEヤフー主催HackU 名城大学　HappyHacking賞</li>
-              <li><span class="badge-year">2021</span> 名城大学　学長表彰</li>
-              <li><span class="badge-year">2021</span> パワーアカデミ主催電気教材企画コンテスト　優秀賞</li>
+              <li data-year="2025"><span class="badge-year">2025</span> 名城大学　学長表彰</li>
+              <li data-year="2025"><span class="badge-year">2025</span> LINEヤフー主催HackU 名城大学　HappyHacking賞</li>
+              <li data-year="2025"><span class="badge-year">2025</span> 名城大学　学業優秀奨学生</li>
+              <li data-year="2025"><span class="badge-year">2025</span> 画像の認識・理解シンポジウム MIRU2025 学生奨励賞</li>
+              <li data-year="2025"><span class="badge-year">2025</span> ViEW2024 外観検査アルゴリズムコンテスト2025 最優秀賞</li>
+              <li data-year="2024"><span class="badge-year">2024</span> 名城大学　学長表彰</li>
+              <li data-year="2024"><span class="badge-year">2024</span> Axell　超解像コンペ　9位入賞</li>
+              <li data-year="2024"><span class="badge-year">2024</span> 情報処理学会 CVIM 研究会 卒業論文セッション優秀賞</li>
+              <li data-year="2023"><span class="badge-year">2023</span> 名城大学　学長表彰</li>
+              <li data-year="2023"><span class="badge-year">2023</span> パワーアカデミ主催電気教材企画コンテスト　最優秀賞</li>
+              <li data-year="2023"><span class="badge-year">2023</span> LINEヤフー主催HackU 名城大学　最優秀賞</li>
+              <li data-year="2023"><span class="badge-year">2023</span> LINEヤフー主催HackU 名城大学　HappyHacking賞</li>
+              <li data-year="2021"><span class="badge-year">2021</span> 名城大学　学長表彰</li>
+              <li data-year="2021"><span class="badge-year">2021</span> パワーアカデミ主催電気教材企画コンテスト　優秀賞</li>
             </ul>
           </section>
 
@@ -456,15 +451,15 @@
             
             <div class="subsection-title">国際会議・ワークショップ（査読あり）</div>
             <ul class="repo-list">
-              <li>
+              <li data-year="2026">
                 <span class="badge-year">2026</span> T. Sakai, T. Nakamura, H. Shimizu, K. Hotta, “Visibility-Gated ConvGRU for Robust Multi-View Pedestrian Detection and Tracking in BEV Space,”
                 <div class="muted">VISAPP 2026, Oral, Marbella, Spain.</div>
               </li>
-              <li>
+              <li data-year="2025">
                 <span class="badge-year">2025</span> T. Sakai, K. Hotta, “Long-Tailed Data Classification by Increasing and Decreasing Neurons During Training,”
                 <div class="muted">ICCV 2025 Workshop on Human-inspired Computer Vision, Poster, Hawaii, USA.</div>
               </li>
-              <li>
+              <li data-year="2024">
                 <span class="badge-year">2024</span> T. Sakai, K. Hotta, “Growing Deep Neural Network Considering with Similarity between Neurons,”
                 <div class="muted">ECCV 2024 Workshop on Human-inspired Computer Vision, Poster, Milano, Italy.</div>
               </li>
@@ -472,39 +467,39 @@
 
             <div class="subsection-title">国内学会・シンポジウム</div>
             <ul class="repo-list">
-              <!-- <li>
+              <!-- <li data-year="2026">
                 <span class="badge-year">2026</span> 坂井 泰吾, 中村 剛, 志水 洋, 堀田 一弘, 「BEV空間におけるロバストなマルチビュー歩行者検出と追跡のためのVisibility-Gated ConvGRU」
                 <div class="muted">動的画像処理実利用化ワークショップ (DIA2026), 高知, ポスター（査読あり）。</div>
               </li>    -->
-              <li>
+              <li data-year="2025">
                 <span class="badge-year">2025</span> 坂井 泰吾, 堀田 一弘, 「医用画像分類におけるCNNとKANの動的な統合によるノイズ頑健性の向上」
                 <div class="muted">2025年度 日本生体医工学会東海支部大会, 愛知, 口頭発表。</div>
               </li>              
-              <li>
+              <li data-year="2025">
                 <span class="badge-year">2025</span> 坂井 泰吾, 堀田 一弘, 「不均衡なデータセットの継続学習における勾配一貫性正規化と動的な知識蒸留」
                 <div class="muted">画像の認識・理解シンポジウム (MIRU2025), 京都, 口頭発表（査読あり）。</div>
               </li>
-              <li>
+              <li data-year="2025">
                 <span class="badge-year">2025</span> 神谷 聡，坂井 泰吾，小嶋 華，朽津 和幸，友井 拓実，堀田 一弘, 「少ない教師付きデータからのゼニゴケ仮根の先端追跡法」
                 <div class="muted">動的画像処理実利用化ワークショップ (DIA2025), 福井, ポスター（査読あり）。</div>
               </li>
-              <li>
+              <li data-year="2025">
                 <span class="badge-year">2025</span> 坂井 泰吾，米倉 崇晃，堀田 一弘, 「SAM2とマスク細線化によるシロイヌナズナの教師無し先端追跡手法」
                 <div class="muted">情報処理学会 第87回全国大会, 大阪, 2025年3月15日, 口頭発表。</div>
               </li>
-              <li>
+              <li data-year="2025">
                 <span class="badge-year">2025</span> 土井田 啓輔, 坂井 泰吾, 他, 「複数視野を使った複数物体追跡の精度向上」
                 <div class="muted">第30回画像センシングシンポジウム (SSII2024), 東京, ポスター（査読あり）。</div>
               </li>
-              <li>
+              <li data-year="2024">
                 <span class="badge-year">2024</span> 坂井 泰吾, 堀田 一弘, 「学習中のニューロン増減によるクラス不均衡データの識別」
                 <div class="muted">ビジョン技術の実利用ワークショップ (ViEW2024), 神奈川, ポスター（査読あり）。</div>
               </li>
-               <li>
+               <li data-year="2024">
                 <span class="badge-year">2024</span> 坂井 泰吾, 堀田 一弘, 「ニューロン間の類似度を考慮した深層ニューラルネットワークによる画像分類」
                 <div class="muted">令和6年度 電気・電子・情報関係学会 東海支部連合大会, 2024年8月30日, 口頭発表。</div>
               </li>
-              <li>
+              <li data-year="2024">
                 <span class="badge-year">2024</span> 坂井 泰吾, 堀田 一弘, 「ニューロン間の類似度分布を考慮したニューロン増加型深層ニューラルネットワーク」
                 <div class="muted">情報処理学会 第238回CVIM研究会 卒論セッション, 2024年5月8日, 口頭発表。</div>
               </li>
@@ -515,7 +510,7 @@
         <div id="ja-engineer" class="tab-content">
           <div class="filter-row">
             <span class="filter-label">フィルター</span>
-            <button class="chip active" data-filter="all" type="button">All</button>
+            <button class="chip active" data-filter="all" type="button">すべて</button>
             <button class="chip" data-filter="ios" type="button">iOS</button>
             <button class="chip" data-filter="android" type="button">Android</button>
             <button class="chip" data-filter="web" type="button">Web</button>
@@ -692,107 +687,6 @@
         </div>
       </div>
     </div>
-  </div> <div id="lang-en" class="lang-section">
-    <div class="container-lg">
-      <div class="profile-sidebar">
-        <div class="profile-card">
-          <div class="profile-avatar">T</div>
-          <div class="profile-name">Taigo Sakai</div>
-          <div class="profile-bio">
-            Ph.D. Student<br>
-            Graduate School of Science and Technology, Meijo University
-          </div>
-          <div class="profile-links">
-            <div class="profile-link-row">
-              <a href="mailto:200442066@ccalumni.meijo-u.ac.jp"><span class="icon">📧</span> Email</a>
-              <button class="copy-btn" data-copy="200442066@ccalumni.meijo-u.ac.jp" data-label="Copy" data-success="Copied" data-error="Error" type="button">Copy</button>
-            </div>
-            <a href="https://scholar.google.com.ni/citations?user=LZnH1HIAAAAJ&hl=en&authuser=1" target="_blank"><span class="icon">📚</span> Google Scholar</a>
-          </div>
-        </div>
-      </div>
-
-      <div class="main-content">
-        <div class="utility-bar">
-          <input id="search-en" class="search-input" type="search" placeholder="Search: research and engineering items" aria-label="Search">
-          <div class="search-meta"><span id="search-count-en">0</span> items</div>
-          <button class="btn btn-sm" id="clear-en" type="button">Clear</button>
-        </div>
-
-        <div class="tab-nav">
-          <div class="tab-item active" onclick="switchTab('en', 'research')">Researcher</div>
-          <div class="tab-item" onclick="switchTab('en', 'engineer')">Engineer</div>
-        </div>
-
-        <div id="en-research" class="tab-content active">
-          <section class="section-card">
-            <div class="section-title">Affiliation</div>
-            <ul class="repo-list">
-              <li>Ph.D. Course, Graduate School of Science and Technology, Meijo University</li>
-              <li>Supervisor: Prof. Kazuhiro Hotta</li>
-            </ul>
-          </section>
-          
-          <section class="section-card">
-            <div class="section-title">Publications</div>
-            <div class="subsection-title">International Workshops (peer-reviewed)</div>
-            <ul class="repo-list">
-              <li>
-                <span class="badge-year">2025</span> T. Sakai, K. Hotta, “Long-Tailed Data Classification by Increasing and Decreasing Neurons During Training,”
-                <div class="muted">ICCV 2025 Workshop on Human-inspired Computer Vision, Poster.</div>
-              </li>
-               <li>
-                <span class="badge-year">2024</span> T. Sakai, K. Hotta, “Growing Deep Neural Network Considering with Similarity between Neurons,”
-                <div class="muted">ECCV 2024 Workshop on Human-inspired Computer Vision, Poster.</div>
-              </li>
-            </ul>
-            <div class="subsection-title">Domestic (Selected)</div>
-             <ul class="repo-list">
-              <li>
-                <span class="badge-year">2025</span> T. Sakai, K. Hotta, "Gradient-consistent regularization..."
-                <div class="muted">MIRU 2025, Oral (Peer-reviewed).</div>
-              </li>
-              <li>
-                <span class="badge-year">2024</span> T. Sakai, K. Hotta, "Class-imbalanced image classification..."
-                <div class="muted">ViEW 2024, Poster (Peer-reviewed).</div>
-              </li>
-            </ul>
-          </section>
-        </div>
-
-        <div id="en-engineer" class="tab-content">
-          <div class="filter-row">
-            <span class="filter-label">Filter</span>
-            <button class="chip active" data-filter="all" type="button">All</button>
-            <button class="chip" data-filter="ios" type="button">iOS</button>
-            <button class="chip" data-filter="android" type="button">Android</button>
-            <button class="chip" data-filter="web" type="button">Web</button>
-            <button class="chip" data-filter="game" type="button">Game</button>
-            <button class="chip" data-filter="ai" type="button">AI</button>
-          </div>
-           <section class="section-card">
-            <div class="section-title">My Apps</div>
-            <div class="grid-dense">
-              <div class="app-card" data-tags="ios ai">
-                 <img src="https://github.com/user-attachments/assets/e7a7dbf0-f338-454a-9802-2ea1ab64da41" class="app-thumb">
-                 <div class="app-info">
-                   <a href="#" class="app-title">kikonAshI (iOS)</a>
-                   <div class="app-desc">Fashion AI application.</div>
-                 </div>
-              </div>
-              <div class="app-card" data-tags="ios ai">
-                 <img src="https://github.com/user-attachments/assets/3c2a0ed5-b342-4b52-b6f7-b706f5d005cd" class="app-thumb">
-                 <div class="app-info">
-                   <a href="#" class="app-title">Super kAIzo (iOS)</a>
-                   <div class="app-desc">AI Super Resolution App.</div>
-                 </div>
-              </div>
-            </div>
-           </section>
-        </div>
-
-      </div>
-    </div>
   </div>
   <div class="footer">
     Last updated: 2025-12-04 | Hosted on GitHub Pages.
@@ -802,69 +696,47 @@
 </div>
 
 <script>
-  const STORAGE_KEY = 'portfolio-lang';
-  const filterState = { ja: { tag: 'all' }, en: { tag: 'all' } };
-
-  // 言語切り替え
-  function setLang(lang) {
-    document.getElementById('lang-ja').classList.toggle('active', lang === 'ja');
-    document.getElementById('lang-en').classList.toggle('active', lang === 'en');
-    document.getElementById('btn-ja').classList.toggle('active', lang === 'ja');
-    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
-    localStorage.setItem(STORAGE_KEY, lang);
-    syncHeaderLabels(lang);
-    applyFilters(lang);
-  }
-
-  function syncHeaderLabels(lang) {
-    document.querySelectorAll('[data-label-ja][data-label-en]').forEach((element) => {
-      element.textContent = lang === 'ja' ? element.dataset.labelJa : element.dataset.labelEn;
-    });
-  }
-
-  function getCurrentLang() {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored === 'en' || stored === 'ja') return stored;
-    return document.getElementById('lang-en').classList.contains('active') ? 'en' : 'ja';
-  }
+  const filterState = { tag: 'all', year: 'all' };
 
   // タブ切り替え
-  function switchTab(lang, tabName) {
-    // コンテンツの表示/非表示
-    const container = document.getElementById('lang-' + lang);
-    container.querySelector('#' + lang + '-research').classList.toggle('active', tabName === 'research');
-    container.querySelector('#' + lang + '-engineer').classList.toggle('active', tabName === 'engineer');
-    
-    // タブボタンのアクティブ化
-    const navItems = container.querySelectorAll('.tab-item');
-    navItems[0].classList.toggle('active', tabName === 'research');
-    navItems[1].classList.toggle('active', tabName === 'engineer');
-    applyFilters(lang);
+  function switchTab(tabName) {
+    const researchTab = document.getElementById('ja-research');
+    const engineerTab = document.getElementById('ja-engineer');
+    if (!researchTab || !engineerTab) return;
+
+    researchTab.classList.toggle('active', tabName === 'research');
+    engineerTab.classList.toggle('active', tabName === 'engineer');
+
+    const navItems = document.querySelectorAll('.tab-nav .tab-item');
+    if (navItems.length >= 2) {
+      navItems[0].classList.toggle('active', tabName === 'research');
+      navItems[1].classList.toggle('active', tabName === 'engineer');
+    }
+    applyFilters();
   }
 
   function jumpToTab(tabName) {
-    const lang = getCurrentLang();
-    switchTab(lang, tabName);
-    const target = document.getElementById(`${lang}-${tabName}`);
+    switchTab(tabName);
+    const target = document.getElementById(`ja-${tabName}`);
     if (!target) return;
     const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     target.scrollIntoView({ behavior: prefersReduced ? 'auto' : 'smooth', block: 'start' });
   }
 
-  function getActiveTab(lang) {
-    const container = document.getElementById('lang-' + lang);
-    return container ? container.querySelector('.tab-content.active') : null;
+  function getActiveTab() {
+    return document.querySelector('.tab-content.active');
   }
 
-  function applyFilters(lang) {
-    const container = document.getElementById('lang-' + lang);
-    const activeTab = getActiveTab(lang);
-    if (!container || !activeTab) return;
+  function applyFilters() {
+    const activeTab = getActiveTab();
+    if (!activeTab) return;
 
-    const searchInput = document.getElementById(`search-${lang}`);
+    const searchInput = document.getElementById('search');
     const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
-    const hasFilterRow = Boolean(activeTab.querySelector('.filter-row'));
-    const tag = hasFilterRow ? (filterState[lang]?.tag || 'all') : 'all';
+    const hasTagFilter = Boolean(activeTab.querySelector('.filter-row:not(.year-filter)'));
+    const tag = hasTagFilter ? filterState.tag : 'all';
+    const hasYearFilter = Boolean(activeTab.querySelector('.year-filter'));
+    const year = hasYearFilter ? filterState.year : 'all';
 
     const items = activeTab.querySelectorAll('.filterable-item');
     let visible = 0;
@@ -873,71 +745,94 @@
       const matchesQuery = !query || text.includes(query);
       const tags = (item.dataset.tags || '').toLowerCase().split(/\s+/).filter(Boolean);
       const matchesTag = tag === 'all' || tags.includes(tag);
-      const isVisible = matchesQuery && matchesTag;
+      const itemYear = item.dataset.year || '';
+      const matchesYear = year === 'all' || itemYear === year;
+      const isVisible = matchesQuery && matchesTag && matchesYear;
       item.style.display = isVisible ? '' : 'none';
       if (isVisible) visible += 1;
     });
 
-    const countEl = document.getElementById(`search-count-${lang}`);
+    const countEl = document.getElementById('search-count');
     if (countEl) countEl.textContent = visible;
   }
 
-  function resetFilterRow(container, lang) {
-    container.querySelectorAll('.filter-row').forEach((row) => {
-      row.querySelectorAll('.chip').forEach((chip) => {
+  function resetFilters(container) {
+    container.querySelectorAll('.filter-row .chip').forEach((chip) => {
+      if (chip.dataset.filter) {
         chip.classList.toggle('active', chip.dataset.filter === 'all');
-      });
+      }
+      if (chip.dataset.year) {
+        chip.classList.toggle('active', chip.dataset.year === 'all');
+      }
     });
-    filterState[lang].tag = 'all';
+    filterState.tag = 'all';
+    filterState.year = 'all';
   }
 
   function initFilters() {
-    ['ja', 'en'].forEach((lang) => {
-      const container = document.getElementById('lang-' + lang);
-      if (!container) return;
+    const container = document.getElementById('content');
+    if (!container) return;
 
-      container.querySelectorAll('.repo-list li, .app-card').forEach((item) => {
-        item.classList.add('filterable-item');
-      });
-
-      const searchInput = document.getElementById(`search-${lang}`);
-      const clearBtn = document.getElementById(`clear-${lang}`);
-
-      if (searchInput) {
-        searchInput.addEventListener('input', () => applyFilters(lang));
-        searchInput.addEventListener('keydown', (event) => {
-          if (event.key === 'Escape') {
-            searchInput.value = '';
-            applyFilters(lang);
-          }
-        });
-      }
-
-      if (clearBtn && searchInput) {
-        clearBtn.addEventListener('click', () => {
-          searchInput.value = '';
-          resetFilterRow(container, lang);
-          applyFilters(lang);
-        });
-      }
-
-      container.querySelectorAll('.filter-row').forEach((row) => {
-        const activeChip = row.querySelector('.chip.active');
-        if (activeChip) {
-          filterState[lang].tag = activeChip.dataset.filter || 'all';
-        }
-
-        row.querySelectorAll('.chip').forEach((chip) => {
-          chip.addEventListener('click', () => {
-            row.querySelectorAll('.chip').forEach((btn) => {
-              btn.classList.toggle('active', btn === chip);
-            });
-            filterState[lang].tag = chip.dataset.filter || 'all';
-            applyFilters(lang);
-          });
-        });
-      });
+    container.querySelectorAll('.repo-list li, .app-card').forEach((item) => {
+      item.classList.add('filterable-item');
     });
+
+    const searchInput = document.getElementById('search');
+    const clearBtn = document.getElementById('clear');
+
+    if (searchInput) {
+      searchInput.addEventListener('input', () => applyFilters());
+      searchInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          searchInput.value = '';
+          applyFilters();
+        }
+      });
+    }
+
+    if (clearBtn && searchInput) {
+      clearBtn.addEventListener('click', () => {
+        searchInput.value = '';
+        resetFilters(container);
+        applyFilters();
+      });
+    }
+
+    const tagRow = container.querySelector('.filter-row:not(.year-filter)');
+    if (tagRow) {
+      const activeChip = tagRow.querySelector('.chip.active');
+      if (activeChip) {
+        filterState.tag = activeChip.dataset.filter || 'all';
+      }
+
+      tagRow.querySelectorAll('.chip').forEach((chip) => {
+        chip.addEventListener('click', () => {
+          tagRow.querySelectorAll('.chip').forEach((btn) => {
+            btn.classList.toggle('active', btn === chip);
+          });
+          filterState.tag = chip.dataset.filter || 'all';
+          applyFilters();
+        });
+      });
+    }
+
+    const yearRow = container.querySelector('.year-filter');
+    if (yearRow) {
+      const activeChip = yearRow.querySelector('.chip.active');
+      if (activeChip) {
+        filterState.year = activeChip.dataset.year || 'all';
+      }
+
+      yearRow.querySelectorAll('.chip').forEach((chip) => {
+        chip.addEventListener('click', () => {
+          yearRow.querySelectorAll('.chip').forEach((btn) => {
+            btn.classList.toggle('active', btn === chip);
+          });
+          filterState.year = chip.dataset.year || 'all';
+          applyFilters();
+        });
+      });
+    }
   }
 
   function copyText(text) {
@@ -1020,8 +915,7 @@
       if (activeTag && /input|textarea/i.test(activeTag)) return;
 
       event.preventDefault();
-      const lang = getCurrentLang();
-      const searchInput = document.getElementById(`search-${lang}`);
+      const searchInput = document.getElementById('search');
       if (searchInput) searchInput.focus();
     });
   }
@@ -1032,8 +926,7 @@
     initCopyButtons();
     initBackToTop();
     initHeaderNav();
-    const saved = localStorage.getItem(STORAGE_KEY) || 'ja';
-    setLang(saved);
+    applyFilters();
   })();
 </script>
 </body>
