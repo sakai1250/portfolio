@@ -22,7 +22,6 @@
   <meta property="og:image" content="https://github.com/sakai1250.png">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:creator" content="@ikaitaig">
-  <link rel="canonical" href="https://sakai1250.github.io/">
   <style>
     /* === Base Styles === */
     :root {
@@ -138,7 +137,6 @@
       font-weight: 700;
       letter-spacing: 0.4px;
       color: var(--text-main);
-      margin: 0;
     }
     .header-subtitle { font-size: 14px; color: var(--muted); margin-top: 2px; max-width: 560px; }
     .header-badges { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -344,7 +342,6 @@
       font-size: 18px; font-weight: 600; color: var(--text-main); margin-bottom: 16px;
       padding-bottom: 8px; border-bottom: 1px solid var(--stroke-subtle);
       font-family: "Space Grotesk", "Noto Sans JP", "SF Pro Text", "Segoe UI", system-ui, sans-serif;
-      margin-top: 0;
     }
     .subsection-title {
       font-size: 15px; font-weight: 600; color: var(--accent-2); margin-top: 20px; margin-bottom: 10px;
@@ -1140,32 +1137,113 @@
   }
 
   function applyFilters() {
-    const activeTab = getActiveTab();
-    if (!activeTab) return;
-
     const searchInput = document.getElementById('search');
     const query = searchInput ? searchInput.value.trim().toLowerCase() : '';
-    const hasTagFilter = Boolean(activeTab.querySelector('.filter-row:not(.year-filter)'));
-    const tag = hasTagFilter ? filterState.tag : 'all';
-    const hasYearFilter = Boolean(activeTab.querySelector('.year-filter'));
-    const year = hasYearFilter ? filterState.year : 'all';
+    
+    let globalCount = 0;
+    const tabCounts = { 'research': 0, 'engineer': 0 };
 
-    const items = activeTab.querySelectorAll('.filterable-item');
-    let visible = 0;
-    items.forEach((item) => {
-      const text = item.textContent.toLowerCase();
-      const matchesQuery = !query || text.includes(query);
-      const tags = (item.dataset.tags || '').toLowerCase().split(/\s+/).filter(Boolean);
-      const matchesTag = tag === 'all' || tags.includes(tag);
-      const itemYear = item.dataset.year || '';
-      const matchesYear = year === 'all' || itemYear === year;
-      const isVisible = matchesQuery && matchesTag && matchesYear;
-      item.style.display = isVisible ? '' : 'none';
-      if (isVisible) visible += 1;
+    // アイテムが所属するタブに応じたフィルタ設定を取得するヘルパー
+    const getEffectiveFilters = (item) => {
+      const parentTab = item.closest('.tab-content');
+      if (!parentTab) return { tag: 'all', year: 'all' };
+      
+      const hasTagFilter = Boolean(parentTab.querySelector('.filter-row:not(.year-filter)'));
+      const hasYearFilter = Boolean(parentTab.querySelector('.year-filter'));
+      
+      return {
+        tag: hasTagFilter ? filterState.tag : 'all',
+        year: hasYearFilter ? filterState.year : 'all'
+      };
+    };
+
+    // メインコンテンツ内の全セクションを走査
+    const sections = document.querySelectorAll('.main-content .section-card');
+    
+    sections.forEach(section => {
+      const titleEl = section.querySelector('.section-title');
+      const titleText = titleEl ? titleEl.textContent.toLowerCase() : '';
+      // セクションタイトルが一致すれば、その中身も（フィルタ条件を満たす限り）表示対象とする
+      const isSectionMatch = query && titleText.includes(query);
+
+      const items = section.querySelectorAll('.filterable-item');
+      
+      if (items.length > 0) {
+        let visibleInThisSection = 0;
+        
+        items.forEach(item => {
+          const filters = getEffectiveFilters(item);
+          const text = item.textContent.toLowerCase();
+          
+          // 検索ヒット条件: (クエリなし) OR (アイテム内テキスト一致) OR (親セクションタイトル一致)
+          const isItemMatch = !query || text.includes(query) || isSectionMatch;
+          
+          // タグ・年度フィルタの適用
+          const tags = (item.dataset.tags || '').toLowerCase().split(/\s+/).filter(Boolean);
+          const itemYear = item.dataset.year || '';
+          const matchesTag = filters.tag === 'all' || tags.includes(filters.tag);
+          const matchesYear = filters.year === 'all' || itemYear === filters.year;
+          
+          if (isItemMatch && matchesTag && matchesYear) {
+            item.style.display = '';
+            visibleInThisSection++;
+            
+            // タブごとのヒット数を集計
+            const tab = item.closest('.tab-content');
+            if (tab) {
+              if (tab.id === 'ja-research') tabCounts.research++;
+              if (tab.id === 'ja-engineer') tabCounts.engineer++;
+            }
+          } else {
+            item.style.display = 'none';
+          }
+        });
+
+        // 表示アイテムがあればセクションを表示、なければ隠す
+        if (visibleInThisSection > 0) {
+          section.style.display = '';
+          globalCount += visibleInThisSection;
+        } else {
+          section.style.display = 'none';
+        }
+      } else {
+        // リストを持たない静的セクション（Contactなど）
+        if (query) {
+          const text = section.textContent.toLowerCase();
+          if (text.includes(query)) {
+            section.style.display = '';
+            globalCount++;
+          } else {
+            section.style.display = 'none';
+          }
+        } else {
+          section.style.display = '';
+        }
+      }
     });
 
     const countEl = document.getElementById('search-count');
-    if (countEl) countEl.textContent = visible;
+    if (countEl) countEl.textContent = globalCount;
+
+    // タブにヒット件数バッジを表示
+    const tabs = document.querySelectorAll('.tab-nav .tab-item');
+    tabs.forEach(tab => {
+      const key = tab.dataset.tab; // 'research' or 'engineer'
+      let badge = tab.querySelector('.tab-count');
+      
+      if (tabCounts[key] !== undefined && query) {
+        if (!badge) {
+          badge = document.createElement('span');
+          badge.className = 'tab-count';
+          badge.style.cssText = 'font-size: 10px; margin-left: 6px; background: var(--surface-3); padding: 2px 6px; border-radius: 10px; vertical-align: middle;';
+          tab.appendChild(badge);
+        }
+        badge.textContent = tabCounts[key];
+        badge.style.display = 'inline-block';
+      } else if (badge) {
+        badge.style.display = 'none';
+      }
+    });
   }
 
   function resetFilters(container) {
