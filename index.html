@@ -659,6 +659,17 @@
       border-width: 6px; border-style: solid;
       border-color: var(--accent) transparent transparent transparent;
     }
+
+    /* === Click Sparkles === */
+    .sparkle {
+      position: fixed; width: 5px; height: 5px; border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      animation: sparkle-anim 0.6s ease-out forwards;
+    }
+    @keyframes sparkle-anim {
+      0% { transform: translate(0, 0) scale(1); opacity: 1; }
+      100% { transform: translate(var(--tx), var(--ty)) scale(0); opacity: 0; }
+    }
   </style>
   <!-- Structured Data (JSON-LD) for SEO & Professionalism -->
   <script type="application/ld+json">
@@ -1775,49 +1786,19 @@
     });
   }
 
-  // GitHub READMEのバッジと同期
-  async function syncReadmeBadges() {
-    const username = 'sakai1250';
-    const repo = 'sakai1250';
-    const branch = 'main'; // デフォルトブランチ (main or master)
+  // GitHub Actionsで生成されたデータを読み込む
+  async function loadPortfolioData() {
+    const dataUrl = 'assets/data.json';
     
     try {
-      const response = await fetch(`https://raw.githubusercontent.com/${username}/${repo}/${branch}/README.md`);
+      const response = await fetch(dataUrl);
       if (!response.ok) return;
-      const text = await response.text();
+      const data = await response.json();
 
-      const updateSection = (id, headerPattern) => {
+      // 1. バッジの更新
+      const updateBadges = (id, images) => {
         const container = document.getElementById(id);
-        if (!container) return;
-
-        // README内の該当セクションを抽出 (ヘッダーから次のヘッダーまで)
-        // 例: ### Languages ... (次の#まで)
-        const sectionRegex = new RegExp(`#{1,6}\\s*(${headerPattern})[\\s\\S]*?(?=(?:#{1,6}\\s)|$)`, 'i');
-        const match = text.match(sectionRegex);
-        if (!match) return;
-
-        const content = match[0];
-        const images = [];
-
-        // Markdown形式の画像 !alt と HTML形式の画像 <img src="..."> を抽出
-        const imgRegex = /(!\[(.*?)\]\((.*?)\))|(<img\s+[^>]*src="'["'][^>]*>)/gi;
-        let m;
-        while ((m = imgRegex.exec(content)) !== null) {
-          let alt = '';
-          let src = '';
-          
-          if (m[1]) { // Markdown
-             alt = m[2];
-             src = m[3];
-          } else if (m[4]) { // HTML
-             src = m[5];
-             const altMatch = m[4].match(/alt="'["']/i);
-             alt = altMatch ? altMatch[1] : '';
-          }
-          if (src) images.push({ alt, src });
-        }
-
-        if (images.length === 0) return;
+        if (!container || !images || images.length === 0) return;
 
         // 既存のバッジをクリアして更新 (h4は見出しとして残す)
         const h4 = container.querySelector('h4');
@@ -1828,19 +1809,44 @@
           const imgEl = document.createElement('img');
           imgEl.src = img.src;
           imgEl.alt = img.alt;
+          imgEl.loading = 'lazy';
           container.appendChild(imgEl);
           container.appendChild(document.createTextNode(' ')); // スペース
         });
       };
 
-      // HTMLのIDとREADMEのヘッダーキーワードをマッピング
-      // READMEの見出しに含まれる単語を指定してください
-      updateSection('badges-languages', 'Languages|言語');
-      updateSection('badges-frameworks', 'Frameworks|Tools|ツール|技術');
-      updateSection('badges-orgs', 'Organizations|所属');
+      if (data.badges) {
+        updateBadges('badges-languages', data.badges['badges-languages']);
+        updateBadges('badges-frameworks', data.badges['badges-frameworks']);
+        updateBadges('badges-orgs', data.badges['badges-orgs']);
+      }
+
+      // 2. アプリ情報の更新
+      if (data.apps) {
+        document.querySelectorAll('.app-card').forEach(card => {
+          const links = card.querySelectorAll('a');
+          let repoSlug = null;
+          for (const link of links) {
+            const match = link.href.match(/github\.com\/([^\/]+\/[^\/]+)/);
+            if (match) {
+              repoSlug = match[1].replace(/\.git$/, '');
+              break;
+            }
+          }
+
+          if (repoSlug && data.apps[repoSlug]) {
+            const appInfo = data.apps[repoSlug];
+            const descEl = card.querySelector('.app-desc');
+            const imgEl = card.querySelector('.app-thumb');
+
+            if (descEl && appInfo.desc) descEl.textContent = appInfo.desc;
+            if (imgEl && appInfo.img) imgEl.src = appInfo.img;
+          }
+        });
+      }
 
     } catch (e) {
-      console.warn('GitHub README sync failed:', e);
+      console.warn('Failed to load portfolio data:', e);
     }
   }
 
@@ -1880,136 +1886,6 @@
       }
     } catch (e) {
       container.innerHTML = '<li>読み込みに失敗しました。</li>';
-    }
-  }
-
-  /**
-   * Syncs app descriptions and images from the GitHub Profile README.
-   * Uses localStorage for caching to minimize API requests.
-   * 
-   * @returns {Promise<void>}
-   */
-  async function syncAppDetails() {
-    const username = 'sakai1250';
-    const repo = 'sakai1250';
-    const branch = 'main';
-    const cacheKey = 'github_profile_readme_apps_cache_v2';
-    
-    const cached = localStorage.getItem(cacheKey);
-    const now = Date.now();
-    let cacheData = {};
-
-    if (cached) {
-      try {
-        const parsed = JSON.parse(cached);
-        if (now - parsed.timestamp < 3600 * 1000) { // 1時間キャッシュ
-          cacheData = parsed.data;
-        }
-      } catch (e) {}
-    }
-
-    const cards = document.querySelectorAll('.app-card');
-    
-    // キャッシュがあれば先に適用
-    cards.forEach(card => {
-      const links = card.querySelectorAll('a');
-      let repoSlug = null;
-      for (const link of links) {
-        const match = link.href.match(/github\.com\/([^\/]+\/[^\/]+)/);
-        if (match) {
-          repoSlug = match[1].replace(/\.git$/, '');
-          break;
-        }
-      }
-      if (repoSlug && cacheData[repoSlug]) {
-        const descEl = card.querySelector('.app-desc');
-        if (descEl && cacheData[repoSlug].desc) {
-          descEl.textContent = cacheData[repoSlug].desc;
-        }
-        const imgEl = card.querySelector('.app-thumb');
-        if (imgEl && cacheData[repoSlug].img) {
-          imgEl.src = cacheData[repoSlug].img;
-        }
-      }
-    });
-
-    try {
-      const res = await fetch(`https://raw.githubusercontent.com/${username}/${repo}/${branch}/README.md`);
-      if (!res.ok) return;
-      const text = await res.text();
-      const lines = text.split('\n');
-      
-      const newData = {};
-      let hasUpdates = false;
-
-      cards.forEach(card => {
-        const links = card.querySelectorAll('a');
-        let repoSlug = null;
-        for (const link of links) {
-          const match = link.href.match(/github\.com\/([^\/]+\/[^\/]+)/);
-          if (match) {
-            repoSlug = match[1].replace(/\.git$/, '');
-            break;
-          }
-        }
-
-        if (!repoSlug) return;
-
-        // READMEから該当リポジトリの行を探す
-        for (const line of lines) {
-          if (line.includes(repoSlug)) {
-            let desc = '';
-            let img = '';
-            if (line.includes('|')) {
-              // テーブル形式の場合、リンクの次のカラムなどを説明文とみなす簡易ロジック
-              const parts = line.split('|').map(s => s.trim()).filter(s => s);
-              const linkIndex = parts.findIndex(p => p.includes(repoSlug));
-              if (linkIndex !== -1 && linkIndex + 1 < parts.length) {
-                desc = parts[linkIndex + 1];
-              }
-              // 同じ行に画像があれば取得
-              const imgMatch = line.match(/!\[.*?\]\((.*?)\)/) || line.match(/<img.*?src=["'](.*?)["']/);
-              if (imgMatch) img = imgMatch[1];
-            } else {
-              // リスト形式などの場合、リンク記法を除去して残りを説明文とする
-              let temp = line.replace(/\[([^\]]+)\]\([^\)]+\)/g, ''); // リンク除去
-              temp = temp.replace(/^[\s\-\*\d\.:]+/, ''); // 先頭の記号除去
-              
-              // 画像タグがあれば抽出して除去
-              const imgMatch = line.match(/!\[.*?\]\((.*?)\)/) || line.match(/<img.*?src=["'](.*?)["']/);
-              if (imgMatch) {
-                img = imgMatch[1];
-                temp = temp.replace(imgMatch[0], '');
-              }
-              desc = temp.trim();
-            }
-
-            desc = desc.replace(/<br\s*\/?>/gi, ' '); // brタグ除去
-            desc = desc.replace(/`/g, ''); // バッククォート除去
-
-            newData[repoSlug] = newData[repoSlug] || {};
-            if (desc && desc.length > 5) {
-              newData[repoSlug].desc = desc;
-              const descEl = card.querySelector('.app-desc');
-              if (descEl) descEl.textContent = desc;
-              hasUpdates = true;
-            }
-            if (img) {
-              newData[repoSlug].img = img;
-              const imgEl = card.querySelector('.app-thumb');
-              if (imgEl) imgEl.src = img;
-              hasUpdates = true;
-            }
-            break;
-          }
-        }
-      });
-
-      if (hasUpdates) {
-        localStorage.setItem(cacheKey, JSON.stringify({ timestamp: now, data: newData }));
-      }
-    } catch (e) {
-      console.warn('Failed to sync app descriptions from profile README', e);
     }
   }
 
@@ -2470,6 +2346,41 @@
     });
   }
 
+  // Click Sparkle Effect
+  function initSparkles() {
+    document.addEventListener('click', (e) => {
+      // Trigger on interactive elements
+      if (!e.target.closest('button, a, .chip, .badge-year, .app-card, .profile-card, .nav-btn')) return;
+
+      const colors = [
+        'var(--accent)', 'var(--accent-2)', 'var(--accent-warm)', '#FFD700', '#FF69B4'
+      ];
+
+      for (let i = 0; i < 8; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('sparkle');
+        
+        const x = e.clientX;
+        const y = e.clientY;
+        
+        particle.style.left = `${x}px`;
+        particle.style.top = `${y}px`;
+        particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = 20 + Math.random() * 40;
+        const tx = Math.cos(angle) * velocity;
+        const ty = Math.sin(angle) * velocity;
+        
+        particle.style.setProperty('--tx', `${tx}px`);
+        particle.style.setProperty('--ty', `${ty}px`);
+        
+        document.body.appendChild(particle);
+        setTimeout(() => particle.remove(), 600);
+      }
+    });
+  }
+
   // 自動スクロール機能
   function initAutoScroll() {
     let isAutoScrolling = true;
@@ -2590,12 +2501,11 @@
     initScrollReveal();
     initAppModal();
     initLoader();
-    syncReadmeBadges();
+    loadPortfolioData();
     fetchQiitaArticles();
     initContactForm();
     initSmoothScroll();
     initTyping();
-    syncAppDetails();
     initTabNav();
     applyFilters();
     initConsoleMessage();
@@ -2609,6 +2519,7 @@
     initDraggableAvatar();
     initNetworkStatus();
     initAutoScroll();
+    initSparkles();
     initTOC();
   })();
 </script>
