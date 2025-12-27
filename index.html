@@ -2229,7 +2229,10 @@
     });
 
     const highlightItems = () => {
-      const center = window.innerHeight / 2;
+      const nav = document.querySelector('.tab-nav');
+      const navBottom = nav ? nav.getBoundingClientRect().bottom : 0;
+      const targetY = navBottom + 60;
+
       // 現在表示中のタブ内のアイテムのみ対象にする
       const targets = document.querySelectorAll('.tab-content.active .repo-list li, .tab-content.active .app-card');
       const toHighlight = [];
@@ -2238,8 +2241,8 @@
       targets.forEach(el => {
         const rect = el.getBoundingClientRect();
         const elCenter = rect.top + rect.height / 2;
-        // 画面中央付近 (±120px) にある要素をハイライト
-        if (Math.abs(elCenter - center) < 120) {
+        // 画面上部付近 (±50px) にある要素をハイライト
+        if (Math.abs(elCenter - targetY) < 50) {
           toHighlight.push(el);
         } else {
           toUnhighlight.push(el);
@@ -2252,6 +2255,21 @@
 
     const step = () => {
       if (!isAutoScrolling) return;
+      
+      // "もっと見る"ボタンの自動クリック
+      const currentTab = document.querySelector('.tab-content.active');
+      if (currentTab) {
+        const showMoreBtns = currentTab.querySelectorAll('button');
+        showMoreBtns.forEach(btn => {
+          if (btn.textContent.includes('もっと見る')) {
+            const rect = btn.getBoundingClientRect();
+            if (rect.top < window.innerHeight) {
+              btn.click();
+            }
+          }
+        });
+      }
+
       highlightItems();
 
       // セクションタイトルでの一時停止判定
@@ -2279,8 +2297,18 @@
         }
       }
 
-      // 最下部に到達したらタブを切り替えてループ
-      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) {
+      // Contactセクション到達判定 (スキップ) または 最下部到達
+      const contactSection = document.getElementById('contact');
+      let isEnd = false;
+      if (contactSection) {
+        const rect = contactSection.getBoundingClientRect();
+        if (rect.top <= window.innerHeight) isEnd = true;
+      }
+      if (!isEnd && (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) {
+        isEnd = true;
+      }
+
+      if (isEnd) {
         // タブ切り替え前の一時停止
         setTimeout(() => {
           if (!isAutoScrolling) return;
