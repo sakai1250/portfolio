@@ -605,6 +605,15 @@
     "alumniOf": "Meijo University"
   }
   </script>
+  <!-- Theme Initialization: Prevent Flash of Incorrect Theme -->
+  <script>
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      const systemTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+      const theme = savedTheme || systemTheme;
+      document.documentElement.setAttribute('data-theme', theme);
+    })();
+  </script>
 </head>
 <body>
 <div id="loading-screen">
@@ -1436,8 +1445,8 @@
     const systemTheme = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
     const initialTheme = savedTheme || systemTheme;
 
-    // 初期テーマ適用
-    setTheme(initialTheme);
+    // アイコンやメタタグの更新のみ行う（属性はhead内で設定済みのため）
+    updateThemeAssets(initialTheme);
 
     // ボタンイベント
     if (themeBtn) {
@@ -1459,6 +1468,10 @@
     // HTMLタグに属性を設定 (CSS切り替え用)
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
+    updateThemeAssets(theme);
+  }
+
+  function updateThemeAssets(theme) {
     
     // アイコン切り替え
     const themeIcon = document.getElementById('theme-icon');
