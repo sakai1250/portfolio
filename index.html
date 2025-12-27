@@ -1332,7 +1332,6 @@
       themeBtn.addEventListener('click', () => {
         const current = document.documentElement.getAttribute('data-theme');
         const next = current === 'light' ? 'dark' : 'light';
-        setTheme(next);
         
         // View Transitions API Support
         if (document.startViewTransition) {
