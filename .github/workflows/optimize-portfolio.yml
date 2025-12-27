@@ -96,9 +96,10 @@ jobs:
                   
                   # 画像URLの抽出
                   img_src = None
-                  img_match = re.search(r'!\[.*?\]\((.*?)\)|<img.*?src=[\"\'](.*?)[\"\']', line)
+                  # 変更: user-attachmentsのURLも画像として認識する
+                  img_match = re.search(r'!\[.*?\]\((.*?)\)|<img.*?src=[\"\'](.*?)[\"\']|(https://github\.com/user-attachments/assets/[\w-]+)', line)
                   if img_match:
-                      img_src = img_match.group(1) or img_match.group(2)
+                      img_src = img_match.group(1) or img_match.group(2) or img_match.group(3)
                   
                   # 画像が現在行にない場合、次の行(最大3行)を探す
                   if not img_src:
@@ -106,12 +107,13 @@ jobs:
                           if i + offset >= len(lines): break
                           next_line = lines[i + offset]
                           # 次の行が別のリポジトリリンクやヘッダーなら中断
-                          if 'github.com' in next_line or next_line.strip().startswith('#'):
+                          # ただし、画像URL(user-attachments)の場合は中断しない
+                          if ('github.com' in next_line and 'user-attachments' not in next_line) or next_line.strip().startswith('#'):
                               break
                           
-                          sub_img_match = re.search(r'!\[.*?\]\((.*?)\)|<img.*?src=[\"\'](.*?)[\"\']', next_line)
+                          sub_img_match = re.search(r'!\[.*?\]\((.*?)\)|<img.*?src=[\"\'](.*?)[\"\']|(https://github\.com/user-attachments/assets/[\w-]+)', next_line)
                           if sub_img_match:
-                              img_src = sub_img_match.group(1) or sub_img_match.group(2)
+                              img_src = sub_img_match.group(1) or sub_img_match.group(2) or sub_img_match.group(3)
                               break
                   
                   if desc or img_src:
