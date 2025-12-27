@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="https://unpkg.com/@primer/css@22.0.2/dist/primer.css">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="名城大学大学院 博士後期課程 坂井泰吾のポートフォリオ。Deep Learning, Computer Visionの研究や、iOS/Webアプリ開発の実績を紹介しています。">
   <meta property="og:title" content="Taigo Sakai | Portfolio">
@@ -62,7 +62,7 @@
     }
     [data-theme="light"] img[alt="typing introduction"] { filter: invert(1); }
     body {
-      font-family: "Noto Sans JP", "Space Grotesk", "SF Pro Text", "Segoe UI", system-ui, -apple-system, sans-serif;
+      font-family: "Inter", "Noto Sans JP", "Space Grotesk", "SF Pro Text", "Segoe UI", system-ui, -apple-system, sans-serif;
       background-color: var(--bg);
       background-image:
         radial-gradient(circle at 15% 20%, rgba(46, 160, 67, 0.12), transparent 25%),
@@ -80,6 +80,13 @@
     body.modal-open .page { filter: blur(5px); }
     a { text-decoration: none; color: var(--accent-2); }
     a:hover { text-decoration: underline; }
+
+    /* === Scrollbar === */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--stroke); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+    html { scrollbar-width: thin; scrollbar-color: var(--stroke) var(--bg); }
 
     /* === Layout === */
     .container-lg {
@@ -167,17 +174,20 @@
     .header-bottom { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
     .header-nav { display: flex; gap: 8px; flex-wrap: wrap; }
     .nav-btn {
-      background: var(--bg-glass);
-      border: 1px solid var(--stroke);
-      color: var(--text-sub);
-      padding: 6px 12px;
-      border-radius: 999px;
-      font-size: 12px;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--muted);
+      padding: 4px 8px;
+      border-radius: 0;
+      font-size: 13px;
+      font-weight: 600;
+      font-family: "Space Grotesk", "Noto Sans JP", "SF Pro Text", "Segoe UI", system-ui, sans-serif;
       letter-spacing: 0.3px;
       cursor: pointer;
-      transition: border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+      transition: all 0.2s ease;
     }
-    .nav-btn:hover { border-color: var(--accent-warm); color: var(--text-main); transform: translateY(-1px); }
+    .nav-btn:hover { border-bottom-color: var(--accent-warm); color: var(--text-main); }
     .header-hint { font-size: 12px; color: var(--muted); }
     
     .header-identity,
@@ -282,14 +292,17 @@
       margin-bottom: 16px;
     }
     .search-input {
-      background: var(--bg);
-      border: 1px solid var(--stroke);
-      color: var(--text-sub);
-      padding: 8px 10px;
-      border-radius: 6px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--stroke);
+      color: var(--text);
+      padding: 8px 0;
+      border-radius: 0;
       min-width: 220px;
       flex: 1;
+      transition: border-color 0.2s;
     }
+    .search-input:focus { outline: none; border-color: var(--accent-2); }
     .search-input::placeholder { color: var(--muted); }
     .search-meta { font-size: 12px; color: var(--muted); }
 
@@ -515,6 +528,19 @@
     }
     @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.9); } }
 
+    /* === Typing Animation === */
+    .typing-container {
+      font-family: "Space Grotesk", monospace;
+      font-size: 24px;
+      font-weight: 600;
+      min-height: 1.5em;
+      display: inline-flex;
+      align-items: center;
+      color: var(--text-main);
+    }
+    .cursor { display: inline-block; width: 2px; height: 1.2em; background-color: var(--accent); margin-left: 4px; animation: blink 1s step-end infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
     /* === Contact Form === */
     .form-group { margin-bottom: 16px; }
     .form-label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: var(--text-main); }
@@ -590,7 +616,7 @@
             <a href="https://x.com/ikaitaig" target="_blank"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="16" height="16" role="img" aria-labelledby="x-icon" class="octicon" fill="currentColor"><title id="x-icon">X</title><path d="M9.332 6.925 14.544 1h-1.235L8.783 6.145 5.17 1H1l5.466 7.78L1 14.993h1.235l4.78-5.433 3.816 5.433H15L9.332 6.925ZM7.64 8.848l-.554-.775L2.68 1.91h1.897l3.556 4.975.554.775 4.622 6.466h-1.897L7.64 8.848Z"></path></svg></span> @ikaitaig</a>
             <a href="https://www.linkedin.com/in/sakai1250" target="_blank"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="currentColor" role="img" aria-labelledby="linkedin-icon" class="octicon"><title id="linkedin-icon">LinkedIn</title><path d="M14.5455 0H1.45455C0.650909 0 0 0.650909 0 1.45455V14.5455C0 15.3491 0.650909 16 1.45455 16H14.5455C15.3491 16 16 15.3491 16 14.5455V1.45455C16 0.650909 15.3491 0 14.5455 0ZM5.05746 13.0909H2.912V6.18764H5.05746V13.0909ZM3.96291 5.20073C3.27127 5.20073 2.712 4.64 2.712 3.94982C2.712 3.25964 3.272 2.69964 3.96291 2.69964C4.65236 2.69964 5.21309 3.26036 5.21309 3.94982C5.21309 4.64 4.65236 5.20073 3.96291 5.20073ZM13.0938 13.0909H10.9498V9.73382C10.9498 8.93309 10.9353 7.90327 9.83491 7.90327C8.71855 7.90327 8.54691 8.77527 8.54691 9.67564V13.0909H6.40291V6.18764H8.46109V7.13091H8.49018C8.77673 6.58836 9.47636 6.016 10.52 6.016C12.6924 6.016 13.0938 7.44582 13.0938 9.30473V13.0909V13.0909Z"></path></svg></span> LinkedIn</a>
             <a href="https://www.kaggle.com/sakaitt" target="_blank"><span class="icon text-icon">K</span> Kaggle</a>
-            <a href="https://qiita.com/sakai1250" target="_blank"><span class="icon"><svg aria-hidden="true" height="16" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-link" fill="currentColor"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg></span> Qiita</a>
+            <a href="https://qiita.com/sakai1250" target="_blank"><span class="icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="currentColor" role="img" aria-labelledby="qiita-icon"><title id="qiita-icon">Qiita</title><path d="M0 0h4.098v10.426h-4.098v-10.426zm6.557 0h4.098v16.82h-4.098v-16.82zm6.558 0h4.098v10.426h-4.098v-10.426zm6.557 6.393h4.098v4.033h-4.098v-4.033z"/></svg></span> Qiita</a>
             <a href="https://github.com/sakai1250" target="_blank"><span class="icon"><svg height="16" aria-hidden="true" viewBox="0 0 16 16" version="1.1" width="16" data-view-component="true" class="octicon octicon-mark-github" fill="currentColor"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.46-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path></svg></span> GitHub</a>
             <a href="https://scholar.google.com.ni/citations?user=LZnH1HIAAAAJ&hl=en&authuser=1" target="_blank"><span class="icon text-icon">G</span> Google Scholar</a>
           </div>
@@ -600,7 +626,7 @@
       <div class="main-content">
         
         <div class="section-card" style="text-align:center; padding: 16px;">
-          <img src="https://readme-typing-svg.demolab.com/?lines=I'm+Taigo+Sakai;Researcher+of+Deep+Learning;&font=Fira%20Code&center=true&width=600&height=50&color=ffffff&vCenter=true&pause=1000&size=24" alt="typing introduction" style="max-width:100%;" />
+          <div class="typing-container"><span id="typing-text"></span><span class="cursor"></span></div>
         </div>
 
         <div class="utility-bar">
@@ -795,61 +821,62 @@
             <div class="section-title">My Apps & Services</div>
             <div class="grid-dense">
               <div class="app-card" data-tags="ios ai">
-                <img src="https://github.com/user-attachments/assets/e7a7dbf0-f338-454a-9802-2ea1ab64da41" class="app-thumb" alt="icon">
+                <img src="https://github.com/user-attachments/assets/e7a7dbf0-f338-454a-9802-2ea1ab64da41" class="app-thumb" alt="icon" loading="lazy">
                 <div class="app-info">
                   <a href="https://apps.apple.com/jp/app/kikonashi/id6502258139" class="app-title">kikonAshI (iOS)</a>
                   <div class="app-desc">独自開発ファッションAI搭載。毎日のコーデ提案と育成機能。</div>
                   <div class="app-links">
-                    <a href="https://apps.apple.com/jp/app/kikonashi/id6502258139">App Store</a>
+                    <a href="https://apps.apple.com/jp/app/kikonashi/id6502258139"><svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="14" height="14" fill="currentColor" style="margin-right:4px; vertical-align: text-bottom;"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 52.3-11.4 69.5-34.3z"/></svg> App Store</a>
                     <a href="https://github.com/sakai1250/hacku2023">GitHub</a>
                   </div>
                 </div>
               </div>
               <div class="app-card" data-tags="ios android">
-                <img src="https://github.com/user-attachments/assets/b1d58dae-fc06-4ca8-aae2-7b76901d79b8" class="app-thumb" alt="icon">
+                <img src="https://github.com/user-attachments/assets/b1d58dae-fc06-4ca8-aae2-7b76901d79b8" class="app-thumb" alt="icon" loading="lazy">
                 <div class="app-info">
                   <a href="https://www.jogiken.com/sugosugiru/" class="app-title">すごすぎる時間割</a>
                   <div class="app-desc">情報技術研究会で開発。シンプルなUIの大学生向け時間割アプリ。</div>
                   <div class="app-links">
-                    <a href="https://apps.apple.com/jp/app/id6744370038">iOS</a>
+                    <a href="https://apps.apple.com/jp/app/id6744370038"><svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="14" height="14" fill="currentColor" style="margin-right:4px; vertical-align: text-bottom;"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 52.3-11.4 69.5-34.3z"/></svg> App Store</a>
                     <a href="https://play.google.com/store/apps/details?id=com.jogiken.sugosugiru">Android</a>
                   </div>
                 </div>
               </div>
               <div class="app-card" data-tags="web ios">
-                <img src="https://github.com/user-attachments/assets/321aa41a-fb83-470b-8d45-0f44b94eb28a" class="app-thumb" alt="icon">
+                <img src="https://github.com/user-attachments/assets/321aa41a-fb83-470b-8d45-0f44b94eb28a" class="app-thumb" alt="icon" loading="lazy">
                 <div class="app-info">
                   <a href="https://recolle.vercel.app/" class="app-title">recolLe (Web/iOS)</a>
                   <div class="app-desc">NFCフォトアルバム。「かざす」動作で思い出を呼び出す体験。</div>
                   <div class="app-links">
                     <a href="https://recolle.vercel.app/">Web</a>
-                    <a href="https://apps.apple.com/jp/app/id6755230226">App Store</a>
+                    <a href="https://apps.apple.com/jp/app/id6755230226"><svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="14" height="14" fill="currentColor" style="margin-right:4px; vertical-align: text-bottom;"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 52.3-11.4 69.5-34.3z"/></svg> App Store</a>
                   </div>
                 </div>
               </div>
               <div class="app-card" data-tags="ios ai">
-                <img src="https://github.com/user-attachments/assets/52ef9d7e-7f2d-4c4b-88d1-8d822a382450" class="app-thumb" alt="icon">
+                <img src="https://github.com/user-attachments/assets/52ef9d7e-7f2d-4c4b-88d1-8d822a382450" class="app-thumb" alt="icon" loading="lazy">
                 <div class="app-info">
                   <a href="https://itunes.apple.com/jp/app/id6755966828?mt=8" class="app-title">おつりDoctor (iOS)</a>
                   <div class="app-desc">硬貨を撮影して金額を自動集計。ユーザー育成機能付き。</div>
                   <div class="app-links">
+                    <a href="https://apps.apple.com/jp/app/id6755966828"><svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="14" height="14" fill="currentColor" style="margin-right:4px; vertical-align: text-bottom;"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 52.3-11.4 69.5-34.3z"/></svg> App Store</a>
                     <a href="https://github.com/sakai1250/otsuri_docter">GitHub</a>
                   </div>
                 </div>
               </div>
                <div class="app-card" data-tags="ios ai">
-                <img src="https://github.com/user-attachments/assets/3c2a0ed5-b342-4b52-b6f7-b706f5d005cd" class="app-thumb" alt="icon">
+                <img src="https://github.com/user-attachments/assets/3c2a0ed5-b342-4b52-b6f7-b706f5d005cd" class="app-thumb" alt="icon" loading="lazy">
                 <div class="app-info">
                   <a href="https://github.com/sakai1250/super_res.git" class="app-title">超kAI蔵 (iOS)</a>
                   <div class="app-desc">最大4倍AI超解像。フォルダ分類・メモ保存搭載で研究用途にも。</div>
                   <div class="app-links">
-                    <a href="https://apps.apple.com/jp/app/id6751739848">App Store</a>
+                    <a href="https://apps.apple.com/jp/app/id6751739848"><svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="14" height="14" fill="currentColor" style="margin-right:4px; vertical-align: text-bottom;"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 52.3-11.4 69.5-34.3z"/></svg> App Store</a>
                     <a href="https://github.com/sakai1250/super_res.git">GitHub</a>
                   </div>
                 </div>
               </div>
                <div class="app-card" data-tags="web">
-                <img src="https://github.com/user-attachments/assets/770a600a-b3b5-4459-ae9a-f09943e82a0f" class="app-thumb" alt="icon">
+                <img src="https://github.com/user-attachments/assets/770a600a-b3b5-4459-ae9a-f09943e82a0f" class="app-thumb" alt="icon" loading="lazy">
                 <div class="app-info">
                   <a href="https://github.com/jphacks/F_2208" class="app-title">貯Pay箱 (Web)</a>
                   <div class="app-desc">電子マネー×ToDo管理。タスク達成でモチベーションを可視化。</div>
@@ -859,17 +886,17 @@
                 </div>
               </div>
               <div class="app-card" data-tags="ios game">
-                <img src="https://github.com/user-attachments/assets/322c6e47-1bdd-47b5-8439-7b186ef4b687" class="app-thumb" alt="icon">
+                <img src="https://github.com/user-attachments/assets/322c6e47-1bdd-47b5-8439-7b186ef4b687" class="app-thumb" alt="icon" loading="lazy">
                 <div class="app-info">
                   <a href="https://github.com/sakai1250/Who-is-the-Ground-Truth-" class="app-title">Who is GT? (iOS)</a>
                   <div class="app-desc">画像AIとユーザーが直接対決するゲーム。真の正解は誰だ？</div>
                   <div class="app-links">
-                    <a href="https://apps.apple.com/jp/app/id6755972438">App Store</a>
+                    <a href="https://apps.apple.com/jp/app/id6755972438"><svg class="octicon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512" width="14" height="14" fill="currentColor" style="margin-right:4px; vertical-align: text-bottom;"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 52.3-11.4 69.5-34.3z"/></svg> App Store</a>
                   </div>
                 </div>
               </div>
                <div class="app-card" data-tags="android">
-                <img src="https://github.com/user-attachments/assets/b6dec124-0428-49cc-9835-4d2a2d89f23a" class="app-thumb" alt="icon">
+                <img src="https://github.com/user-attachments/assets/b6dec124-0428-49cc-9835-4d2a2d89f23a" class="app-thumb" alt="icon" loading="lazy">
                 <div class="app-info">
                   <a href="https://github.com/jphacks/F_2107" class="app-title">NERO (Android)</a>
                   <div class="app-desc">タスク管理と同時に睡眠時間を記録。健康と効率を両立。</div>
@@ -879,7 +906,7 @@
                 </div>
               </div>
               <div class="app-card" data-tags="web">
-                <img src="https://github.com/user-attachments/assets/0e3a5e1e-a535-4aa6-918e-a66d2c62f4be" class="app-thumb" alt="icon">
+                <img src="https://github.com/user-attachments/assets/0e3a5e1e-a535-4aa6-918e-a66d2c62f4be" class="app-thumb" alt="icon" loading="lazy">
                 <div class="app-info">
                   <a href="https://github.com/sakai1250/HackU2022" class="app-title">StylePlan</a>
                   <div class="app-desc">大学生の一人暮らし支援。天気、ToDo、レシピ、音楽を統合。</div>
@@ -892,21 +919,21 @@
             <div class="section-title">Playground</div>
              <div class="grid-dense">
               <div class="app-card" data-tags="web ai">
-                <img src="https://github.com/user-attachments/assets/6810d77d-35e9-44ff-96c7-7921653a5e1c" class="app-thumb" alt="icon">
+                <img src="https://github.com/user-attachments/assets/6810d77d-35e9-44ff-96c7-7921653a5e1c" class="app-thumb" alt="icon" loading="lazy">
                 <div class="app-info">
                   <a href="https://github.com/sakai1250/ML_app_flask_test" class="app-title">金魚画像識別サイト</a>
                   <div class="app-desc">Flask製Webアプリ。金魚の画像をAIが判別。</div>
                 </div>
               </div>
               <div class="app-card" data-tags="ai">
-                <img src="https://github.com/user-attachments/assets/f463115e-7fdf-47ac-97d1-164cb3b9bea7" class="app-thumb" alt="icon">
+                <img src="https://github.com/user-attachments/assets/f463115e-7fdf-47ac-97d1-164cb3b9bea7" class="app-thumb" alt="icon" loading="lazy">
                 <div class="app-info">
                   <a href="https://github.com/sakai1250/RL_super_mario_bro" class="app-title">SuperMario強化学習</a>
                   <div class="app-desc">強化学習でマリオを自動プレイ。1-1, 1-3等クリア。</div>
                 </div>
               </div>
                <div class="app-card" data-tags="game">
-                <img src="https://github.com/user-attachments/assets/c82ac5df-8c0c-4e3b-b9e8-92ede64a08d9" class="app-thumb" alt="icon">
+                <img src="https://github.com/user-attachments/assets/c82ac5df-8c0c-4e3b-b9e8-92ede64a08d9" class="app-thumb" alt="icon" loading="lazy">
                 <div class="app-info">
                   <a href="https://github.com/sakai1250/Block_KUZUSHI_unity" class="app-title">ブロック崩し</a>
                   <div class="app-desc">Unityで制作したクラシックなブロック崩し。</div>
@@ -934,35 +961,35 @@
             
             <div class="badge-row" id="badges-languages">
               <h4>Languages</h4>
-              <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python">
-              <img src="https://img.shields.io/badge/swift-F54A2A?style=for-the-badge&logo=swift&logoColor=white" alt="Swift">
-              <img src="https://img.shields.io/badge/Dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white" alt="Dart">
-              <img src="https://img.shields.io/badge/TypeScript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript">
-              <img src="https://img.shields.io/badge/Java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java">
-              <img src="https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=c&logoColor=black" alt="C">
-              <img src="https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++">
+              <img src="https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54" alt="Python" loading="lazy">
+              <img src="https://img.shields.io/badge/swift-F54A2A?style=for-the-badge&logo=swift&logoColor=white" alt="Swift" loading="lazy">
+              <img src="https://img.shields.io/badge/Dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white" alt="Dart" loading="lazy">
+              <img src="https://img.shields.io/badge/TypeScript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white" alt="TypeScript" loading="lazy">
+              <img src="https://img.shields.io/badge/Java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java" loading="lazy">
+              <img src="https://img.shields.io/badge/C-A8B9CC?style=for-the-badge&logo=c&logoColor=black" alt="C" loading="lazy">
+              <img src="https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white" alt="C++" loading="lazy">
 
             </div>
             
             <div class="badge-row" id="badges-frameworks">
               <h4>Frameworks & Tools</h4>
-              <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="Flutter">
-              <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" alt="Django">
-              <img src="https://img.shields.io/badge/Flask-000?style=for-the-badge&logo=flask&logoColor=fff" alt="Flask">
-              <img src="https://img.shields.io/badge/Unity-FFFFFF?style=for-the-badge&logo=unity&logoColor=black" alt="Unity">
-              <img src="https://custom-icon-badges.demolab.com/badge/Microsoft%20Azure-0089D6?style=for-the-badge&logo=msazure&logoColor=white" alt="Azure">
-              <img src="https://img.shields.io/badge/ros2-%2322314E.svg?style=for-the-badge&logo=ros&logoColor=white" alt="ROS2">
+              <img src="https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white" alt="Flutter" loading="lazy">
+              <img src="https://img.shields.io/badge/Django-092E20?style=for-the-badge&logo=django&logoColor=white" alt="Django" loading="lazy">
+              <img src="https://img.shields.io/badge/Flask-000?style=for-the-badge&logo=flask&logoColor=fff" alt="Flask" loading="lazy">
+              <img src="https://img.shields.io/badge/Unity-FFFFFF?style=for-the-badge&logo=unity&logoColor=black" alt="Unity" loading="lazy">
+              <img src="https://custom-icon-badges.demolab.com/badge/Microsoft%20Azure-0089D6?style=for-the-badge&logo=msazure&logoColor=white" alt="Azure" loading="lazy">
+              <img src="https://img.shields.io/badge/ros2-%2322314E.svg?style=for-the-badge&logo=ros&logoColor=white" alt="ROS2" loading="lazy">
             </div>
             <div class="badge-row" id="badges-orgs">
               <h4>Organizations</h4>
-               <a href="https://github.com/RM-NAGOYASHACHIHOKO"><img src="https://github.com/user-attachments/assets/06029876-4a7b-44fe-8df6-cac6bbbf8391" alt="Nagoya" width="40"></a>
-               <a href="https://github.com/jphacks"><img src="https://github.com/user-attachments/assets/3df7dbab-02ff-494d-b468-3bf755043a2c" alt="JPHacks" width="40"></a>
-               <a href="https://www.jogiken.com/"><img src="https://github.com/user-attachments/assets/7109b8d7-da71-4b8d-8858-773980b358d5" alt="Jogiken" width="40"></a>
+               <a href="https://github.com/RM-NAGOYASHACHIHOKO"><img src="https://github.com/user-attachments/assets/06029876-4a7b-44fe-8df6-cac6bbbf8391" alt="Nagoya" width="40" loading="lazy"></a>
+               <a href="https://github.com/jphacks"><img src="https://github.com/user-attachments/assets/3df7dbab-02ff-494d-b468-3bf755043a2c" alt="JPHacks" width="40" loading="lazy"></a>
+               <a href="https://www.jogiken.com/"><img src="https://github.com/user-attachments/assets/7109b8d7-da71-4b8d-8858-773980b358d5" alt="Jogiken" width="40" loading="lazy"></a>
             </div>
 
             <div style="margin-top: 24px;">
-              <img id="stats-langs" alt="Top Langs" height="130" src="https://github-readme-stats-vercel-wea9.vercel.app/api/top-langs/?username=sakai1250&layout=compact&show_icons=true&theme=dracula&count_private=true" />
-              <img id="stats-general" alt="github stats" height="130" src="https://github-readme-stats-vercel-wea9.vercel.app/api?username=sakai1250&theme=dracula&show_icons=ture&count_private=true" />
+              <img id="stats-langs" alt="Top Langs" height="130" src="https://github-readme-stats-vercel-wea9.vercel.app/api/top-langs/?username=sakai1250&layout=compact&show_icons=true&theme=dracula&count_private=true" loading="lazy" />
+              <img id="stats-general" alt="github stats" height="130" src="https://github-readme-stats-vercel-wea9.vercel.app/api?username=sakai1250&theme=dracula&show_icons=ture&count_private=true" loading="lazy" />
             </div>
           </section>
 
@@ -995,6 +1022,11 @@
   </div>
   <div class="footer">
     Last updated: 2025-12-04 | Hosted on GitHub Pages.
+    <div style="margin-top: 12px;">
+      <a href="https://twitter.com/intent/tweet?text=Check%20out%20Taigo%20Sakai's%20Portfolio!&url=https://sakai1250.github.io/&via=ikaitaig" target="_blank" class="btn btn-sm" style="color: var(--text-sub); border-color: var(--stroke); background: var(--surface-2); display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M9.332 6.925 14.544 1h-1.235L8.783 6.145 5.17 1H1l5.466 7.78L1 14.993h1.235l4.78-5.433 3.816 5.433H15L9.332 6.925ZM7.64 8.848l-.554-.775L2.68 1.91h1.897l3.556 4.975.554.775 4.622 6.466h-1.897L7.64 8.848Z"></path></svg> Xでシェア
+      </a>
+    </div>
   </div>
   <button id="back-to-top" type="button" aria-label="Back to top">↑ Top</button>
 
@@ -1538,6 +1570,107 @@
     }
   }
 
+  // GitHub README (profile) からアプリの説明文を同期
+  async function syncAppDescriptions() {
+    const username = 'sakai1250';
+    const repo = 'sakai1250';
+    const branch = 'main';
+    const cacheKey = 'github_profile_readme_apps_cache';
+    
+    const cached = localStorage.getItem(cacheKey);
+    const now = Date.now();
+    let cacheData = {};
+
+    if (cached) {
+      try {
+        const parsed = JSON.parse(cached);
+        if (now - parsed.timestamp < 3600 * 1000) { // 1時間キャッシュ
+          cacheData = parsed.data;
+        }
+      } catch (e) {}
+    }
+
+    const cards = document.querySelectorAll('.app-card');
+    
+    // キャッシュがあれば先に適用
+    cards.forEach(card => {
+      const links = card.querySelectorAll('a');
+      let repoSlug = null;
+      for (const link of links) {
+        const match = link.href.match(/github\.com\/([^\/]+\/[^\/]+)/);
+        if (match) {
+          repoSlug = match[1].replace(/\.git$/, '');
+          break;
+        }
+      }
+      if (repoSlug && cacheData[repoSlug]) {
+        const descEl = card.querySelector('.app-desc');
+        if (descEl) descEl.textContent = cacheData[repoSlug];
+      }
+    });
+
+    try {
+      const res = await fetch(`https://raw.githubusercontent.com/${username}/${repo}/${branch}/README.md`);
+      if (!res.ok) return;
+      const text = await res.text();
+      const lines = text.split('\n');
+      
+      const newData = {};
+      let hasUpdates = false;
+
+      cards.forEach(card => {
+        const links = card.querySelectorAll('a');
+        let repoSlug = null;
+        for (const link of links) {
+          const match = link.href.match(/github\.com\/([^\/]+\/[^\/]+)/);
+          if (match) {
+            repoSlug = match[1].replace(/\.git$/, '');
+            break;
+          }
+        }
+
+        if (!repoSlug) return;
+
+        // READMEから該当リポジトリの行を探す
+        for (const line of lines) {
+          if (line.includes(repoSlug)) {
+            let desc = '';
+            if (line.includes('|')) {
+              // テーブル形式の場合、リンクの次のカラムなどを説明文とみなす簡易ロジック
+              const parts = line.split('|').map(s => s.trim()).filter(s => s);
+              const linkIndex = parts.findIndex(p => p.includes(repoSlug));
+              if (linkIndex !== -1 && linkIndex + 1 < parts.length) {
+                desc = parts[linkIndex + 1];
+              }
+            } else {
+              // リスト形式などの場合、リンク記法を除去して残りを説明文とする
+              let temp = line.replace(/\[([^\]]+)\]\([^\)]+\)/g, ''); // リンク除去
+              temp = temp.replace(/^[\s\-\*\d\.:]+/, ''); // 先頭の記号除去
+              desc = temp.trim();
+            }
+
+            desc = desc.replace(/<br\s*\/?>/gi, ' '); // brタグ除去
+            desc = desc.replace(/`/g, ''); // バッククォート除去
+
+            if (desc && desc.length > 5) {
+              newData[repoSlug] = desc;
+              const descEl = card.querySelector('.app-desc');
+              if (descEl) descEl.textContent = desc;
+              hasUpdates = true;
+            }
+            break;
+          }
+        }
+      });
+
+      if (hasUpdates) {
+        localStorage.setItem(cacheKey, JSON.stringify({ timestamp: now, data: newData }));
+      }
+    } catch (e) {
+      console.warn('Failed to sync app descriptions from profile README', e);
+    }
+  }
+
   // お問い合わせフォーム送信処理
   function initContactForm() {
     const form = document.getElementById('contact-form');
@@ -1620,6 +1753,31 @@
     });
   }
 
+  // タイピングアニメーション
+  function initTyping() {
+    const textEl = document.getElementById('typing-text');
+    if (!textEl) return;
+    
+    const texts = ["I'm Taigo Sakai", "Researcher of Deep Learning", "Engineer of iOS / Web"];
+    let textIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    let wait = 2000;
+
+    function type() {
+      const current = texts[textIndex];
+      if (isDeleting) charIndex--; else charIndex++;
+      textEl.textContent = current.substring(0, charIndex);
+
+      let speed = isDeleting ? 50 : 100;
+      if (!isDeleting && charIndex === current.length) { speed = wait; isDeleting = true; }
+      else if (isDeleting && charIndex === 0) { isDeleting = false; textIndex = (textIndex + 1) % texts.length; speed = 500; }
+
+      setTimeout(type, speed);
+    }
+    setTimeout(type, 1000);
+  }
+
   // 初期化
   (function init() {
     initTheme();
@@ -1636,6 +1794,8 @@
     fetchQiitaArticles();
     initContactForm();
     initSmoothScroll();
+    initTyping();
+    syncAppDescriptions();
     applyFilters();
   })();
 </script>
