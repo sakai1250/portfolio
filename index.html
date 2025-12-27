@@ -9,6 +9,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="名城大学大学院 博士後期課程 坂井泰吾のポートフォリオ。Deep Learning, Computer Visionの研究や、iOS/Webアプリ開発の実績を紹介しています。">
+  <!-- Performance: Preconnect to external asset domains -->
+  <link rel="preconnect" href="https://github-readme-stats-vercel-wea9.vercel.app">
+  <link rel="preconnect" href="https://img.shields.io">
+  <link rel="dns-prefetch" href="https://api.rss2json.com">
+  <!-- Dynamic Theme Color for Mobile Browsers -->
+  <meta name="theme-color" content="#0d1117">
   <meta property="og:title" content="Taigo Sakai | Portfolio">
   <meta property="og:description" content="名城大学大学院 博士後期課程 坂井泰吾のポートフォリオ。Deep Learning, Computer Visionの研究や、iOS/Webアプリ開発の実績を紹介しています。">
   <meta property="og:type" content="website">
@@ -157,6 +163,7 @@
       box-shadow: 0 0 0 1px rgba(47, 129, 247, 0.2), 0 8px 18px rgba(0, 0, 0, 0.25);
       position: relative;
       overflow: hidden;
+      transition: transform 0.1s ease-out, box-shadow 0.3s ease; /* For Magnetic Effect */
     }
     .header-btn.primary::after {
       content: "";
@@ -384,6 +391,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 16px;
+      container-type: inline-size;
     }
     .app-card {
       background: var(--surface); border: 1px solid var(--stroke); border-radius: 6px;
@@ -405,6 +413,12 @@
     .app-links { font-size: 11px; }
     .app-links a { margin-right: 8px; color: var(--muted); border: 1px solid var(--stroke); padding: 2px 6px; border-radius: 4px; }
     .app-links a:hover { color: var(--text-main); border-color: var(--muted); text-decoration: none; }
+
+    /* Container Query: Optimize card layout for narrow containers (Modern CSS) */
+    @container (max-width: 340px) {
+      .app-card { flex-direction: column; }
+      .app-thumb { width: 100%; height: 140px; margin-bottom: 8px; }
+    }
 
     /* Footer */
     .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--stroke-subtle); font-size: 12px; color: var(--muted); text-align: center; }
@@ -557,6 +571,23 @@
     .form-control:focus { outline: none; border-color: var(--accent-2); box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1); }
     textarea.form-control { min-height: 120px; resize: vertical; }
     .form-status { margin-top: 12px; font-size: 14px; color: var(--text-main); font-weight: 600; }
+
+    /* === Print Styles (PDF/印刷用最適化) === */
+    @media print {
+      .header-bar { position: static; background: none; box-shadow: none; color: #000; padding: 0; margin-bottom: 20px; }
+      .header-actions, .header-nav, .tab-nav, .utility-bar, .footer, #back-to-top, #theme-toggle, .copy-btn, .modal-overlay, .filter-row { display: none !important; }
+      body { background: #fff !important; color: #000 !important; }
+      .page { max-width: 100%; margin: 0; padding: 0; }
+      
+      /* 印刷時は全てのタブコンテンツを展開する */
+      .tab-content { display: block !important; opacity: 1 !important; transform: none !important; }
+      .hidden-item { display: list-item !important; }
+      
+      .section-card { border: none; padding: 0; margin-bottom: 24px; break-inside: avoid; }
+      .section-title { border-bottom: 2px solid #000; color: #000; }
+      .repo-list li, .app-card { border: 1px solid #ccc; break-inside: avoid; box-shadow: none; }
+      a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: #555; word-break: break-all; }
+    }
   </style>
   <!-- Structured Data (JSON-LD) for SEO & Professionalism -->
   <script type="application/ld+json">
@@ -1037,9 +1068,9 @@
     </div>
   </div>
   <div class="footer">
-    Last updated: 2025-12-04 | Hosted on GitHub Pages.
+    Last updated: <span id="last-updated">2025-12-04</span> | Hosted on GitHub Pages.
     <div style="margin-top: 12px;">
-      <a href="https://twitter.com/intent/tweet?text=Check%20out%20Taigo%20Sakai's%20Portfolio!&url=https://sakai1250.github.io/&via=ikaitaig" target="_blank" class="btn btn-sm" style="color: var(--text-sub); border-color: var(--stroke); background: var(--surface-2); display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
+      <a id="share-btn" href="https://twitter.com/intent/tweet?text=Check%20out%20Taigo%20Sakai's%20Portfolio!&url=https://sakai1250.github.io/&via=ikaitaig" target="_blank" class="btn btn-sm" style="color: var(--text-sub); border-color: var(--stroke); background: var(--surface-2); display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M9.332 6.925 14.544 1h-1.235L8.783 6.145 5.17 1H1l5.466 7.78L1 14.993h1.235l4.78-5.433 3.816 5.433H15L9.332 6.925ZM7.64 8.848l-.554-.775L2.68 1.91h1.897l3.556 4.975.554.775 4.622 6.466h-1.897L7.64 8.848Z"></path></svg> Xでシェア
       </a>
     </div>
@@ -1354,6 +1385,12 @@
       themeIcon.textContent = theme === 'light' ? '☀️' : '🌙';
     }
 
+    // ブラウザのテーマカラー(アドレスバーの色)を更新
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', theme === 'light' ? '#ffffff' : '#0d1117');
+    }
+
     // GitHub Statsのテーマ更新 (lightならdefault, darkならdracula)
     const statsTheme = theme === 'light' ? 'default' : 'dracula';
     const statsIds = ['stats-langs', 'stats-general'];
@@ -1612,7 +1649,12 @@
     }
   }
 
-  // GitHub README (profile) からアプリの説明文と画像を同期
+  /**
+   * Syncs app descriptions and images from the GitHub Profile README.
+   * Uses localStorage for caching to minimize API requests.
+   * 
+   * @returns {Promise<void>}
+   */
   async function syncAppDetails() {
     const username = 'sakai1250';
     const repo = 'sakai1250';
@@ -1872,6 +1914,199 @@
     console.log('%cWelcome to my portfolio! Feel free to check the source code on GitHub.', 'color: #58a6ff; font-size: 12px; margin-top: 4px;');
   }
 
+  // "Decoding" Text Effect for Header Name
+  function initHackerEffect() {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    const element = document.querySelector('.header-name');
+    if (!element) return;
+
+    const originalText = element.innerText;
+
+    element.addEventListener('mouseover', event => {
+      let iteration = 0;
+      clearInterval(element.interval);
+
+      element.interval = setInterval(() => {
+        event.target.innerText = originalText
+          .split("")
+          .map((letter, index) => {
+            if(index < iteration) {
+              return originalText[index];
+            }
+            // スペースはそのまま維持
+            if (originalText[index] === ' ') return ' ';
+            return letters[Math.floor(Math.random() * letters.length)];
+          })
+          .join("");
+
+        if(iteration >= originalText.length){ 
+          clearInterval(element.interval);
+          event.target.innerText = originalText;
+        }
+        
+        iteration += 1 / 3;
+      }, 30);
+    });
+  }
+
+  // Web Share API Integration
+  function initShare() {
+    const shareBtn = document.getElementById('share-btn');
+    if (!shareBtn || !navigator.share) return;
+
+    shareBtn.addEventListener('click', async (e) => {
+      e.preventDefault();
+      try {
+        await navigator.share({
+          title: 'Taigo Sakai | Portfolio',
+          text: "Check out Taigo Sakai's Portfolio! Deep Learning Researcher & Engineer.",
+          url: window.location.href,
+        });
+      } catch (err) {
+        // キャンセル時などは何もしない（フォールバック不要、クリックイベント消費済み）
+        console.debug('Share canceled');
+      }
+    });
+  }
+
+  // 1. Dynamic Last Updated from GitHub API
+  async function fetchLastUpdated() {
+    const dateEl = document.getElementById('last-updated');
+    if (!dateEl) return;
+    
+    // GitHub Pagesのリポジトリ名を指定 (通常は username.github.io)
+    const repo = 'sakai1250/sakai1250.github.io'; 
+    
+    try {
+      const res = await fetch(`https://api.github.com/repos/${repo}/commits?per_page=1`);
+      if (res.ok) {
+        const data = await res.json();
+        const date = new Date(data[0].commit.committer.date);
+        
+        // 2. Modern JS: Relative Time Format (No external libraries)
+        const now = new Date();
+        const diffDays = Math.floor((date - now) / (1000 * 60 * 60 * 24));
+        const rtf = new Intl.RelativeTimeFormat('ja', { numeric: 'auto' });
+        const relative = rtf.format(diffDays, 'day');
+
+        const dateStr = date.toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' }).replace(/\//g, '-');
+        dateEl.innerHTML = `${dateStr} <span style="color:var(--muted); font-weight:400;">(${relative})</span>`;
+      }
+    } catch (e) {
+      console.debug('Failed to fetch last updated date');
+    }
+  }
+
+  // 2. Web Vitals Logger (Performance Engineering)
+  function initWebVitals() {
+    if (typeof PerformanceObserver === 'undefined') return;
+    try {
+      const observer = new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+          // LCP: Largest Contentful Paint
+          if (entry.entryType === 'largest-contentful-paint') {
+             console.log(`%c[Web Vitals] LCP: ${Math.round(entry.startTime)}ms`, 'color: #bf3989; font-weight: bold;');
+          }
+          // CLS: Cumulative Layout Shift
+          if (entry.entryType === 'layout-shift' && !entry.hadRecentInput) {
+             console.log(`%c[Web Vitals] CLS: ${entry.value.toFixed(4)}`, 'color: #bf3989; font-weight: bold;');
+          }
+        }
+      });
+      observer.observe({ type: 'largest-contentful-paint', buffered: true });
+      observer.observe({ type: 'layout-shift', buffered: true });
+    } catch (e) {}
+  }
+
+  // 3. Magnetic Button Effect (UI/UX Engineering)
+  function initMagneticButtons() {
+    const btn = document.querySelector('.header-btn.primary');
+    if (!btn) return;
+    
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      
+      // ボタンを中心から少しずらす (磁力のような演出)
+      btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+    });
+
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = 'translate(0, 0)';
+    });
+  }
+
+  // 1. 3D Tilt Effect (Math & Interactive DOM)
+  function initTiltEffect() {
+    const card = document.querySelector('.profile-card');
+    if (!card || window.matchMedia('(hover: none)').matches) return;
+
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      
+      // 中心からの距離を計算 (-1 to 1)
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+      const rotateX = ((y - centerY) / centerY) * -4; // Max tilt deg
+      const rotateY = ((x - centerX) / centerX) * 4;
+
+      // アニメーションを滑らかにするためtransitionを一時的に無効化
+      card.style.transition = 'none';
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    });
+
+    card.addEventListener('mouseleave', () => {
+      card.style.transition = 'transform 0.5s ease, box-shadow 0.5s ease';
+      card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
+    });
+  }
+
+  // 3. Network Status Monitor (Resilience)
+  function initNetworkStatus() {
+    const showToast = (msg, type) => {
+      let toast = document.getElementById('network-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'network-toast';
+        document.body.appendChild(toast);
+      }
+      toast.textContent = msg;
+      toast.style.background = type === 'error' ? 'var(--accent-warm)' : 'var(--accent)';
+      toast.style.color = '#fff';
+      toast.classList.add('show');
+      
+      if (type === 'success') {
+        setTimeout(() => toast.classList.remove('show'), 3000);
+      }
+    };
+
+    window.addEventListener('offline', () => showToast('オフラインモード: 接続を確認してください', 'error'));
+    window.addEventListener('online', () => showToast('オンラインに復帰しました', 'success'));
+  }
+
+  function initKonami() {
+    // Konami Code: Up, Up, Down, Down, Left, Right, Left, Right, B, A
+    const code = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    let cursor = 0;
+    document.addEventListener('keydown', (e) => {
+      if (e.key === code[cursor]) {
+        cursor++;
+        if (cursor === code.length) {
+          console.log('%c★ Konami Code Activated! ★', 'color: #f78166; font-size: 20px; font-weight: bold;');
+          document.body.style.transition = 'transform 1s ease';
+          document.body.style.transform = 'rotate(360deg)'; // 画面が一回転する演出
+          setTimeout(() => { document.body.style.transform = 'none'; }, 1000);
+          cursor = 0;
+        }
+      } else {
+        cursor = 0;
+      }
+    });
+  }
+
   // 初期化
   (function init() {
     initTheme();
@@ -1893,6 +2128,14 @@
     initTabNav();
     applyFilters();
     initConsoleMessage();
+    initHackerEffect();
+    initShare();
+    initKonami();
+    fetchLastUpdated();
+    initWebVitals();
+    initMagneticButtons();
+    initTiltEffect();
+    initNetworkStatus();
   })();
 </script>
 </body>
