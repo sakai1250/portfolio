@@ -38,7 +38,7 @@ jobs:
           from io import BytesIO
 
           # 設定
-          README_PATH = 'README.md'
+          README_URL = 'https://raw.githubusercontent.com/sakai1250/sakai1250/main/Readme.md'
           ASSETS_DIR = 'assets'
           THUMB_DIR = os.path.join(ASSETS_DIR, 'thumbnails')
           DATA_FILE = os.path.join(ASSETS_DIR, 'data.json')
@@ -50,13 +50,12 @@ jobs:
               if f.endswith('.jpg'):
                   os.remove(os.path.join(THUMB_DIR, f))
 
-          # README読み込み
-          if not os.path.exists(README_PATH):
-              print('README.md not found.')
+          # README読み込み (外部URLから取得)
+          res = requests.get(README_URL)
+          if res.status_code != 200:
+              print(f'Failed to fetch README: {res.status_code}')
               exit(0)
-
-          with open(README_PATH, 'r', encoding='utf-8') as f:
-              content = f.read()
+          content = res.text
 
           data = {'badges': {}, 'apps': {}}
 
