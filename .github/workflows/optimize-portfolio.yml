@@ -44,6 +44,11 @@ jobs:
           DATA_FILE = os.path.join(ASSETS_DIR, 'data.json')
 
           os.makedirs(THUMB_DIR, exist_ok=True)
+          
+          # 古いJPEGファイルを削除 (WebP移行のため)
+          for f in os.listdir(THUMB_DIR):
+              if f.endswith('.jpg'):
+                  os.remove(os.path.join(THUMB_DIR, f))
 
           # README読み込み
           if not os.path.exists(README_PATH):
@@ -106,19 +111,20 @@ jobs:
                       # 画像がある場合、ダウンロードしてリサイズ
                       if img_src and img_src.startswith('http'):
                           try:
-                              filename = f\"{full_repo.replace('/', '_')}.jpg\"
+                              filename = f\"{full_repo.replace('/', '_')}.webp\"
                               local_path = os.path.join(THUMB_DIR, filename)
                               
                               # 画像取得
                               r = requests.get(img_src, timeout=10)
                               if r.status_code == 200:
                                   img = Image.open(BytesIO(r.content))
-                                  # RGB変換 (PNGの透過対策など)
-                                  if img.mode in ('RGBA', 'P'): img = img.convert('RGB')
+                                  # モード変換 (WebPはRGBA対応。P/CMYKは変換)
+                                  if img.mode == 'P': img = img.convert('RGBA')
+                                  if img.mode == 'CMYK': img = img.convert('RGB')
                                   # リサイズ (幅400pxに制限)
                                   img.thumbnail((400, 400))
-                                  # 保存 (品質85)
-                                  img.save(local_path, 'JPEG', quality=85)
+                                  # 保存 (WebP, 品質85)
+                                  img.save(local_path, 'WEBP', quality=85)
                                   
                                   app_data['img'] = f\"assets/thumbnails/{filename}\"
                               else:
