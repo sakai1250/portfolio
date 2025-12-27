@@ -216,9 +216,11 @@
 
     
     /* === Sidebar === */
-    .profile-sidebar { position: sticky; top: 24px; height: fit-content; }
+    .profile-sidebar { position: sticky; top: calc(var(--header-height, 80px) + 24px); height: fit-content; }
     .profile-card {
       background-color: var(--surface); border: 1px solid var(--stroke); border-radius: 6px;
+      background-image: radial-gradient(var(--stroke) 1px, transparent 1px);
+      background-size: 20px 20px;
       padding: 16px; margin-bottom: 16px; box-shadow: 0 8px 26px rgba(0, 0, 0, 0.28);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       position: relative; overflow: hidden;
@@ -344,12 +346,6 @@
       font-size: 15px; font-weight: 600; color: var(--accent-2); margin-top: 20px; margin-bottom: 10px;
       font-family: "Space Grotesk", "Noto Sans JP", "SF Pro Text", "Segoe UI", system-ui, sans-serif;
     }
-    @keyframes flash-highlight {
-      0% { color: var(--text-main); text-shadow: none; transform: scale(1); }
-      50% { color: var(--accent); text-shadow: 0 0 15px var(--accent); transform: scale(1.05); transform-origin: left; }
-      100% { color: var(--text-main); text-shadow: none; transform: scale(1); }
-    }
-    .section-title.flash-active { animation: flash-highlight 0.8s ease-out; }
 
     /* Lists & Items */
     .repo-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
@@ -358,8 +354,7 @@
       padding: 12px 16px; font-size: 14px; line-height: 1.5;
       transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
-    .repo-list li:hover,
-    .repo-list li.highlight-active {
+    .repo-list li:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       border-color: var(--accent-2);
@@ -402,8 +397,7 @@
       padding: 12px; display: flex; flex-direction: row; gap: 12px;
       align-items: start; transition: border-color 0.2s, transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .app-card:hover,
-    .app-card.highlight-active { 
+    .app-card:hover { 
       border-color: var(--accent-2);
       transform: translateY(-4px);
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -2208,140 +2202,6 @@
     });
   }
 
-  // 自動スクロール機能 (Auto Scroll)
-  function initAutoScroll() {
-    let isAutoScrolling = true;
-    let animationId = null;
-    let lastEncounteredSection = null;
-
-    const stopAutoScroll = () => {
-      isAutoScrolling = false;
-      if (animationId) cancelAnimationFrame(animationId);
-      // ハイライトを解除
-      document.querySelectorAll('.highlight-active').forEach(el => el.classList.remove('highlight-active'));
-      ['wheel', 'mousedown', 'touchstart', 'touchmove', 'keydown'].forEach(event => {
-        window.removeEventListener(event, stopAutoScroll);
-      });
-    };
-
-    ['wheel', 'mousedown', 'touchstart', 'touchmove', 'keydown'].forEach(event => {
-      window.addEventListener(event, stopAutoScroll, { passive: true });
-    });
-
-    const highlightItems = () => {
-      const nav = document.querySelector('.tab-nav');
-      const navBottom = nav ? nav.getBoundingClientRect().bottom : 0;
-      const targetY = navBottom + 60;
-
-      // 現在表示中のタブ内のアイテムのみ対象にする
-      const targets = document.querySelectorAll('.tab-content.active .repo-list li, .tab-content.active .app-card');
-      const toHighlight = [];
-      const toUnhighlight = [];
-
-      targets.forEach(el => {
-        const rect = el.getBoundingClientRect();
-        const elCenter = rect.top + rect.height / 2;
-        // 画面上部付近 (±50px) にある要素をハイライト
-        if (Math.abs(elCenter - targetY) < 50) {
-          toHighlight.push(el);
-        } else {
-          toUnhighlight.push(el);
-        }
-      });
-
-      toHighlight.forEach(el => el.classList.add('highlight-active'));
-      toUnhighlight.forEach(el => el.classList.remove('highlight-active'));
-    };
-
-    const step = () => {
-      if (!isAutoScrolling) return;
-      
-      // "もっと見る"ボタンの自動クリック
-      const currentTab = document.querySelector('.tab-content.active');
-      if (currentTab) {
-        const showMoreBtns = currentTab.querySelectorAll('button');
-        showMoreBtns.forEach(btn => {
-          if (btn.textContent.includes('もっと見る')) {
-            const rect = btn.getBoundingClientRect();
-            if (rect.top < window.innerHeight) {
-              btn.click();
-            }
-          }
-        });
-      }
-
-      highlightItems();
-
-      // セクションタイトルでの一時停止判定
-      // タブナビゲーションの直下（視界の一番上）に来たタイミングで判定
-      const nav = document.querySelector('.tab-nav');
-      const navBottom = nav ? nav.getBoundingClientRect().bottom : 0;
-      const checkY = navBottom + 30;
-
-      const activeTab = document.querySelector('.tab-content.active');
-      if (activeTab) {
-        const sections = activeTab.querySelectorAll('.section-title');
-        for (const section of sections) {
-          const rect = section.getBoundingClientRect();
-          // 判定ライン付近にあり、かつまだ停止していない場合
-          if (rect.top >= checkY && rect.top < checkY + 15 && lastEncounteredSection !== section) {
-            lastEncounteredSection = section;
-            section.classList.add('flash-active');
-            setTimeout(() => section.classList.remove('flash-active'), 1000);
-            // 一時停止 (1.2秒)
-            setTimeout(() => {
-              if (isAutoScrolling) step();
-            }, 1200);
-            return; // ループを一度抜ける
-          }
-        }
-      }
-
-      // Contactセクション到達判定 (スキップ) または 最下部到達
-      const contactSection = document.getElementById('contact');
-      let isEnd = false;
-      if (contactSection) {
-        const rect = contactSection.getBoundingClientRect();
-        if (rect.top <= window.innerHeight) isEnd = true;
-      }
-      if (!isEnd && (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) {
-        isEnd = true;
-      }
-
-      if (isEnd) {
-        // タブ切り替え前の一時停止
-        setTimeout(() => {
-          if (!isAutoScrolling) return;
-          const researchTab = document.getElementById('ja-research');
-          if (researchTab && researchTab.classList.contains('active')) {
-            switchTab('engineer');
-          } else {
-            switchTab('research');
-          }
-          window.scrollTo(0, 0);
-          lastEncounteredSection = null; // セクション追跡をリセット
-          // 切り替え後の再開待ち
-          setTimeout(() => {
-            if (isAutoScrolling) step();
-          }, 1000);
-        }, 2000);
-        return;
-      }
-      
-      window.scrollBy(0, 2.4); // スクロール速度 (数値を変えると速さが変わります)
-      animationId = requestAnimationFrame(step);
-    };
-
-    window.addEventListener('load', () => {
-      setTimeout(() => {
-        // ユーザーがまだ操作しておらず、ページの先頭付近にいる場合のみ開始
-        if (isAutoScrolling && window.scrollY < 50) {
-          step();
-        }
-      }, 2000); // ローディング終了後、少し待ってから開始
-    });
-  }
-
   // 初期化
   (function init() {
     initTheme();
@@ -2371,7 +2231,6 @@
     initMagneticButtons();
     initTiltEffect();
     initNetworkStatus();
-    initAutoScroll();
   })();
 </script>
 </body>
