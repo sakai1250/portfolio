@@ -344,6 +344,12 @@
       font-size: 15px; font-weight: 600; color: var(--accent-2); margin-top: 20px; margin-bottom: 10px;
       font-family: "Space Grotesk", "Noto Sans JP", "SF Pro Text", "Segoe UI", system-ui, sans-serif;
     }
+    @keyframes flash-highlight {
+      0% { color: var(--text-main); text-shadow: none; transform: scale(1); }
+      50% { color: var(--accent); text-shadow: 0 0 15px var(--accent); transform: scale(1.05); transform-origin: left; }
+      100% { color: var(--text-main); text-shadow: none; transform: scale(1); }
+    }
+    .section-title.flash-active { animation: flash-highlight 0.8s ease-out; }
 
     /* Lists & Items */
     .repo-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
@@ -2206,6 +2212,7 @@
   function initAutoScroll() {
     let isAutoScrolling = true;
     let animationId = null;
+    let lastEncounteredSection = null;
 
     const stopAutoScroll = () => {
       isAutoScrolling = false;
@@ -2246,18 +2253,54 @@
     const step = () => {
       if (!isAutoScrolling) return;
       highlightItems();
+
+      // セクションタイトルでの一時停止判定
+      // タブナビゲーションの直下（視界の一番上）に来たタイミングで判定
+      const nav = document.querySelector('.tab-nav');
+      const navBottom = nav ? nav.getBoundingClientRect().bottom : 0;
+      const checkY = navBottom + 30;
+
+      const activeTab = document.querySelector('.tab-content.active');
+      if (activeTab) {
+        const sections = activeTab.querySelectorAll('.section-title');
+        for (const section of sections) {
+          const rect = section.getBoundingClientRect();
+          // 判定ライン付近にあり、かつまだ停止していない場合
+          if (rect.top >= checkY && rect.top < checkY + 15 && lastEncounteredSection !== section) {
+            lastEncounteredSection = section;
+            section.classList.add('flash-active');
+            setTimeout(() => section.classList.remove('flash-active'), 1000);
+            // 一時停止 (1.2秒)
+            setTimeout(() => {
+              if (isAutoScrolling) step();
+            }, 1200);
+            return; // ループを一度抜ける
+          }
+        }
+      }
+
       // 最下部に到達したらタブを切り替えてループ
       if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) {
-        const researchTab = document.getElementById('ja-research');
-        if (researchTab && researchTab.classList.contains('active')) {
-          switchTab('engineer');
-        } else {
-          switchTab('research');
-        }
-        window.scrollTo(0, 0);
-      } else {
-        window.scrollBy(0, 2.4); // スクロール速度 (数値を変えると速さが変わります)
+        // タブ切り替え前の一時停止
+        setTimeout(() => {
+          if (!isAutoScrolling) return;
+          const researchTab = document.getElementById('ja-research');
+          if (researchTab && researchTab.classList.contains('active')) {
+            switchTab('engineer');
+          } else {
+            switchTab('research');
+          }
+          window.scrollTo(0, 0);
+          lastEncounteredSection = null; // セクション追跡をリセット
+          // 切り替え後の再開待ち
+          setTimeout(() => {
+            if (isAutoScrolling) step();
+          }, 1000);
+        }, 2000);
+        return;
       }
+      
+      window.scrollBy(0, 2.4); // スクロール速度 (数値を変えると速さが変わります)
       animationId = requestAnimationFrame(step);
     };
 
