@@ -335,7 +335,10 @@
     .badge-year {
       display: inline-block; padding: 2px 8px; font-size: 11px; font-weight: 600;
       border-radius: 12px; background-color: #238636; color: #ffffff; margin-right: 6px;
+      cursor: pointer;
+      transition: opacity 0.2s;
     }
+    .badge-year:hover { opacity: 0.8; }
     li[data-year="2026"] .badge-year { background-color: #8957e5; }
     li[data-year="2025"] .badge-year { background-color: #1f6feb; }
     li[data-year="2024"] .badge-year { background-color: #238636; }
@@ -1104,6 +1107,23 @@
         });
       });
     }
+
+    // リスト内の年度バッジをクリックした時の処理
+    container.querySelectorAll('.badge-year').forEach(badge => {
+      badge.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const li = badge.closest('li');
+        const year = li ? li.dataset.year : null;
+        
+        if (year && yearRow) {
+          filterState.year = year;
+          yearRow.querySelectorAll('.chip').forEach(chip => {
+            chip.classList.toggle('active', chip.dataset.year === year);
+          });
+          applyFilters();
+        }
+      });
+    });
   }
 
   function copyText(text) {
