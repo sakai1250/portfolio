@@ -352,7 +352,8 @@
       padding: 12px 16px; font-size: 14px; line-height: 1.5;
       transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
-    .repo-list li:hover {
+    .repo-list li:hover,
+    .repo-list li.highlight-active {
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       border-color: var(--accent-2);
@@ -395,7 +396,8 @@
       padding: 12px; display: flex; flex-direction: row; gap: 12px;
       align-items: start; transition: border-color 0.2s, transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .app-card:hover { 
+    .app-card:hover,
+    .app-card.highlight-active { 
       border-color: var(--accent-2);
       transform: translateY(-4px);
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -2200,6 +2202,75 @@
     });
   }
 
+  // 自動スクロール機能 (Auto Scroll)
+  function initAutoScroll() {
+    let isAutoScrolling = true;
+    let animationId = null;
+
+    const stopAutoScroll = () => {
+      isAutoScrolling = false;
+      if (animationId) cancelAnimationFrame(animationId);
+      // ハイライトを解除
+      document.querySelectorAll('.highlight-active').forEach(el => el.classList.remove('highlight-active'));
+      ['wheel', 'mousedown', 'touchstart', 'touchmove', 'keydown'].forEach(event => {
+        window.removeEventListener(event, stopAutoScroll);
+      });
+    };
+
+    ['wheel', 'mousedown', 'touchstart', 'touchmove', 'keydown'].forEach(event => {
+      window.addEventListener(event, stopAutoScroll, { passive: true });
+    });
+
+    const highlightItems = () => {
+      const center = window.innerHeight / 2;
+      // 現在表示中のタブ内のアイテムのみ対象にする
+      const targets = document.querySelectorAll('.tab-content.active .repo-list li, .tab-content.active .app-card');
+      const toHighlight = [];
+      const toUnhighlight = [];
+
+      targets.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const elCenter = rect.top + rect.height / 2;
+        // 画面中央付近 (±120px) にある要素をハイライト
+        if (Math.abs(elCenter - center) < 120) {
+          toHighlight.push(el);
+        } else {
+          toUnhighlight.push(el);
+        }
+      });
+
+      toHighlight.forEach(el => el.classList.add('highlight-active'));
+      toUnhighlight.forEach(el => el.classList.remove('highlight-active'));
+    };
+
+    const step = () => {
+      if (!isAutoScrolling) return;
+      highlightItems();
+      // 最下部に到達したらタブを切り替えてループ
+      if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) {
+        const researchTab = document.getElementById('ja-research');
+        if (researchTab && researchTab.classList.contains('active')) {
+          switchTab('engineer');
+        } else {
+          switchTab('research');
+        }
+        window.scrollTo(0, 0);
+      } else {
+        window.scrollBy(0, 2.4); // スクロール速度 (数値を変えると速さが変わります)
+      }
+      animationId = requestAnimationFrame(step);
+    };
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        // ユーザーがまだ操作しておらず、ページの先頭付近にいる場合のみ開始
+        if (isAutoScrolling && window.scrollY < 50) {
+          step();
+        }
+      }, 2000); // ローディング終了後、少し待ってから開始
+    });
+  }
+
   // 初期化
   (function init() {
     initTheme();
@@ -2229,6 +2300,7 @@
     initMagneticButtons();
     initTiltEffect();
     initNetworkStatus();
+    initAutoScroll();
   })();
 </script>
 </body>
