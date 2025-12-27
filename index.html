@@ -505,6 +505,23 @@
       animation: pulse 1.5s ease-in-out infinite;
     }
     @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.9); } }
+
+    /* === Contact Form === */
+    .form-group { margin-bottom: 16px; }
+    .form-label { display: block; margin-bottom: 8px; font-size: 14px; font-weight: 600; color: var(--text-main); }
+    .form-control {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid var(--stroke);
+      background: var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      transition: border-color 0.2s;
+    }
+    .form-control:focus { outline: none; border-color: var(--accent-2); box-shadow: 0 0 0 3px rgba(88, 166, 255, 0.1); }
+    textarea.form-control { min-height: 120px; resize: vertical; }
+    .form-status { margin-top: 12px; font-size: 14px; color: var(--text-main); font-weight: 600; }
   </style>
 </head>
 <body>
@@ -529,7 +546,7 @@
           <button class="btn btn-sm header-btn" id="theme-toggle" type="button" aria-label="テーマ切り替え">
             <span id="theme-icon">🌙</span>
           </button>
-          <a href="mailto:200442066@ccalumni.meijo-u.ac.jp" class="btn btn-sm header-btn">連絡</a>
+          <a href="#contact" class="btn btn-sm header-btn scroll-link">連絡</a>
           <a href="https://github.com/sakai1250" class="btn btn-sm header-btn primary">フォロー</a>
         </div>
       </div>
@@ -897,6 +914,13 @@
           </section>
 
           <section class="section-card">
+            <div class="section-title">Technical Articles (Qiita)</div>
+            <ul class="repo-list" id="qiita-list">
+              <li>Loading articles...</li>
+            </ul>
+          </section>
+
+          <section class="section-card">
             <div class="section-title">Tech Stack & Organizations</div>
             
             <div class="badge-row" id="badges-languages">
@@ -934,6 +958,29 @@
           </section>
 
         </div>
+
+        <section id="contact" class="section-card">
+          <div class="section-title">Contact</div>
+          <p style="font-size: 14px; color: var(--muted); margin-bottom: 20px;">
+            研究・開発に関するお問い合わせや、その他ご連絡はこちらからお願いします。
+          </p>
+          <form id="contact-form" action="https://formspree.io/f/mlgegwjy" method="POST">
+            <div class="form-group">
+              <label for="name" class="form-label">お名前</label>
+              <input type="text" id="name" name="name" class="form-control" placeholder="山田 太郎" required>
+            </div>
+            <div class="form-group">
+              <label for="email" class="form-label">メールアドレス</label>
+              <input type="email" id="email" name="email" class="form-control" placeholder="email@example.com" required>
+            </div>
+            <div class="form-group">
+              <label for="message" class="form-label">メッセージ</label>
+              <textarea id="message" name="message" class="form-control" placeholder="お問い合わせ内容をご記入ください" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-sm header-btn primary" style="width: 100%; justify-content: center; padding: 10px;">送信する</button>
+            <div id="form-status" class="form-status"></div>
+          </form>
+        </section>
       </div>
     </div>
   </div>
@@ -1455,6 +1502,115 @@
     }
   }
 
+  // Qiitaの記事取得
+  async function fetchQiitaArticles() {
+    const rssUrl = 'https://qiita.com/sakai1250/feed';
+    // rss2json APIを使用してCORSを回避
+    const apiUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+    const container = document.getElementById('qiita-list');
+    if (!container) return;
+
+    try {
+      const res = await fetch(apiUrl);
+      const data = await res.json();
+      if (data.status === 'ok' && data.items.length > 0) {
+        container.innerHTML = '';
+        data.items.slice(0, 5).forEach(item => { // 最新5件を表示
+          const li = document.createElement('li');
+          const date = new Date(item.pubDate).toLocaleDateString('ja-JP');
+          li.innerHTML = `<a href="${item.link}" target="_blank" style="font-weight:600; color:var(--text-main); display:block; margin-bottom:4px;">${item.title}</a><div class="muted">Qiita | ${date}</div>`;
+          container.appendChild(li);
+        });
+      } else {
+        container.innerHTML = '<li>記事が見つかりませんでした。</li>';
+      }
+    } catch (e) {
+      container.innerHTML = '<li>読み込みに失敗しました。</li>';
+    }
+  }
+
+  // お問い合わせフォーム送信処理
+  function initContactForm() {
+    const form = document.getElementById('contact-form');
+    if (!form) return;
+    
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const status = document.getElementById('form-status');
+      const btn = form.querySelector('button[type="submit"]');
+      
+      // FormspreeのIDが設定されていない場合の警告
+      if (form.action.includes('YOUR_FORM_ID')) {
+        // デモモード: ID未設定時は成功したふりをする
+        btn.disabled = true;
+        btn.textContent = '送信中...';
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        status.textContent = '送信完了（デモ）: 実際には送信されていません。HTMLのaction属性にFormspree IDを設定してください。';
+        status.style.color = 'var(--accent)';
+        form.reset();
+        btn.disabled = false;
+        btn.textContent = '送信する';
+        return;
+      }
+
+      const data = new FormData(form);
+      btn.disabled = true;
+      btn.textContent = '送信中...';
+
+      try {
+        const response = await fetch(form.action, {
+          method: form.method,
+          body: data,
+          headers: { 'Accept': 'application/json' }
+        });
+        
+        if (response.ok) {
+          status.textContent = '送信しました！お問い合わせありがとうございます。';
+          status.style.color = 'var(--accent)';
+          form.reset();
+        } else {
+          const result = await response.json();
+          if (Object.hasOwn(result, 'errors')) {
+             status.textContent = result.errors.map(error => error.message).join(", ");
+          } else {
+             status.textContent = '送信に失敗しました。再度お試しください。';
+          }
+          status.style.color = 'var(--accent-warm)';
+        }
+      } catch (error) {
+        status.textContent = 'エラーが発生しました。';
+        status.style.color = 'var(--accent-warm)';
+      } finally {
+        btn.disabled = false;
+        btn.textContent = '送信する';
+      }
+    });
+  }
+
+  // スムーズスクロール (汎用)
+  function initSmoothScroll() {
+    document.querySelectorAll('.scroll-link').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = link.getAttribute('href').substring(1);
+        const target = document.getElementById(targetId);
+        if (!target) return;
+        
+        const header = document.querySelector('.header-bar');
+        let offset = 16;
+        if (header && getComputedStyle(header).position === 'sticky') {
+          offset += header.offsetHeight;
+        }
+
+        const elementPosition = target.getBoundingClientRect().top + window.scrollY;
+        const offsetPosition = elementPosition - offset;
+
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({ top: offsetPosition, behavior: prefersReduced ? 'auto' : 'smooth' });
+      });
+    });
+  }
+
   // 初期化
   (function init() {
     initTheme();
@@ -1468,6 +1624,9 @@
     initAppModal();
     initLoader();
     syncReadmeBadges();
+    fetchQiitaArticles();
+    initContactForm();
+    initSmoothScroll();
     applyFilters();
   })();
 </script>
