@@ -261,6 +261,30 @@
     .copy-btn:hover { border-color: var(--accent-2); color: var(--text-main); }
     .copy-btn.success { border-color: var(--accent); color: var(--text-main); }
 
+    /* === TOC === */
+    #toc-fab {
+      position: fixed; right: 24px; bottom: 90px;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: var(--surface); border: 1px solid var(--stroke);
+      color: var(--text-main); display: flex; align-items: center; justify-content: center;
+      cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+      transition: transform 0.2s, background-color 0.2s, box-shadow 0.2s;
+      z-index: 890;
+    }
+    #toc-fab:hover { transform: translateY(-2px); background: var(--surface-3); box-shadow: 0 8px 20px rgba(0,0,0,0.5); }
+    #toc-menu {
+      position: fixed; bottom: 145px; right: 24px; width: 220px;
+      background: var(--surface); border: 1px solid var(--stroke); border-radius: 8px;
+      padding: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      opacity: 0; visibility: hidden; transform: translateY(10px) scale(0.95);
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); transform-origin: bottom right;
+      z-index: 890; max-height: 60vh; overflow-y: auto;
+    }
+    #toc-menu.show { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    .toc-header { font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--stroke); padding-bottom: 4px; }
+    .toc-link { font-size: 13px; color: var(--text-sub); text-decoration: none; padding: 6px 10px; display: block; border-radius: 4px; transition: background 0.2s; }
+    .toc-link:hover { background: var(--surface-3); color: var(--text-main); }
+
     /* === Tabs Navigation === */
     .tab-nav {
       display: flex;
@@ -607,7 +631,7 @@
     /* === Print Styles (PDF/印刷用最適化) === */
     @media print {
       .header-bar { position: static; background: none; box-shadow: none; color: #000; padding: 0; margin-bottom: 20px; }
-      .header-actions, .header-nav, .tab-nav, .utility-bar, .footer, #back-to-top, #theme-toggle, .copy-btn, .modal-overlay, .filter-row { display: none !important; }
+      .header-actions, .header-nav, .tab-nav, .utility-bar, .footer, #back-to-top, #theme-toggle, .copy-btn, .modal-overlay, .filter-row, #toc-fab, #toc-menu { display: none !important; }
       body { background: #fff !important; color: #000 !important; }
       .page { max-width: 100%; margin: 0; padding: 0; }
       
@@ -1120,6 +1144,15 @@
   </footer>
   <button id="back-to-top" type="button" aria-label="Back to top">↑ Top</button>
 
+  <!-- TOC FAB -->
+  <button id="toc-fab" type="button" aria-label="目次">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="20" height="20" fill="currentColor"><path d="M1.5 1.75a.75.75 0 0 1 .75-.75h11.5a.75.75 0 0 1 0 1.5H2.25a.75.75 0 0 1-.75-.75ZM1.5 8a.75.75 0 0 1 .75-.75h11.5a.75.75 0 0 1 0 1.5H2.25A.75.75 0 0 1 1.5 8Zm.75 5.5a.75.75 0 0 0 0 1.5h11.5a.75.75 0 0 0 0-1.5H2.25Z"></path></svg>
+  </button>
+  <div id="toc-menu">
+    <div class="toc-header">目次</div>
+    <nav id="toc-nav"></nav>
+  </div>
+
 </div>
 
   <!-- Modal Structure -->
@@ -1137,6 +1170,63 @@
 
 <script>
   const filterState = { tag: 'all', year: 'all' };
+
+  // 目次FABの初期化
+  function initTOC() {
+    const fab = document.getElementById('toc-fab');
+    const menu = document.getElementById('toc-menu');
+    if (!fab || !menu) return;
+
+    fab.addEventListener('click', (e) => {
+      e.stopPropagation();
+      menu.classList.toggle('show');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && !fab.contains(e.target)) {
+        menu.classList.remove('show');
+      }
+    });
+  }
+
+  // 目次生成
+  function updateTOC() {
+    const tocNav = document.getElementById('toc-nav');
+    if (!tocNav) return;
+    tocNav.innerHTML = '';
+
+    const activeTab = document.querySelector('.tab-content.active');
+    const sections = [];
+
+    if (activeTab) {
+      activeTab.querySelectorAll('.section-card').forEach(sec => sections.push(sec));
+    }
+    const contact = document.getElementById('contact');
+    if (contact) sections.push(contact);
+
+    sections.forEach((sec, index) => {
+      if (getComputedStyle(sec).display === 'none') return;
+      const title = sec.querySelector('.section-title');
+      if (!title) return;
+      
+      if (!sec.id) sec.id = `section-${index}-${Math.random().toString(36).substr(2, 5)}`;
+      
+      const a = document.createElement('a');
+      a.textContent = title.textContent;
+      a.className = 'toc-link';
+      a.onclick = (e) => {
+        e.preventDefault();
+        const header = document.querySelector('.header-bar');
+        const offset = header ? header.offsetHeight + 20 : 20;
+        const top = sec.getBoundingClientRect().top + window.scrollY - offset;
+        window.scrollTo({ top, behavior: 'smooth' });
+        // メニューを閉じる
+        const menu = document.getElementById('toc-menu');
+        if (menu) menu.classList.remove('show');
+      };
+      tocNav.appendChild(a);
+    });
+  }
 
   // タブ切り替え
   function switchTab(tabName) {
@@ -1287,6 +1377,7 @@
         badge.style.display = 'none';
       }
     });
+    updateTOC();
   }
 
   function resetFilters(container) {
@@ -2373,6 +2464,7 @@
     initTiltEffect();
     initNetworkStatus();
     initAutoScroll();
+    initTOC();
   })();
 </script>
 </body>
