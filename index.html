@@ -334,13 +334,42 @@
 
     /* === Content Sections === */
     .section-card {
-      background: var(--bg); border: 1px solid var(--stroke-subtle); border-radius: 6px;
+      background: var(--section-bg, var(--bg)); border: 1px solid var(--section-border, var(--stroke-subtle)); border-radius: 6px;
       padding: 20px; margin-bottom: 16px;
     }
+    /* Subtle border color variation */
+    .tab-content .section-card:nth-of-type(3n+1) {
+      --section-accent: var(--accent);
+      --section-border: color-mix(in srgb, var(--accent), var(--stroke-subtle) 85%);
+      --section-bg: color-mix(in srgb, var(--accent), var(--bg) 98%);
+    }
+    .tab-content .section-card:nth-of-type(3n+2) {
+      --section-accent: var(--accent-2);
+      --section-border: color-mix(in srgb, var(--accent-2), var(--stroke-subtle) 85%);
+      --section-bg: color-mix(in srgb, var(--accent-2), var(--bg) 98%);
+    }
+    .tab-content .section-card:nth-of-type(3n+3) {
+      --section-accent: var(--accent-warm);
+      --section-border: color-mix(in srgb, var(--accent-warm), var(--stroke-subtle) 85%);
+      --section-bg: color-mix(in srgb, var(--accent-warm), var(--bg) 98%);
+    }
+
     .section-title {
-      font-size: 18px; font-weight: 600; color: var(--text-main); margin-bottom: 16px;
-      padding-bottom: 8px; border-bottom: 1px solid var(--stroke-subtle);
+      font-size: 18px; font-weight: 600; color: color-mix(in srgb, var(--section-accent, var(--text-main)), var(--text-main) 70%); margin-bottom: 16px;
+      padding-bottom: 8px; border-bottom: 1px solid var(--section-border, var(--stroke-subtle));
       font-family: "Space Grotesk", "Noto Sans JP", "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+      display: flex; align-items: center; gap: 10px;
+    }
+    @keyframes flash-text {
+      0% { color: color-mix(in srgb, var(--section-accent, var(--text-main)), var(--text-main) 70%); text-shadow: none; }
+      50% { color: var(--section-accent, var(--accent)); text-shadow: 0 0 15px var(--section-accent, var(--accent)); }
+      100% { color: color-mix(in srgb, var(--section-accent, var(--text-main)), var(--text-main) 70%); text-shadow: none; }
+    }
+    .section-title.flash-active { animation: flash-text 0.8s ease-out; }
+    .section-title::before {
+      content: ""; display: block; width: 4px; height: 1.2em;
+      background-color: var(--section-accent, var(--accent));
+      border-radius: 2px;
     }
     .subsection-title {
       font-size: 15px; font-weight: 600; color: var(--accent-2); margin-top: 20px; margin-bottom: 10px;
@@ -354,10 +383,12 @@
       padding: 12px 16px; font-size: 14px; line-height: 1.5;
       transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
-    .repo-list li:hover {
+    .repo-list li:hover,
+    .repo-list li.highlight-active {
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      border-color: var(--accent-2);
+      border-color: var(--section-accent, var(--accent-2));
+      background-color: color-mix(in srgb, var(--section-accent, var(--accent-2)), var(--surface) 92%);
       z-index: 1;
     }
     .badge-year {
@@ -397,8 +428,10 @@
       padding: 12px; display: flex; flex-direction: row; gap: 12px;
       align-items: start; transition: border-color 0.2s, transform 0.2s ease, box-shadow 0.2s ease;
     }
-    .app-card:hover { 
-      border-color: var(--accent-2);
+    .app-card:hover,
+    .app-card.highlight-active { 
+      border-color: var(--section-accent, var(--accent-2));
+      background-color: color-mix(in srgb, var(--section-accent, var(--accent-2)), var(--surface) 92%);
       transform: translateY(-4px);
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
     }
@@ -2202,6 +2235,114 @@
     });
   }
 
+  // 自動スクロール機能
+  function initAutoScroll() {
+    let isAutoScrolling = true;
+    let animationId = null;
+    let lastEncounteredSection = null;
+
+    const stopAutoScroll = () => {
+      isAutoScrolling = false;
+      if (animationId) cancelAnimationFrame(animationId);
+      document.querySelectorAll('.highlight-active').forEach(el => el.classList.remove('highlight-active'));
+      ['wheel', 'mousedown', 'touchstart', 'touchmove', 'keydown'].forEach(event => {
+        window.removeEventListener(event, stopAutoScroll);
+      });
+    };
+
+    ['wheel', 'mousedown', 'touchstart', 'touchmove', 'keydown'].forEach(event => {
+      window.addEventListener(event, stopAutoScroll, { passive: true });
+    });
+
+    const highlightItems = () => {
+      const nav = document.querySelector('.tab-nav');
+      const navBottom = nav ? nav.getBoundingClientRect().bottom : 0;
+      const targetY = navBottom + 60;
+
+      const targets = document.querySelectorAll('.tab-content.active .repo-list li, .tab-content.active .app-card');
+      const toHighlight = [];
+      const toUnhighlight = [];
+
+      targets.forEach(el => {
+        const rect = el.getBoundingClientRect();
+        const elCenter = rect.top + rect.height / 2;
+        if (Math.abs(elCenter - targetY) < 60) {
+          toHighlight.push(el);
+        } else {
+          toUnhighlight.push(el);
+        }
+      });
+
+      toHighlight.forEach(el => el.classList.add('highlight-active'));
+      toUnhighlight.forEach(el => el.classList.remove('highlight-active'));
+    };
+
+    const step = () => {
+      if (!isAutoScrolling) return;
+
+      // "もっと見る"ボタンの自動クリック
+      const currentTab = document.querySelector('.tab-content.active');
+      if (currentTab) {
+        const showMoreBtns = currentTab.querySelectorAll('button');
+        showMoreBtns.forEach(btn => {
+          if (btn.textContent.includes('もっと見る')) {
+            const rect = btn.getBoundingClientRect();
+            if (rect.top < window.innerHeight) btn.click();
+          }
+        });
+      }
+
+      highlightItems();
+
+      // セクションタイトルでの一時停止
+      const nav = document.querySelector('.tab-nav');
+      const navBottom = nav ? nav.getBoundingClientRect().bottom : 0;
+      const checkY = navBottom + 30;
+      const activeTab = document.querySelector('.tab-content.active');
+      if (activeTab) {
+        const sections = activeTab.querySelectorAll('.section-title');
+        for (const section of sections) {
+          const rect = section.getBoundingClientRect();
+          if (rect.top >= checkY && rect.top < checkY + 10 && lastEncounteredSection !== section) {
+            lastEncounteredSection = section;
+            section.classList.add('flash-active');
+            setTimeout(() => section.classList.remove('flash-active'), 1000);
+            setTimeout(() => { if (isAutoScrolling) step(); }, 1200);
+            return;
+          }
+        }
+      }
+
+      // Contactセクション到達または最下部でループ
+      const contactSection = document.getElementById('contact');
+      let isEnd = false;
+      if (contactSection && contactSection.getBoundingClientRect().top <= window.innerHeight) isEnd = true;
+      if (!isEnd && (window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) isEnd = true;
+
+      if (isEnd) {
+        setTimeout(() => {
+          if (!isAutoScrolling) return;
+          const researchTab = document.getElementById('ja-research');
+          if (researchTab && researchTab.classList.contains('active')) switchTab('engineer');
+          else switchTab('research');
+          window.scrollTo(0, 0);
+          lastEncounteredSection = null;
+          setTimeout(() => { if (isAutoScrolling) step(); }, 1000);
+        }, 2000);
+        return;
+      }
+
+      window.scrollBy(0, 2.4);
+      animationId = requestAnimationFrame(step);
+    };
+
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        if (isAutoScrolling && window.scrollY < 50) step();
+      }, 2000);
+    });
+  }
+
   // 初期化
   (function init() {
     initTheme();
@@ -2231,6 +2372,7 @@
     initMagneticButtons();
     initTiltEffect();
     initNetworkStatus();
+    initAutoScroll();
   })();
 </script>
 </body>
