@@ -224,6 +224,7 @@
       padding: 16px; margin-bottom: 16px; box-shadow: 0 8px 26px rgba(0, 0, 0, 0.28);
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       position: relative; overflow: hidden;
+      cursor: grab; user-select: none;
     }
     .profile-card:hover {
       transform: translateY(-5px);
@@ -643,6 +644,21 @@
       .section-title { border-bottom: 2px solid #000; color: #000; }
       .repo-list li, .app-card { border: 1px solid #ccc; break-inside: avoid; box-shadow: none; }
       a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: #555; word-break: break-all; }
+    }
+
+    /* === Drag Tooltip === */
+    .drag-tooltip {
+      position: fixed; background: var(--surface-3); color: var(--text-main);
+      padding: 8px 12px; border-radius: 8px; border: 1px solid var(--accent);
+      pointer-events: none; z-index: 9999; font-size: 12px; font-weight: bold;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3); opacity: 0; transition: opacity 0.2s;
+      white-space: nowrap; transform: translate(-50%, -100%);
+    }
+    .drag-tooltip.visible { opacity: 1; }
+    .drag-tooltip::after {
+      content: ''; position: absolute; top: 100%; left: 50%; margin-left: -6px;
+      border-width: 6px; border-style: solid;
+      border-color: var(--accent) transparent transparent transparent;
     }
   </style>
   <!-- Structured Data (JSON-LD) for SEO & Professionalism -->
@@ -2256,31 +2272,159 @@
     });
   }
 
-  // 1. 3D Tilt Effect (Math & Interactive DOM)
-  function initTiltEffect() {
+  // 3D Draggable Rotate Effect
+  function initDraggableCard() {
     const card = document.querySelector('.profile-card');
-    if (!card || window.matchMedia('(hover: none)').matches) return;
+    if (!card) return;
 
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+    let isDragging = false;
+    let startX, startY;
+    let currentRotateX = 0;
+    let currentRotateY = 0;
+    let targetRotateX = 0;
+    let targetRotateY = 0;
+
+    const onMouseDown = (e) => {
+      isDragging = true;
+      card.style.cursor = 'grabbing';
+      card.style.transition = 'none'; // ドラッグ中は即時反応
       
-      // 中心からの距離を計算 (-1 to 1)
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      const rotateX = ((y - centerY) / centerY) * -4; // Max tilt deg
-      const rotateY = ((x - centerX) / centerX) * 4;
+      const pageX = e.pageX || e.touches[0].pageX;
+      const pageY = e.pageY || e.touches[0].pageY;
+      
+      startX = pageX;
+      startY = pageY;
+    };
 
-      // アニメーションを滑らかにするためtransitionを一時的に無効化
-      card.style.transition = 'none';
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    const onMouseMove = (e) => {
+      if (!isDragging) return;
+      e.preventDefault();
+      
+      const pageX = e.pageX || e.touches[0].pageX;
+      const pageY = e.pageY || e.touches[0].pageY;
+
+      const deltaX = pageX - startX;
+      const deltaY = pageY - startY;
+
+      // 感度調整
+      targetRotateY = currentRotateY + deltaX * 0.5;
+      targetRotateX = currentRotateX - deltaY * 0.5;
+
+      card.style.transform = `perspective(1000px) rotateX(${targetRotateX}deg) rotateY(${targetRotateY}deg)`;
+    };
+
+    const onMouseUp = () => {
+      if (!isDragging) return;
+      isDragging = false;
+      card.style.cursor = 'grab';
+      // 元の位置に戻す
+      currentRotateX = 0; currentRotateY = 0;
+      targetRotateX = 0; targetRotateY = 0;
+      
+      // 手を離したらゆっくり戻る
+      card.style.transition = 'transform 1.5s cubic-bezier(0.2, 0.8, 0.2, 1)';
+      card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
+    };
+
+    // ダブルクリックでリセット
+    card.addEventListener('dblclick', () => {
+      currentRotateX = 0;
+      currentRotateY = 0;
+      targetRotateX = 0;
+      targetRotateY = 0;
+      card.style.transition = 'transform 0.5s ease';
+      card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
     });
 
-    card.addEventListener('mouseleave', () => {
-      card.style.transition = 'transform 0.5s ease, box-shadow 0.5s ease';
-      card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale3d(1, 1, 1)';
-    });
+    card.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+    
+    card.addEventListener('touchstart', onMouseDown, { passive: false });
+    window.addEventListener('touchmove', onMouseMove, { passive: false });
+    window.addEventListener('touchend', onMouseUp);
+  }
+
+  // Draggable Avatar with Tooltip
+  function initDraggableAvatar() {
+    const avatar = document.querySelector('.header-top img');
+    if (!avatar) return;
+
+    avatar.style.cursor = 'grab';
+    avatar.style.zIndex = '1000';
+    avatar.style.position = 'relative';
+
+    let isDragging = false;
+    let startX, startY;
+    let tooltip = null;
+
+    const createTooltip = () => {
+      const el = document.createElement('div');
+      el.className = 'drag-tooltip';
+      document.body.appendChild(el);
+      return el;
+    };
+
+    const updateTooltip = (x, y) => {
+      if (!tooltip) tooltip = createTooltip();
+      
+      // アバターを一時的に非表示にして下の要素を判定
+      const prevDisplay = avatar.style.display;
+      avatar.style.display = 'none';
+      const elemBelow = document.elementFromPoint(x, y);
+      avatar.style.display = prevDisplay;
+
+      let text = 'ここは...';
+      if (elemBelow) {
+        if (elemBelow.closest('.header-bar')) text = 'ここは「ヘッダー」だよ';
+        else if (elemBelow.closest('.profile-sidebar')) text = 'ここは「プロフィール」だよ';
+        else if (elemBelow.closest('#ja-research')) text = 'ここは「研究業績」だよ';
+        else if (elemBelow.closest('#ja-engineer')) text = 'ここは「開発実績」だよ';
+        else if (elemBelow.closest('#contact')) text = 'ここは「お問い合わせ」だよ';
+        else if (elemBelow.closest('.footer')) text = 'ここは「フッター」だよ';
+        else text = 'ここは「ページ背景」だよ';
+      }
+
+      tooltip.textContent = text;
+      tooltip.style.left = `${x}px`;
+      tooltip.style.top = `${y - 10}px`;
+      tooltip.classList.add('visible');
+    };
+
+    const onMouseDown = (e) => {
+      e.preventDefault();
+      isDragging = true;
+      avatar.style.cursor = 'grabbing';
+      avatar.style.transition = 'none';
+      startX = e.pageX || e.touches[0].pageX;
+      startY = e.pageY || e.touches[0].pageY;
+    };
+
+    const onMouseMove = (e) => {
+      if (!isDragging) return;
+      const pageX = e.pageX || e.touches[0].pageX;
+      const pageY = e.pageY || e.touches[0].pageY;
+      const clientX = e.clientX || e.touches[0].clientX;
+      const clientY = e.clientY || e.touches[0].clientY;
+      avatar.style.transform = `translate(${pageX - startX}px, ${pageY - startY}px) scale(1.1)`;
+      updateTooltip(clientX, clientY);
+    };
+
+    const onMouseUp = () => {
+      if (!isDragging) return;
+      isDragging = false;
+      avatar.style.cursor = 'grab';
+      avatar.style.transition = 'transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+      avatar.style.transform = 'translate(0, 0) scale(1)';
+      if (tooltip) tooltip.classList.remove('visible');
+    };
+
+    avatar.addEventListener('mousedown', onMouseDown);
+    window.addEventListener('mousemove', onMouseMove);
+    window.addEventListener('mouseup', onMouseUp);
+    avatar.addEventListener('touchstart', onMouseDown, { passive: false });
+    window.addEventListener('touchmove', onMouseMove, { passive: false });
+    window.addEventListener('touchend', onMouseUp);
   }
 
   // 3. Network Status Monitor (Resilience)
@@ -2461,7 +2605,8 @@
     fetchLastUpdated();
     initWebVitals();
     initMagneticButtons();
-    initTiltEffect();
+    initDraggableCard();
+    initDraggableAvatar();
     initNetworkStatus();
     initAutoScroll();
     initTOC();
