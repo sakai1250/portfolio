@@ -22,6 +22,7 @@
   <meta property="og:image" content="https://github.com/sakai1250.png">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:creator" content="@ikaitaig">
+  <link rel="canonical" href="https://sakai1250.github.io/">
   <style>
     /* === Base Styles === */
     :root {
@@ -137,6 +138,7 @@
       font-weight: 700;
       letter-spacing: 0.4px;
       color: var(--text-main);
+      margin: 0;
     }
     .header-subtitle { font-size: 14px; color: var(--muted); margin-top: 2px; max-width: 560px; }
     .header-badges { display: flex; gap: 8px; flex-wrap: wrap; }
@@ -342,6 +344,7 @@
       font-size: 18px; font-weight: 600; color: var(--text-main); margin-bottom: 16px;
       padding-bottom: 8px; border-bottom: 1px solid var(--stroke-subtle);
       font-family: "Space Grotesk", "Noto Sans JP", "SF Pro Text", "Segoe UI", system-ui, sans-serif;
+      margin-top: 0;
     }
     .subsection-title {
       font-size: 15px; font-weight: 600; color: var(--accent-2); margin-top: 20px; margin-bottom: 10px;
@@ -612,11 +615,11 @@
 </div>
 <div class="page">
 
-  <div class="header-bar">
+  <header class="header-bar">
     <div class="header-inner">
       <div class="header-top">
         <div class="header-identity">
-          <div class="header-name">Taigo Sakai</div>
+          <h1 class="header-name">Taigo Sakai</h1>
           <div class="header-subtitle">名城大学 大学院 理工学研究科</div>
           <div class="header-badges">
             <span class="header-badge">Deep Learning</span>
@@ -640,12 +643,12 @@
         <div class="header-hint">検索: / キー</div>
       </div>
     </div>
-  </div>
+  </header>
 
   <div id="content">
     <div class="container-lg">
       
-      <div class="profile-sidebar">
+      <aside class="profile-sidebar">
         <div class="profile-card">
           <!-- <div class="profile-avatar">T</div> -->
           <div class="profile-name">Taigo Sakai</div>
@@ -668,9 +671,9 @@
             <a href="https://scholar.google.com.ni/citations?user=LZnH1HIAAAAJ&hl=en&authuser=1" target="_blank"><span class="icon text-icon">G</span> Google Scholar</a>
           </div>
         </div>
-      </div>
+      </aside>
       
-      <div class="main-content">
+      <main class="main-content">
         
         <div class="section-card" style="text-align:center; padding: 16px;">
           <div class="typing-container"><span id="typing-text"></span><span class="cursor"></span></div>
@@ -682,10 +685,10 @@
           <button class="btn btn-sm" id="clear" type="button">クリア</button>
         </div>
 
-        <div class="tab-nav">
+        <nav class="tab-nav">
           <div class="tab-item active" data-tab="research" role="button" tabindex="0">研究 (Researcher)</div>
           <div class="tab-item" data-tab="engineer" role="button" tabindex="0">開発 (Engineer)</div>
-        </div>
+        </nav>
 
         <div id="ja-research" class="tab-content active">
           <div class="filter-row year-filter">
@@ -700,7 +703,7 @@
           </div>
           
           <section class="section-card">
-            <div class="section-title">所属・学歴</div>
+            <h2 class="section-title">所属・学歴</h2>
             <ul class="repo-list">
               <li data-year="2026">
                 <b>名城大学 大学院 理工学研究科 電気電子・情報・材料工学専攻 博士後期課程</b>
@@ -718,7 +721,7 @@
           </section>
 
           <section class="section-card">
-            <div class="section-title">受賞・表彰</div>
+            <h2 class="section-title">受賞・表彰</h2>
             <ul class="repo-list">
               <li data-year="2025"><span class="badge-year">2025</span> 名城大学　学長表彰</li>
               <li data-year="2025"><span class="badge-year">2025</span> LINEヤフー主催HackU 名城大学　HappyHacking賞</li>
@@ -739,7 +742,7 @@
           </section>
 
           <section class="section-card">
-            <div class="section-title">資格</div>
+            <h2 class="section-title">資格</h2>
             <ul class="repo-list">
               <li data-year="2024">
                 <span class="badge-year">2024</span> <b>JDLA Deep Learning Engineer</b>
@@ -753,7 +756,7 @@
           </section>
 
           <section class="section-card">
-            <div class="section-title">ボランティア</div>
+            <h2 class="section-title">ボランティア</h2>
             <ul class="repo-list">
               <li data-year="2025">
                 <span class="badge-year">2025</span> <b>Technical Program Committee</b>
@@ -775,7 +778,7 @@
           </section>
 
           <section class="section-card">
-            <div class="section-title">インターン</div>
+            <h2 class="section-title">インターン</h2>
             <ul class="repo-list">
               <li data-year="2024">
                 <span class="badge-year">2024</span> <b>研究開発インターン - セコム（株）</b>
@@ -793,9 +796,9 @@
           </section>
 
           <section class="section-card">
-            <div class="section-title">研究業績</div>
+            <h2 class="section-title">研究業績</h2>
             
-            <div class="subsection-title">国際会議・ワークショップ（査読あり）</div>
+            <h3 class="subsection-title">国際会議・ワークショップ（査読あり）</h3>
             <ul class="repo-list">
               <li data-year="2026">
                 <span class="badge-year">2026</span> T. Sakai, T. Nakamura, H. Shimizu, K. Hotta, “Visibility-Gated ConvGRU for Robust Multi-View Pedestrian Detection and Tracking in BEV Space,”
@@ -811,7 +814,7 @@
               </li>
             </ul>
 
-            <div class="subsection-title">国内学会・シンポジウム</div>
+            <h3 class="subsection-title">国内学会・シンポジウム</h3>
             <ul class="repo-list">
               <!-- <li data-year="2026">
                 <span class="badge-year">2026</span> 坂井 泰吾, 中村 剛, 志水 洋, 堀田 一弘, 「BEV空間におけるロバストなマルチビュー歩行者検出と追跡のためのVisibility-Gated ConvGRU」
@@ -865,7 +868,7 @@
           </div>
           
           <section class="section-card">
-            <div class="section-title">My Apps & Services</div>
+            <h2 class="section-title">My Apps & Services</h2>
             <div class="grid-dense">
               <div class="app-card" data-tags="ios ai">
                 <img src="https://github.com/user-attachments/assets/e7a7dbf0-f338-454a-9802-2ea1ab64da41" class="app-thumb" alt="icon" loading="lazy">
@@ -963,7 +966,7 @@
           </section>
 
           <section class="section-card">
-            <div class="section-title">Playground</div>
+            <h2 class="section-title">Playground</h2>
              <div class="grid-dense">
               <div class="app-card" data-tags="web ai">
                 <img src="https://github.com/user-attachments/assets/6810d77d-35e9-44ff-96c7-7921653a5e1c" class="app-thumb" alt="icon" loading="lazy">
@@ -997,14 +1000,14 @@
           </section>
 
           <section class="section-card">
-            <div class="section-title">Technical Articles (Qiita)</div>
+            <h2 class="section-title">Technical Articles (Qiita)</h2>
             <ul class="repo-list" id="qiita-list">
               <li>Loading articles...</li>
             </ul>
           </section>
 
           <section class="section-card">
-            <div class="section-title">Tech Stack & Organizations</div>
+            <h2 class="section-title">Tech Stack & Organizations</h2>
             
             <div class="badge-row" id="badges-languages">
               <h4>Languages</h4>
@@ -1043,7 +1046,7 @@
         </div>
 
         <section id="contact" class="section-card">
-          <div class="section-title">Contact</div>
+          <h2 class="section-title">Contact</h2>
           <p style="font-size: 14px; color: var(--muted); margin-bottom: 20px;">
             研究・開発に関するお問い合わせや、その他ご連絡はこちらからお願いします。
           </p>
@@ -1064,17 +1067,17 @@
             <div id="form-status" class="form-status"></div>
           </form>
         </section>
-      </div>
+      </main>
     </div>
   </div>
-  <div class="footer">
+  <footer class="footer">
     Last updated: <span id="last-updated">2025-12-04</span> | Hosted on GitHub Pages.
     <div style="margin-top: 12px;">
       <a id="share-btn" href="https://twitter.com/intent/tweet?text=Check%20out%20Taigo%20Sakai's%20Portfolio!&url=https://sakai1250.github.io/&via=ikaitaig" target="_blank" class="btn btn-sm" style="color: var(--text-sub); border-color: var(--stroke); background: var(--surface-2); display: inline-flex; align-items: center; gap: 6px; text-decoration: none;">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="14" height="14" fill="currentColor"><path d="M9.332 6.925 14.544 1h-1.235L8.783 6.145 5.17 1H1l5.466 7.78L1 14.993h1.235l4.78-5.433 3.816 5.433H15L9.332 6.925ZM7.64 8.848l-.554-.775L2.68 1.91h1.897l3.556 4.975.554.775 4.622 6.466h-1.897L7.64 8.848Z"></path></svg> Xでシェア
       </a>
     </div>
-  </div>
+  </footer>
   <button id="back-to-top" type="button" aria-label="Back to top">↑ Top</button>
 
 </div>
