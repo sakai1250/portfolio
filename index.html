@@ -76,6 +76,7 @@
         radial-gradient(circle at 40% 80%, rgba(201, 213, 217, 0.06), transparent 30%);
       color: var(--text);
       transition: background-color 0.3s ease, color 0.3s ease;
+      margin: 0;
     }
     .page {
       max-width: 1280px;
@@ -109,6 +110,18 @@
       }
       .header-actions { justify-content: flex-start; }
       .header-bottom { align-items: flex-start; }
+
+      /* Mobile: Adjust padding to match screen width better */
+      .page { padding: 16px; }
+      .header-bar {
+        margin: -16px -16px 24px -16px;
+        padding: 20px 16px;
+      }
+
+      /* Mobile: Align modal width with page content padding (16px * 2 = 32px) */
+      .modal-container {
+        width: calc(100% - 32px);
+      }
     }
     
     /* === Header === */
@@ -129,6 +142,7 @@
     }
     .header-inner { display: flex; flex-direction: column; gap: 12px; position: relative; z-index: 1; }
     .header-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .header-profile { display: flex; gap: 20px; align-items: center; }
     .header-identity { display: flex; flex-direction: column; gap: 8px; }
     .header-name {
       font-family: "Space Grotesk", "Noto Sans JP", "SF Pro Text", "Segoe UI", system-ui, sans-serif;
@@ -707,7 +721,7 @@
   <header class="header-bar">
     <div class="header-inner">
       <div class="header-top">
-        <div style="display: flex; gap: 20px; align-items: center;">
+        <div class="header-profile">
           <img src="https://researchmap.jp/sakai1250/avatar.jpg" alt="Taigo Sakai" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 2px solid var(--surface-2); box-shadow: 0 4px 12px rgba(0,0,0,0.2);">
           <div class="header-identity">
             <h1 class="header-name">Taigo Sakai</h1>
