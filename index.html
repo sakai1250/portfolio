@@ -375,6 +375,50 @@
       }
     }
 
+    /* === Stats in Header === */
+    .header-stats {
+      display: flex;
+      gap: 0;
+      align-items: center;
+      margin: 0 auto;
+      /* 中央配置 */
+      padding: 8px 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--stroke);
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 80px;
+    }
+
+    .stat-value {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      font-family: "Space Grotesk", sans-serif;
+      line-height: 1.2;
+    }
+
+    .stat-label {
+      font-size: 10px;
+      color: var(--muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-top: 2px;
+    }
+
+    @media (max-width: 900px) {
+      .header-stats {
+        display: none;
+      }
+    }
+
 
     /* === Sidebar === */
     .profile-sidebar {
@@ -1507,6 +1551,23 @@
               </div>
             </div>
           </div>
+
+          <!-- Stats (Middle) -->
+          <div class="header-stats">
+            <div class="stat-item">
+              <div class="stat-value" id="stat-papers">-</div>
+              <div class="stat-label">Papers</div>
+            </div>
+            <div class="stat-item" style="border-left: 1px solid var(--stroke); padding-left: 24px;">
+              <div class="stat-value" id="stat-awards">-</div>
+              <div class="stat-label">Awards</div>
+            </div>
+            <div class="stat-item" style="border-left: 1px solid var(--stroke); padding-left: 24px;">
+              <div class="stat-value" id="stat-apps">-</div>
+              <div class="stat-label">Apps</div>
+            </div>
+          </div>
+
           <div class="header-actions">
             <button class="btn btn-sm header-btn" id="theme-toggle" type="button" aria-label="テーマ切り替え">
               <span id="theme-icon">🌙</span>

@@ -534,8 +534,61 @@ function initScrollReveal() {
   });
 }
 
+// ヘッダーの統計情報更新
+function initHeaderStats() {
+  // 1. Papers: 研究業績セクション内のliの数（発表済み）
+  // セクションタイトルに「研究業績」を含むセクション配下のliをカウント
+  let paperCount = 0;
+  const items = document.querySelectorAll('.repo-list li');
+  items.forEach(li => {
+    const section = li.closest('.section-card');
+    const title = section ? section.querySelector('.section-title') : null;
+    if (title && title.textContent.includes('研究業績')) {
+      paperCount++;
+    }
+  });
+
+  // 2. Awards: 「受賞・表彰」セクション
+  let awardCount = 0;
+  items.forEach(li => {
+    const section = li.closest('.section-card');
+    const title = section ? section.querySelector('.section-title') : null;
+    if (title && title.textContent.includes('受賞・表彰')) {
+      awardCount++;
+    }
+  });
+
+  // 3. Apps: .app-cardの数
+  const appCount = document.querySelectorAll('.app-card').length;
+
+  // DOM更新 (アニメーション付き)
+  const animateValue = (id, end, duration) => {
+    const obj = document.getElementById(id);
+    if (!obj) return;
+    let startTimestamp = null;
+    const step = (timestamp) => {
+      if (!startTimestamp) startTimestamp = timestamp;
+      const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+      obj.innerHTML = Math.floor(progress * end);
+      if (progress < 1) {
+        window.requestAnimationFrame(step);
+      } else {
+        obj.innerHTML = end;
+      }
+    };
+    window.requestAnimationFrame(step);
+  };
+
+  setTimeout(() => {
+    animateValue("stat-papers", paperCount, 1000);
+    animateValue("stat-awards", awardCount, 1000);
+    animateValue("stat-apps", appCount, 1000);
+  }, 500);
+}
+
 // ローディング画面
 function initLoader() {
+  initHeaderStats(); // 統計初期化
   const loader = document.getElementById('loading-screen');
   if (!loader) return;
   window.addEventListener('load', () => {
