@@ -1205,6 +1205,98 @@ function initKonami() {
   });
 }
 
+// Glowing Grid Effect
+function initGlowingGrid() {
+  // SCSSのbox-shadow生成ロジックをJSで再現
+  let bxs = '0 0 0';
+  for (let i = 1; i <= 4; i++) {
+    bxs += `, ${i * 3}rem 0 0 ${i * -0.3}rem`;
+    bxs += `, ${i * -3}rem 0 0 ${i * -0.3}rem`;
+    bxs += `, 0 ${i * -3}rem 0 ${i * -0.3}rem`;
+    bxs += `, 0 ${i * 3}rem 0 ${i * -0.3}rem`;
+
+    for (let j = 1; j <= 4; j++) {
+      bxs += `, ${i * 3}rem ${j * 3}rem 0 ${i * j * 1.5 * -0.3}rem`;
+      bxs += `, ${i * 3}rem ${j * -3}rem 0 ${i * j * 1.5 * -0.3}rem`;
+      bxs += `, ${i * -3}rem ${j * 3}rem 0 ${i * j * 1.5 * -0.3}rem`;
+      bxs += `, ${i * -3}rem ${j * -3}rem 0 ${i * j * 1.5 * -0.3}rem`;
+    }
+  }
+  document.documentElement.style.setProperty('--grid-shadow-pattern', bxs);
+
+  const cards = document.querySelectorAll('.app-card');
+  const colors = ['#2f81f7', '#58a6ff', '#f78166', '#2ea043', '#8957e5', '#d29922', '#a371f7'];
+
+  cards.forEach((card, index) => {
+    // 既存のGridがあれば削除（二重防止）
+    const existing = card.querySelector('.card__grid-effect');
+    if (existing) existing.remove();
+
+    card.style.position = 'relative';
+    card.style.overflow = 'hidden';
+
+    const grid = document.createElement('div');
+    grid.className = 'card__grid-effect';
+
+    const tiles = [];
+    const fragment = document.createDocumentFragment();
+    for (let k = 0; k < 100; k++) {
+      const tile = document.createElement('div');
+      tile.className = 'card__grid-effect-tile';
+      tiles.push(tile);
+      fragment.appendChild(tile);
+    }
+    grid.appendChild(fragment);
+
+    card.insertBefore(grid, card.firstChild);
+
+    const color = colors[index % colors.length];
+    card.style.setProperty('--effect-color', color);
+
+    // Mouse Interaction (JSで制御してポインターイベントを透過させる)
+    let activeTileIndex = -1;
+    // Debounce/Throttleなしでも現代のブラウザならOKだが、念のため
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      // 10x10 grid
+      if (rect.width <= 0 || rect.height <= 0) return;
+
+      const col = Math.floor((x / rect.width) * 10);
+      const row = Math.floor((y / rect.height) * 10);
+      // 範囲外チェック
+      if (col < 0 || col > 9 || row < 0 || row > 9) {
+        if (activeTileIndex >= 0 && tiles[activeTileIndex]) {
+          tiles[activeTileIndex].classList.remove('active');
+          activeTileIndex = -1;
+        }
+        return;
+      }
+
+      const newIndex = row * 10 + col;
+
+      if (newIndex !== activeTileIndex) {
+        if (activeTileIndex >= 0 && tiles[activeTileIndex]) {
+          tiles[activeTileIndex].classList.remove('active');
+        }
+        if (newIndex >= 0 && newIndex < 100 && tiles[newIndex]) {
+          tiles[newIndex].classList.add('active');
+          activeTileIndex = newIndex;
+        }
+      }
+    });
+
+    card.addEventListener('mouseleave', () => {
+      if (activeTileIndex >= 0 && tiles[activeTileIndex]) {
+        tiles[activeTileIndex].classList.remove('active');
+        activeTileIndex = -1;
+      }
+    });
+  });
+}
+
 // Click Sparkle Effect
 function initSparkles() {
   document.addEventListener('click', (e) => {
@@ -1380,4 +1472,5 @@ function initAutoScroll() {
   initAutoScroll();
   initSparkles();
   initTOC();
+  initGlowingGrid();
 })();

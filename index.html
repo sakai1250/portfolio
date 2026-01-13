@@ -1047,6 +1047,85 @@
       text-decoration: none;
     }
 
+    /* === Glowing Grid Effect (App Cards) === */
+    .app-card {
+      position: relative;
+      background: var(--surface);
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    /* Content layers */
+    .app-thumb,
+    .app-info {
+      position: relative;
+      z-index: 2;
+      /* Content is below grid overlay visually but grid is blended */
+    }
+
+    /* Links must be clickable */
+    .app-info a {
+      position: relative;
+      z-index: 10;
+      pointer-events: auto;
+      /* Ensure links work */
+    }
+
+    .card__grid-effect {
+      position: absolute;
+      z-index: 5;
+      /* Overlay on top */
+      inset: 0;
+      display: grid;
+      grid-template-columns: repeat(10, 1fr);
+      grid-template-rows: repeat(10, 1fr);
+
+      pointer-events: none;
+      /* Pass events through to card listener */
+      mix-blend-mode: overlay;
+      /* Blend nicely with image */
+    }
+
+    /* Dark mode tweaks */
+    [data-theme="dark"] .card__grid-effect {
+      mix-blend-mode: screen;
+    }
+
+    .card__grid-effect-tile {
+      position: relative;
+    }
+
+    .card__grid-effect-tile::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      height: 0.4rem;
+      width: 0.4rem;
+      border-radius: 50%;
+
+      background: var(--effect-color, var(--accent));
+      opacity: 0;
+      /* Hidden by default */
+      transition: all 500ms ease;
+
+      box-shadow: var(--grid-shadow-pattern);
+      color: var(--effect-color, var(--accent));
+    }
+
+    /* Active State (JS driven) */
+    .card__grid-effect-tile.active::before {
+      height: 3.5rem;
+      width: 3.5rem;
+      opacity: 1;
+      transition: all 100ms ease-out;
+    }
+
+    transition: all 100ms ease-out;
+    }
+
     /* Container Query: Optimize card layout for narrow containers (Modern CSS) */
     @container (max-width: 340px) {
       .app-card {
