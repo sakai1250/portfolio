@@ -158,11 +158,30 @@ function initDraggableInteractions() {
             avatar.style.display = 'none';
             const elBelow = document.elementFromPoint(x, y);
             avatar.style.display = 'block';
-            let text = 'Background Area';
+
+            const lang = document.documentElement.getAttribute('data-lang') || 'ja';
+            let text = lang === 'ja' ? '未知の領域' : 'Unknown Area';
+
             if (elBelow) {
-                if (elBelow.closest('.header-bar')) text = 'Header Area';
-                else if (elBelow.closest('.profile-sidebar')) text = 'Profile Area';
-                else if (elBelow.closest('.main-content')) text = 'Content Area';
+                const app = elBelow.closest('.app-card');
+                const section = elBelow.closest('.section-card');
+                const header = elBelow.closest('.header-bar');
+                const sidebar = elBelow.closest('.profile-sidebar');
+
+                if (app) {
+                    const title = app.querySelector('.app-title')?.textContent || '';
+                    text = (lang === 'ja' ? '開発：' : 'Dev: ') + title;
+                } else if (section) {
+                    const titleEl = section.querySelector('.section-title');
+                    const titleText = (titleEl?.querySelector(`[lang="${lang}"]`) || titleEl)?.textContent.trim() || '';
+                    text = (lang === 'ja' ? '研究：' : 'Res: ') + titleText;
+                } else if (header) {
+                    text = lang === 'ja' ? 'ナビゲーション' : 'Navigation';
+                } else if (sidebar) {
+                    text = lang === 'ja' ? '自己紹介' : 'Biography';
+                } else {
+                    text = lang === 'ja' ? '背景' : 'Background';
+                }
             }
             tooltip.textContent = text;
             tooltip.style.left = `${x}px`;

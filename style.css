@@ -318,3 +318,35 @@ html[data-lang="en"] [lang="ja"] { display: none !important; }
 .typing-container { font-size: 24px; font-weight: 600; color: var(--text-main); display: inline-flex; align-items: center; min-height: 1.5em; }
 .cursor { width: 2px; height: 1.2em; background: var(--accent); margin-left: 4px; animation: blink 1s step-end infinite; }
 @keyframes blink { 50% { opacity: 0; } }
+
+/* === Drag Tooltip === */
+.drag-tooltip {
+  position: fixed;
+  background: var(--surface-3);
+  color: var(--text-main);
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--accent);
+  pointer-events: none;
+  z-index: 9999;
+  font-size: 12px;
+  font-weight: 700;
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  transition: opacity 0.2s, transform 0.2s;
+  white-space: nowrap;
+  transform: translate(-50%, -100%) scale(0.9);
+}
+.drag-tooltip.visible {
+  opacity: 1;
+  transform: translate(-50%, -100%) scale(1);
+}
+.drag-tooltip::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: var(--accent);
+}
