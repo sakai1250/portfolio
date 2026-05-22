@@ -121,31 +121,7 @@ function initTypingEffect() {
 
 // === Drag & Drop Interactions ===
 function initDraggableInteractions() {
-    // Draggable Profile Card
-    const card = document.querySelector('.profile-card');
-    if (card) {
-        let isDragging = false, startX, startY, currentRotateX = 0, currentRotateY = 0;
-        const onStart = (e) => {
-            isDragging = true; card.style.cursor = 'grabbing'; card.style.transition = 'none';
-            startX = e.pageX || e.touches[0].pageX; startY = e.pageY || e.touches[0].pageY;
-        };
-        const onMove = (e) => {
-            if (!isDragging) return;
-            const pageX = e.pageX || e.touches[0].pageX, pageY = e.pageY || e.touches[0].pageY;
-            currentRotateY += (pageX - startX) * 0.5; currentRotateX -= (pageY - startY) * 0.5;
-            startX = pageX; startY = pageY;
-            card.style.transform = `perspective(1000px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
-        };
-        const onEnd = () => {
-            isDragging = false; card.style.cursor = 'grab';
-            currentRotateX = 0; currentRotateY = 0;
-            card.style.transition = 'transform 1s cubic-bezier(0.2, 0.8, 0.2, 1)';
-            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0)';
-        };
-        card.addEventListener('mousedown', onStart);
-        window.addEventListener('mousemove', onMove);
-        window.addEventListener('mouseup', onEnd);
-    }
+    initPlayfulCardDrag();
 
     // Draggable Avatar Tooltip
     const avatar = document.querySelector('.header-profile img');
@@ -214,6 +190,259 @@ function initDraggableInteractions() {
         window.addEventListener('mousemove', onMove);
         window.addEventListener('mouseup', onEnd);
     }
+}
+
+function initPlayfulCardDrag() {
+    const dragSelector = '.profile-card, .section-card, .app-card, .repo-list li';
+    const edgeOnlySelector = '.repo-list li, .app-card';
+
+    document.querySelectorAll(dragSelector).forEach((card) => {
+        if (card.dataset.playDragReady === 'true') return;
+        card.dataset.playDragReady = 'true';
+        card.classList.add('playful-draggable');
+
+        let startX = 0, startY = 0, pointerActive = false, didReorder = false, suppressClick = false;
+        let activeConfig = null, placeholder = null, grabOffsetX = 0, grabOffsetY = 0;
+
+        const endDrag = (e = {}) => {
+            if (!pointerActive) return;
+            pointerActive = false;
+            card.releasePointerCapture?.(e.pointerId);
+            window.removeEventListener('pointerup', endDrag);
+            window.removeEventListener('pointercancel', endDrag);
+            window.removeEventListener('blur', endDrag);
+            if (placeholder) {
+                placeholder.parentElement?.insertBefore(card, placeholder);
+                placeholder.remove();
+                placeholder = null;
+            }
+            clearPlayfulDragState(card);
+            activeConfig = null;
+
+            if (didReorder) {
+                suppressClick = true;
+                setTimeout(() => { suppressClick = false; }, 0);
+                if (typeof updateSectionTabs === 'function') updateSectionTabs();
+                if (typeof updateTOC === 'function') updateTOC();
+            }
+        };
+
+        card.addEventListener('pointerdown', (e) => {
+            if (e.button === 2) {
+                clearPlayfulDragState(card);
+                return;
+            }
+            if (e.button !== 0 || e.target.closest('button, input, textarea, select, .section-tab-item, .chip')) return;
+            if (card.matches('.section-card') && e.target.closest('.repo-list li, .app-card')) return;
+            if (card.matches(edgeOnlySelector) && !isInItemDragHandle(card, e.clientX)) return;
+            activeConfig = getReorderConfig(card);
+            pointerActive = true;
+            didReorder = false;
+            startX = e.clientX;
+            startY = e.clientY;
+            const rect = card.getBoundingClientRect();
+            grabOffsetX = e.clientX - rect.left;
+            grabOffsetY = e.clientY - rect.top;
+            card.classList.add('playful-grabbed');
+            card.style.transition = 'none';
+            card.setPointerCapture?.(e.pointerId);
+            window.addEventListener('pointerup', endDrag);
+            window.addEventListener('pointercancel', endDrag);
+            window.addEventListener('blur', endDrag);
+        });
+
+        card.addEventListener('pointermove', (e) => {
+            if (!pointerActive) return;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            const isItem = card.matches(edgeOnlySelector);
+            const config = activeConfig;
+
+            if (!isItem) {
+                const rect = card.getBoundingClientRect();
+                const pointerX = (e.clientX - rect.left) / rect.width - 0.5;
+                const pointerY = (e.clientY - rect.top) / rect.height - 0.5;
+                const dragBoostX = Math.max(-1, Math.min(1, dx / 160));
+                const dragBoostY = Math.max(-1, Math.min(1, dy / 160));
+                const rotateX = Math.max(-190, Math.min(190, (-pointerY * 90) - (dragBoostY * 160)));
+                const rotateY = Math.max(-190, Math.min(190, (pointerX * 90) + (dragBoostX * 160)));
+                const lift = Math.min(18, Math.hypot(dx, dy) / 8);
+                card.style.transform = `perspective(620px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(${-lift}px) scale(1.035)`;
+            }
+
+            if (Math.hypot(dx, dy) < 8) return;
+            if (!config) return;
+
+            e.preventDefault();
+            didReorder = true;
+            card.classList.add('playful-dragging');
+            config.container.classList.add('playful-drop-target');
+            if (!placeholder) {
+                const rect = card.getBoundingClientRect();
+                placeholder = createDragPlaceholder(card, rect);
+                card.parentElement.insertBefore(placeholder, card);
+                setFixedDragPosition(card, rect, e.clientX, e.clientY, grabOffsetX, grabOffsetY);
+                document.body.appendChild(card);
+            }
+
+            updateFixedDragPosition(card, e.clientX, e.clientY, grabOffsetX, grabOffsetY);
+
+            const afterElement = getDragAfterElement(config.container, config.item, e.clientY, e.clientX, placeholder);
+            if (!afterElement) {
+                config.container.appendChild(placeholder);
+            } else if (afterElement !== placeholder.nextElementSibling) {
+                config.container.insertBefore(placeholder, afterElement);
+            }
+            markSortNeighbors(config.container, placeholder);
+        });
+
+        card.addEventListener('pointerup', endDrag);
+        card.addEventListener('pointercancel', endDrag);
+        card.addEventListener('contextmenu', () => {
+            if (placeholder) {
+                placeholder.parentElement?.insertBefore(card, placeholder);
+                placeholder.remove();
+                placeholder = null;
+            }
+            clearPlayfulDragState(card);
+            activeConfig = null;
+            pointerActive = false;
+            window.removeEventListener('pointerup', endDrag);
+            window.removeEventListener('pointercancel', endDrag);
+            window.removeEventListener('blur', endDrag);
+        });
+        card.addEventListener('click', (e) => {
+            if (!suppressClick) return;
+            e.preventDefault();
+            e.stopPropagation();
+            suppressClick = false;
+        });
+    });
+
+    if (document.body.dataset.playDragObserver !== 'true') {
+        document.body.dataset.playDragObserver = 'true';
+        let observerTicking = false;
+        new MutationObserver(() => {
+            if (observerTicking) return;
+            observerTicking = true;
+            requestAnimationFrame(() => {
+                initPlayfulCardDrag();
+                observerTicking = false;
+            });
+        }).observe(document.body, { childList: true, subtree: true });
+    }
+}
+
+function isInItemDragHandle(card, clientX) {
+    const rect = card.getBoundingClientRect();
+    if (card.matches('.repo-list li') && card.querySelector(':scope > .link-arrow')) {
+        return clientX >= rect.right - 92 && clientX <= rect.right - 38;
+    }
+    return clientX >= rect.right - 56;
+}
+
+function clearPlayfulDragState(card) {
+    card.classList.remove('playful-grabbed', 'playful-dragging', 'playful-floating-list-item');
+    card.style.transition = 'transform 0.45s var(--ease-out-expo)';
+    card.style.transform = '';
+    card.style.position = '';
+    card.style.left = '';
+    card.style.top = '';
+    card.style.width = '';
+    card.style.height = '';
+    card.style.margin = '';
+    card.style.pointerEvents = '';
+    card.style.zIndex = '';
+    document.querySelectorAll('.playful-drop-target').forEach(el => el.classList.remove('playful-drop-target'));
+    document.querySelectorAll('.playful-sort-before, .playful-sort-after').forEach(el => {
+        el.classList.remove('playful-sort-before', 'playful-sort-after');
+    });
+}
+
+function createDragPlaceholder(card, rect) {
+    const placeholder = document.createElement(card.tagName.toLowerCase());
+    placeholder.className = card.className;
+    placeholder.classList.remove('playful-grabbed', 'playful-dragging');
+    placeholder.classList.add('playful-placeholder-source');
+    placeholder.style.width = `${rect.width}px`;
+    placeholder.style.height = `${rect.height}px`;
+    placeholder.style.margin = getComputedStyle(card).margin;
+    placeholder.setAttribute('aria-hidden', 'true');
+    return placeholder;
+}
+
+function setFixedDragPosition(card, rect, clientX, clientY, offsetX, offsetY) {
+    if (card.matches('li')) {
+        card.classList.add('playful-floating-list-item');
+    }
+    card.style.position = 'fixed';
+    card.style.width = `${rect.width}px`;
+    card.style.height = `${rect.height}px`;
+    card.style.margin = '0';
+    card.style.pointerEvents = 'none';
+    card.style.zIndex = '2400';
+    card.style.transform = 'none';
+    updateFixedDragPosition(card, clientX, clientY, offsetX, offsetY);
+}
+
+function updateFixedDragPosition(card, clientX, clientY, offsetX, offsetY) {
+    card.style.left = `${clientX - offsetX}px`;
+    card.style.top = `${clientY - offsetY}px`;
+}
+
+function markSortNeighbors(container, dragging) {
+    container.querySelectorAll('.playful-sort-before, .playful-sort-after').forEach(el => {
+        el.classList.remove('playful-sort-before', 'playful-sort-after');
+    });
+    const prev = getSortableSibling(dragging, 'previousElementSibling');
+    const next = getSortableSibling(dragging, 'nextElementSibling');
+    if (prev) prev.classList.add('playful-sort-before');
+    if (next) next.classList.add('playful-sort-after');
+}
+
+function getSortableSibling(element, direction) {
+    let sibling = element[direction];
+    while (sibling && (
+        sibling.classList.contains('playful-dragging')
+        || sibling.classList.contains('playful-placeholder-source')
+    )) {
+        sibling = sibling[direction];
+    }
+    return sibling;
+}
+
+function getReorderConfig(card) {
+    if (card.matches('.section-card') && card.parentElement?.matches('.tab-content')) {
+        return { container: card.parentElement, item: '.section-card' };
+    }
+    if (card.matches('li') && card.parentElement?.matches('.repo-list')) {
+        return { container: card.parentElement, item: 'li' };
+    }
+    if (card.matches('.app-card') && card.parentElement?.matches('.grid-dense')) {
+        return { container: card.parentElement, item: '.app-card' };
+    }
+    return null;
+}
+
+function getDragAfterElement(container, selector, y, x, dragging) {
+    const items = [...container.querySelectorAll(selector)].filter(item => {
+        return item !== dragging
+            && !item.classList.contains('playful-dragging')
+            && !item.classList.contains('playful-placeholder-source');
+    });
+    const isGrid = getComputedStyle(container).display === 'grid';
+
+    return items.reduce((closest, child) => {
+        const box = child.getBoundingClientRect();
+        const offset = isGrid
+            ? Math.hypot(x - (box.left + box.width / 2), y - (box.top + box.height / 2))
+            : y - box.top - box.height / 2;
+
+        if (isGrid) {
+            return offset < closest.offset ? { offset, element: child } : closest;
+        }
+        return offset < 0 && offset > closest.offset ? { offset, element: child } : closest;
+    }, { offset: isGrid ? Number.POSITIVE_INFINITY : Number.NEGATIVE_INFINITY }).element;
 }
 
 // 互換性のためにwindowに公開

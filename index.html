@@ -28,7 +28,7 @@
   <meta property="og:image" content="https://github.com/sakai1250.png">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:creator" content="@ikaitaig">
-  <link rel="stylesheet" href="style.css?v=20260522-1" />
+  <link rel="stylesheet" href="style.css?v=20260522-18" />
   <!-- Structured Data (JSON-LD) for SEO & Professionalism -->
   <script type="application/ld+json">
   {
@@ -123,16 +123,35 @@
             </a>
           </div>
         </div>
-        <nav class="tab-nav header-tab-nav" aria-label="Primary sections">
-          <div class="tab-item active" data-tab="research" role="button" tabindex="0">
-            <span lang="ja">研究 (Researcher)</span>
-            <span lang="en">Research</span>
+        <div class="header-tab-row">
+          <nav class="tab-nav header-tab-nav" aria-label="Primary sections">
+            <div class="tab-item active" data-tab="research" role="button" tabindex="0">
+              <span lang="ja">研究 (Researcher)</span>
+              <span lang="en">Research</span>
+            </div>
+            <div class="tab-item" data-tab="engineer" role="button" tabindex="0">
+              <span lang="ja">開発 (Engineer)</span>
+              <span lang="en">Engineering</span>
+            </div>
+          </nav>
+          <div class="filter-row year-filter">
+            <span class="filter-label">
+              <span lang="ja">年度</span>
+              <span lang="en">Year</span>
+            </span>
+            <button class="chip active" data-year="all" type="button">
+              <span lang="ja">すべて</span>
+              <span lang="en">All</span>
+            </button>
+            <button class="chip" data-year="2026" type="button">2026</button>
+            <button class="chip" data-year="2025" type="button">2025</button>
+            <button class="chip" data-year="2024" type="button">2024</button>
+            <button class="chip" data-year="2023" type="button">2023</button>
+            <button class="chip" data-year="2022" type="button">2022</button>
+            <button class="chip" data-year="2021" type="button">2021</button>
+            <button class="chip" data-year="2020" type="button">2020</button>
           </div>
-          <div class="tab-item" data-tab="engineer" role="button" tabindex="0">
-            <span lang="ja">開発 (Engineer)</span>
-            <span lang="en">Engineering</span>
-          </div>
-        </nav>
+        </div>
         <!-- <div class="header-bottom">
           <div class="header-nav">
             <button class="nav-btn" data-jump="research" type="button">
@@ -230,23 +249,6 @@
           <nav id="section-tab-nav" class="section-tab-nav" aria-label="Cards"></nav>
 
           <div id="research-content" class="tab-content active">
-            <div class="filter-row year-filter">
-              <span class="filter-label">
-                <span lang="ja">年度</span>
-                <span lang="en">Year</span>
-              </span>
-              <button class="chip active" data-year="all" type="button">
-                <span lang="ja">すべて</span>
-                <span lang="en">All</span>
-              </button>
-              <button class="chip" data-year="2026" type="button">2026</button>
-              <button class="chip" data-year="2025" type="button">2025</button>
-              <button class="chip" data-year="2024" type="button">2024</button>
-              <button class="chip" data-year="2023" type="button">2023</button>
-              <button class="chip" data-year="2022" type="button">2022</button>
-              <button class="chip" data-year="2021" type="button">2021</button>
-              <button class="chip" data-year="2020" type="button">2020</button>
-            </div>
 
             <section class="section-card">
               <h2 class="section-title">
@@ -1014,8 +1016,8 @@
     </div>
   </div>
 
-  <script src="effects.js?v=20260522-1"></script>
-  <script src="main.js?v=20260522-1"></script>
+  <script src="effects.js?v=20260522-18"></script>
+  <script src="main.js?v=20260522-18"></script>
 </body>
 
 </html>
