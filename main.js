@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     safeInit(initSearchAndFilters, 'SearchAndFilters');
     safeInit(initCopyButtons, 'CopyButtons');
     safeInit(initTOC, 'TOC');
+    safeInit(initSectionTabs, 'SectionTabs');
     safeInit(initQiitaArticles, 'QiitaArticles');
     safeInit(initContactForm, 'ContactForm');
     safeInit(initStickyHeader, 'StickyHeader');
@@ -58,8 +59,17 @@ function initTabs() {
             c.style.display = active ? 'block' : 'none';
         });
         if (typeof updateTOC === 'function') updateTOC();
+        if (typeof updateSectionTabs === 'function') updateSectionTabs();
     };
-    tabItems.forEach(i => i.addEventListener('click', () => switchTab(i.getAttribute('data-tab'))));
+    tabItems.forEach(i => {
+        const activate = () => switchTab(i.getAttribute('data-tab'));
+        i.addEventListener('click', activate);
+        i.addEventListener('keydown', (e) => {
+            if (e.key !== 'Enter' && e.key !== ' ') return;
+            e.preventDefault();
+            activate();
+        });
+    });
 }
 
 function initTheme() {
@@ -85,18 +95,35 @@ function initSearchAndFilters() {
     let activeTag = 'all', activeYear = 'all';
 
     const apply = () => {
-        const q = input.value.toLowerCase().trim();
+        const q = input ? input.value.toLowerCase().trim() : '';
+        const activeContent = document.querySelector('.tab-content.active') || document;
         let count = 0;
-        document.querySelectorAll('.repo-list li, .app-card').forEach(item => {
+
+        activeContent.querySelectorAll('.section-card').forEach(section => {
+            section.style.display = '';
+        });
+
+        activeContent.querySelectorAll('.repo-list li, .app-card').forEach(item => {
             const text = item.textContent.toLowerCase();
             const tags = (item.getAttribute('data-tags') || '').split(' ');
             const year = item.getAttribute('data-year') || '';
-            const match = (!q || text.includes(q)) && (activeTag === 'all' || tags.includes(activeTag)) && (activeYear === 'all' || year === activeYear);
+            const tagMatch = !item.classList.contains('app-card') || activeTag === 'all' || tags.includes(activeTag);
+            const yearMatch = !year || activeYear === 'all' || year === activeYear;
+            const match = (!q || text.includes(q)) && tagMatch && yearMatch;
             item.style.display = match ? '' : 'none';
             if (match) count++;
         });
+
+        activeContent.querySelectorAll('.section-card').forEach(section => {
+            const filterableItems = section.querySelectorAll('.repo-list li[data-year], .app-card[data-tags]');
+            if (!filterableItems.length) return;
+            const visibleItems = Array.from(filterableItems).some(item => item.style.display !== 'none');
+            section.style.display = visibleItems ? '' : 'none';
+        });
+
         const countEl = document.getElementById('search-count');
         if (countEl) countEl.textContent = count;
+        if (typeof updateSectionTabs === 'function') updateSectionTabs();
     };
 
     if (input) input.addEventListener('input', apply);
@@ -151,6 +178,7 @@ function initTOC() {
         fab.addEventListener('click', () => menu.classList.toggle('show'));
         document.addEventListener('click', (e) => { if (!menu.contains(e.target) && !fab.contains(e.target)) menu.classList.remove('show'); });
         updateTOC();
+        updateSectionTabs();
     }
 }
 
@@ -178,6 +206,88 @@ function updateTOC() {
         });
         nav.appendChild(a);
     });
+}
+
+function getActiveSections() {
+    const content = document.querySelector('.tab-content.active');
+    if (!content) return [];
+    return Array.from(content.querySelectorAll('.section-card')).filter(section => section.offsetParent !== null);
+}
+
+function getSectionTitle(section) {
+    const title = section.querySelector('.section-title');
+    if (!title) return '';
+    const lang = document.documentElement.getAttribute('data-lang') || 'ja';
+    return (title.querySelector(`[lang="${lang}"]`) || title).textContent.trim();
+}
+
+function getStickyOffset() {
+    const header = document.querySelector('.header-bar');
+    const sectionTabs = document.getElementById('section-tab-nav');
+    return (header?.offsetHeight || 0) + (sectionTabs?.offsetHeight || 0) + 16;
+}
+
+function scrollToSection(section) {
+    window.scrollTo({
+        top: section.getBoundingClientRect().top + window.scrollY - getStickyOffset(),
+        behavior: 'smooth'
+    });
+}
+
+function updateActiveSectionTab() {
+    const sections = getActiveSections();
+    const tabs = document.querySelectorAll('.section-tab-item');
+    if (!sections.length || !tabs.length) return;
+
+    const targetLine = getStickyOffset() + 48;
+    let activeIndex = 0;
+    let nearest = Infinity;
+    sections.forEach((section, index) => {
+        const distance = Math.abs(section.getBoundingClientRect().top - targetLine);
+        if (distance < nearest) {
+            nearest = distance;
+            activeIndex = index;
+        }
+    });
+    tabs.forEach((tab, index) => tab.classList.toggle('active', index === activeIndex));
+}
+
+function updateSectionTabs() {
+    const nav = document.getElementById('section-tab-nav');
+    if (!nav) return;
+    const sections = getActiveSections();
+    nav.innerHTML = '';
+
+    sections.forEach((section, index) => {
+        if (!section.id) section.id = `section-${index}`;
+        const button = document.createElement('button');
+        button.className = 'section-tab-item';
+        button.type = 'button';
+        button.textContent = getSectionTitle(section);
+        button.addEventListener('click', () => scrollToSection(section));
+        nav.appendChild(button);
+    });
+
+    updateActiveSectionTab();
+}
+
+function initSectionTabs() {
+    let ticking = false;
+    const requestActiveUpdate = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+            updateActiveSectionTab();
+            ticking = false;
+        });
+    };
+
+    window.addEventListener('scroll', requestActiveUpdate, { passive: true });
+    window.addEventListener('resize', () => {
+        updateSectionTabs();
+        requestActiveUpdate();
+    });
+    updateSectionTabs();
 }
 
 function initCopyButtons() {
@@ -218,6 +328,55 @@ function initScrollReveal() {
     document.querySelectorAll('.section-card, .app-card').forEach(el => {
         el.classList.add('reveal-item'); obs.observe(el);
     });
+}
+
+function resolveCssColor(element, property) {
+    const value = getComputedStyle(element).getPropertyValue(property).trim();
+    const match = value.match(/^var\((--[^),\s]+)/);
+    if (!match) return value;
+    return getComputedStyle(document.documentElement).getPropertyValue(match[1]).trim() || value;
+}
+
+function updateSectionBackgroundTone() {
+    const cards = Array.from(document.querySelectorAll('.tab-content.active .section-card'))
+        .filter(card => card.offsetParent !== null);
+    if (!cards.length) return;
+
+    const viewportCenter = window.innerHeight / 2;
+    let activeCard = cards[0];
+    let nearest = Infinity;
+
+    cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+        const cardCenter = rect.top + rect.height / 2;
+        const distance = Math.abs(cardCenter - viewportCenter);
+        if (distance < nearest) {
+            nearest = distance;
+            activeCard = card;
+        }
+    });
+
+    document.documentElement.style.setProperty('--page-bg-accent', resolveCssColor(activeCard, '--section-accent'));
+}
+
+function initSectionBackgroundTone() {
+    let ticking = false;
+    const requestUpdate = () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+            updateSectionBackgroundTone();
+            ticking = false;
+        });
+    };
+
+    window.addEventListener('scroll', requestUpdate, { passive: true });
+    window.addEventListener('resize', requestUpdate);
+    document.querySelectorAll('.tab-item').forEach(item => {
+        item.addEventListener('click', () => setTimeout(updateSectionBackgroundTone, 0));
+    });
+    updateSectionBackgroundTone();
 }
 
 function initReadingProgress() {
@@ -281,6 +440,7 @@ function initLanguage() {
             });
         }
         updateTOC();
+        updateSectionTabs();
     };
     if (btn) btn.addEventListener('click', () => set(document.documentElement.getAttribute('data-lang') === 'ja' ? 'en' : 'ja'));
     set(localStorage.getItem('lang') || 'ja');
