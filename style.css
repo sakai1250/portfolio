@@ -96,8 +96,7 @@ a:hover { text-decoration: underline; color: var(--accent); }
   .header-actions { width: 100%; justify-content: flex-start; }
   .header-btn { padding: 5px 10px; font-size: 12px; }
   .header-tab-row { align-items: stretch; }
-  .header-tab-nav { width: 100%; }
-  .header-tab-nav { gap: 4px; padding: 3px; }
+  .header-tab-nav { width: 100%; gap: 4px; padding: 3px; }
   .header-tab-nav .tab-item { padding: 8px 10px; font-size: 12px; }
   .header-tab-nav .tab-item { flex: 1; text-align: center; }
   .header-tab-row .year-filter { width: 100%; gap: 6px; }
