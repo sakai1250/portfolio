@@ -98,7 +98,7 @@ a:hover { text-decoration: underline; color: var(--accent); }
   .header-tab-row { align-items: stretch; }
   .header-tab-nav { width: 100%; gap: 4px; padding: 3px; }
   .header-tab-nav .tab-item { flex: 1; text-align: center; padding: 8px 10px; font-size: 14px; }
-  .header-tab-row .year-filter { width: 100%; gap: 6px; flex-wrap: nowrap; overflow-x: auto; }
+  .header-tab-row .year-filter { width: 100%; gap: 6px; flex-wrap: nowrap; overflow-x: auto; scroll-padding-inline: 8px; }
   .filter-label { font-size: 14px; }
   .chip { height: 44px; padding: 6px 10px; font-size: 14px; flex: 0 0 auto; }
   .profile-card { padding: 16px; margin-bottom: 12px; }
