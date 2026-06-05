@@ -88,7 +88,7 @@ a:hover { text-decoration: underline; color: var(--accent); }
   .header-profile { gap: 12px; align-items: center; }
   .header-profile img { width: 56px !important; height: 56px !important; }
   .header-name { font-size: 22px; }
-  .header-subtitle { font-size: 12px; }
+  .header-subtitle { font-size: 14px; }
   .header-stats { width: 100%; justify-content: center; padding: 4px 10px; }
   .header-stats .stat-item { min-width: 64px; }
   .header-stats .stat-item:not(:first-child) { padding-left: 12px !important; }
@@ -97,10 +97,9 @@ a:hover { text-decoration: underline; color: var(--accent); }
   .header-btn { height: 44px; padding: 6px 12px; font-size: 14px; }
   .header-tab-row { align-items: stretch; }
   .header-tab-nav { width: 100%; gap: 4px; padding: 3px; }
-  .header-tab-nav .tab-item { flex: 1; text-align: center; padding: 8px 10px; font-size: 12px; }
-  .header-tab-row .year-filter { width: 100%; gap: 6px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
-  .header-tab-row .year-filter::-webkit-scrollbar { display: none; }
-  .filter-label { font-size: 12px; }
+  .header-tab-nav .tab-item { flex: 1; text-align: center; padding: 8px 10px; font-size: 14px; }
+  .header-tab-row .year-filter { width: 100%; gap: 6px; flex-wrap: nowrap; overflow-x: auto; }
+  .filter-label { font-size: 14px; }
   .chip { height: 44px; padding: 6px 10px; font-size: 14px; flex: 0 0 auto; }
   .profile-card { padding: 16px; margin-bottom: 12px; }
   .section-card { padding: 16px; margin-bottom: 16px; }
