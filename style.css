@@ -97,11 +97,10 @@ a:hover { text-decoration: underline; color: var(--accent); }
   .header-btn { padding: 5px 10px; font-size: 12px; }
   .header-tab-row { align-items: stretch; }
   .header-tab-nav { width: 100%; gap: 4px; padding: 3px; }
-  .header-tab-nav .tab-item { padding: 8px 10px; font-size: 12px; }
-  .header-tab-nav .tab-item { flex: 1; text-align: center; }
+  .header-tab-nav .tab-item { flex: 1; text-align: center; padding: 8px 10px; font-size: 12px; }
   .header-tab-row .year-filter { width: 100%; gap: 6px; }
-  .filter-label { font-size: 11px; }
-  .chip { padding: 3px 9px; font-size: 11px; }
+  .filter-label { font-size: 12px; }
+  .chip { padding: 3px 9px; font-size: 12px; }
   .profile-card { padding: 16px; margin-bottom: 12px; }
   .section-card { padding: 16px; margin-bottom: 16px; }
   .section-title { font-size: 16px; margin-bottom: 12px; }
@@ -112,7 +111,7 @@ a:hover { text-decoration: underline; color: var(--accent); }
   .app-card { padding: 12px; gap: 12px; }
   .app-thumb { width: 64px; height: 64px; }
   .app-title { font-size: 14px; }
-  .app-desc { font-size: 11px; margin-bottom: 6px; }
+  .app-desc { font-size: 12px; margin-bottom: 6px; }
 }
 
 /* === Header === */
