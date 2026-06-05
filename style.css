@@ -94,14 +94,14 @@ a:hover { text-decoration: underline; color: var(--accent); }
   .header-stats .stat-item:not(:first-child) { padding-left: 12px !important; }
   .stat-value { font-size: 16px; }
   .header-actions { width: 100%; justify-content: flex-start; }
-  .header-btn { min-height: 44px; padding: 6px 12px; font-size: 12px; }
+  .header-btn { min-height: 44px; padding: 6px 12px; font-size: 14px; }
   .header-tab-row { align-items: stretch; }
   .header-tab-nav { width: 100%; gap: 4px; padding: 3px; }
   .header-tab-nav .tab-item { flex: 1; text-align: center; padding: 8px 10px; font-size: 12px; }
   .header-tab-row .year-filter { width: 100%; gap: 6px; flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
   .header-tab-row .year-filter::-webkit-scrollbar { display: none; }
   .filter-label { font-size: 12px; }
-  .chip { min-height: 44px; padding: 6px 10px; font-size: 12px; flex: 0 0 auto; }
+  .chip { min-height: 44px; padding: 6px 10px; font-size: 14px; flex: 0 0 auto; }
   .profile-card { padding: 16px; margin-bottom: 12px; }
   .section-card { padding: 16px; margin-bottom: 16px; }
   .section-title { font-size: 16px; margin-bottom: 12px; }
@@ -112,7 +112,7 @@ a:hover { text-decoration: underline; color: var(--accent); }
   .app-card { padding: 12px; gap: 12px; }
   .app-thumb { width: 64px; height: 64px; }
   .app-title { font-size: 14px; }
-  .app-desc { font-size: 12px; margin-bottom: 6px; }
+  .app-desc { font-size: 14px; margin-bottom: 6px; }
 }
 
 /* === Header === */
