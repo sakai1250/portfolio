@@ -43,8 +43,34 @@ document.addEventListener('DOMContentLoaded', () => {
 function initLoader() {
     const loader = document.getElementById('loading-screen');
     if (!loader) return;
-    const hide = () => { loader.classList.add('hidden'); document.body.style.overflow = ''; };
-    window.addEventListener('load', () => setTimeout(hide, 500));
+    const hide = () => {
+        if (loader.classList.contains('hidden')) return;
+        loader.classList.add('hidden');
+        document.body.style.overflow = '';
+        // After transition, remove from layout and block interaction
+        const onEnd = (e) => {
+            if (e && e.target !== loader) return;
+            loader.style.display = 'none';
+            loader.setAttribute('aria-hidden', 'true');
+            loader.removeEventListener('transitionend', onEnd);
+        };
+        loader.addEventListener('transitionend', onEnd);
+        // Fallback if transitionend doesn't fire
+        setTimeout(() => {
+            if (loader.style.display !== 'none') {
+                loader.style.display = 'none';
+                loader.setAttribute('aria-hidden', 'true');
+            }
+        }, 700);
+    };
+
+    if (document.readyState === 'complete') {
+        setTimeout(hide, 200);
+    } else {
+        window.addEventListener('load', () => setTimeout(hide, 500));
+    }
+
+    // Safety timeout in case load never fires
     setTimeout(hide, 3000);
 }
 
