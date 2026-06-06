@@ -411,7 +411,7 @@ html[data-lang="en"] [lang="ja"] { display: none !important; }
 
 /* Hide loading screen */
 #loading-screen { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; transition: 0.5s; }
-#loading-screen.hidden { opacity: 0; visibility: hidden; }
+#loading-screen.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 .spinner { font-size: 24px; font-weight: 700; color: var(--accent); animation: pulse 1.5s infinite; }
 @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.95); } }
 
