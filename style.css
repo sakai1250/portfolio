@@ -621,3 +621,73 @@ html[data-lang="en"] [lang="ja"] { display: none !important; }
 .playful-floating-list-item:has(> .link-arrow).playful-draggable::after {
   right: 50px;
 }
+
+/* === Object-Detection Hover Overlays (CV theme) === */
+
+/* 1) Profile avatar → square "Person" bounding box on hover.
+   Box is vertically centered because .header-profile is taller than the 80px avatar. */
+.header-profile { position: relative; }
+.header-profile::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 80px;
+  height: 80px;
+  transform: translateY(-50%);
+  border: 2px solid #ff00ff;       /* CV magenta */
+  box-sizing: border-box;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+}
+.header-profile::after {
+  content: 'Person: 0.99';
+  position: absolute;
+  top: calc(50% - 40px);           /* top edge of the 80px box */
+  left: 0;
+  transform: translateY(-100%);    /* sit just above the box */
+  background: #ff00ff;
+  color: #fff;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.3;
+  padding: 2px 5px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+}
+.header-profile:hover::before,
+.header-profile:hover::after { opacity: 1; }
+
+/* 2) App cards → "tag" bounding box on hover.
+   .app-card::after is already the drag handle (⋮⋮) and .app-card has overflow:hidden,
+   so the box is an (intentionally square) outline and the label uses ::before. */
+.app-card:hover {
+  outline: 2px solid #00ff00;      /* CV green */
+  outline-offset: -2px;
+}
+.app-card::before {
+  content: attr(data-tags) ': 0.98';
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: #00ff00;
+  color: #000;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: capitalize;
+  padding: 2px 6px;
+  white-space: nowrap;
+  border-bottom-right-radius: 4px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+  z-index: 11;
+}
+.app-card:hover::before { opacity: 1; }
